@@ -1,5 +1,21 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import dbConnect from "../../helper/connection";
 
-export default function handler(req, res) {
-  res.status(200).json({ name: 'John Doe' })
-}
+export default async (req, res) => {
+  try {
+    let name;
+    await dbConnect()
+      .listDatabases()
+      .then((dbs) => {
+        console.log(dbs);
+        name = dbs || "efwe"
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    res.status(200).json({ status: true, message: "success", data: name });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ status: false, message: "Something went wrong" });
+  }
+};
