@@ -16,8 +16,8 @@ const table = () => {
                 </div>
               </div>
               <div className="card-body px-0 pb-2">
-                <div className="table-responsive p-0">
-                  <table className="table align-items-center mb-0">
+                <div className="table-responsive px-5">
+                  {/* <table className="table align-items-center mb-0">
                     <thead>
                       <tr>
                         <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -35,54 +35,7 @@ const table = () => {
                         <th className="text-secondary opacity-7"></th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <div className="d-flex px-2 py-1">
-                            <div>
-                              <img
-                                src="/assets/image/team-2.jpg"
-                                className="avatar avatar-sm me-3 border-radius-lg"
-                                alt="user1"
-                              />
-                            </div>
-                            <div className="d-flex flex-column justify-content-center">
-                              <h6 className="mb-0 text-sm">John Michael</h6>
-                              <p className="text-xs text-secondary mb-0">
-                                john@creative-tim.com
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <p className="text-xs font-weight-bold mb-0">
-                            Manager
-                          </p>
-                          <p className="text-xs text-secondary mb-0">
-                            Organization
-                          </p>
-                        </td>
-                        <td className="align-middle text-center text-sm">
-                          <span className="badge badge-sm bg-gradient-success">
-                            Online
-                          </span>
-                        </td>
-                        <td className="align-middle text-center">
-                          <span className="text-secondary text-xs font-weight-bold">
-                            23/04/18
-                          </span>
-                        </td>
-                        <td className="align-middle">
-                          <a
-                            href="#"
-                            className="text-secondary font-weight-bold text-xs"
-                            data-toggle="tooltip"
-                            data-original-title="Edit user"
-                          >
-                            Edit
-                          </a>
-                        </td>
-                      </tr>
+                    <tbody className="px-2">
                       <tr>
                         <td>
                           <div className="d-flex px-2 py-1">
@@ -103,7 +56,7 @@ const table = () => {
                         </td>
                         <td>
                           <p className="text-xs font-weight-bold mb-0">
-                            Programator    
+                            Programator
                           </p>
                           <p className="text-xs text-secondary mb-0">
                             Developer
@@ -114,7 +67,7 @@ const table = () => {
                             Offline
                           </span>
                         </td>
-                        <td className="align-middle text-center">    
+                        <td className="align-middle text-center">
                           <span className="text-secondary text-xs font-weight-bold">
                             11/01/19
                           </span>
@@ -125,7 +78,7 @@ const table = () => {
                             className="text-secondary font-weight-bold text-xs"
                             data-toggle="tooltip"
                             data-original-title="Edit user"
-                          >    
+                          >
                             Edit
                           </a>
                         </td>
@@ -140,7 +93,7 @@ const table = () => {
                                 alt="user3"
                               />
                             </div>
-                            <div className="d-flex flex-column justify-content-center">     
+                            <div className="d-flex flex-column justify-content-center">
                               <h6 className="mb-0 text-sm">Laurent Perrier</h6>
                               <p className="text-xs text-secondary mb-0">
                                 laurent@creative-tim.com
@@ -319,7 +272,17 @@ const table = () => {
                         </td>
                       </tr>
                     </tbody>
-                  </table>
+                  </table> */}
+                  <div className="d-flex justify-content-between">
+                    <h5>India</h5>
+                    <h5>RBI</h5>
+                    <p>jfiuoehn jwejuwejwefh w fwfjwehfweh w wefjpw0j</p>
+                  </div>
+                  <div className="d-flex justify-content-between ms-auto" style={{width: "90%"}}>
+                    <h5>Gujarat</h5>
+                    <h5>SBI</h5>
+                    <p>jfiuoehn jwejuwejwefh w fwfjwehfweh w wefjpw0j</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -422,7 +385,7 @@ const table = () => {
                           </div>
                         </td>
                         <td>
-                            <p className="text-sm font-weight-bold mb-0">
+                          <p className="text-sm font-weight-bold mb-0">
                             $5,000
                           </p>
                         </td>
@@ -439,7 +402,7 @@ const table = () => {
                                 <div
                                   className="progress-bar bg-gradient-success"
                                   role="progressbar"
-                                  aria-valuenow="100" 
+                                  aria-valuenow="100"
                                   aria-valuemin="0"
                                   aria-valuemax="100"
                                   style={{ width: "100%" }}
