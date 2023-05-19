@@ -1,7 +1,9 @@
 import React from "react";
 import Layout from "../component/Layout";
+import Tree from "../component/tree/Tree";
 
-const table = () => {
+const table = ({ data }) => {
+  console.log(data);
   return (
     <>
       <Layout>
@@ -16,8 +18,8 @@ const table = () => {
                 </div>
               </div>
               <div className="card-body px-0 pb-2">
-                <div className="table-responsive px-5">
-                  {/* <table className="table align-items-center mb-0">
+                {/* <div className="table-responsive px-5">
+                  <table className="table align-items-center mb-0">
                     <thead>
                       <tr>
                         <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -272,18 +274,11 @@ const table = () => {
                         </td>
                       </tr>
                     </tbody>
-                  </table> */}
-                  <div className="d-flex justify-content-between">
-                    <h5>India</h5>
-                    <h5>RBI</h5>
-                    <p>jfiuoehn jwejuwejwefh w fwfjwehfweh w wefjpw0j</p>
-                  </div>
-                  <div className="d-flex justify-content-between ms-auto" style={{width: "90%"}}>
-                    <h5>Gujarat</h5>
-                    <h5>SBI</h5>
-                    <p>jfiuoehn jwejuwejwefh w fwfjwehfweh w wefjpw0j</p>
-                  </div>
-                </div>
+                  </table>
+                </div> */}
+                {data.map((item) => (
+                  <Tree treeData={item} />
+                ))}
               </div>
             </div>
           </div>
@@ -647,4 +642,14 @@ const table = () => {
   );
 };
 
+export async function getServerSideProps() {
+  const res = await fetch(`${process.env.baseUrl}/api/getData`);
+  const data = await res.json();
+
+  return {
+    props: {
+      data: data.data,
+    },
+  };
+}
 export default table;

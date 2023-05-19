@@ -1,4 +1,3 @@
-import Layout from "../component/Layout";
 import * as React from "react";
 import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
 import { alpha, styled } from "@mui/material/styles";
@@ -78,13 +77,11 @@ const CustomContent = React.forwardRef(function CustomContent(props, ref) {
   };
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
-      className="d-flex align-items-center"
+      className="d-flex align-items-center mt-3"
       onMouseDown={handleMouseDown}
       ref={ref}
     >
-      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
       <div onClick={handleExpansionClick} className="pe-2">
         {icon}
       </div>
@@ -118,43 +115,16 @@ const StyledTreeItem = styled((props) => <CustomTreeItem {...props} />)(
       fontSize: 34,
     },
     [`& .${treeItemClasses.content}`]: {
-      // marginLeft: 6,
-      // paddingLeft: 40,
+      marginLeft: 6,
+      paddingLeft: 40,
       borderLeft: `2px solid ${color ? color : "red"}`,
-      // fontSize: 34,
+      fontSize: 34,
     },
   })
 );
 
-function CustomizedTreeView({ treeData }) {
+export default function Tree({ treeData }) {
   return (
-    // <TreeView
-    //   aria-label="customized"
-    //   //   defaultExpanded={["2"]}
-    //   defaultCollapseIcon={<MinusSquare />}
-    //   defaultExpandIcon={<PlusSquare />}
-    //   defaultEndIcon={<CloseSquare />}
-    // >
-    //   <StyledTreeItem nodeId="1" label="Main">
-    //     <StyledTreeItem nodeId="2" label="Hello" />
-    //     <StyledTreeItem
-    //       nodeId="3"
-    //       color="green"
-    //       label={{ title: "Subtree with children", color: "green" }}
-    //     >
-    //       <StyledTreeItem nodeId="6" label="Hello" />
-    //       <StyledTreeItem nodeId="7" label="Sub-subtree with children">
-    //         <StyledTreeItem nodeId="9" label="Child 1" />
-    //         <StyledTreeItem nodeId="10" label="Child 2" />
-    //         <StyledTreeItem nodeId="11" label="Child 3" />
-    //       </StyledTreeItem>
-    //       <StyledTreeItem nodeId="8" label="Hello" />
-    //     </StyledTreeItem>
-    //     <StyledTreeItem nodeId="4" label="World" />
-    //     <StyledTreeItem nodeId="5" label="Something something" />
-    //   </StyledTreeItem>
-    // </TreeView>
-
     <TreeView
       aria-label="customized"
       //   defaultExpanded={["2"]}
@@ -164,24 +134,11 @@ function CustomizedTreeView({ treeData }) {
     >
       <StyledTreeItem
         nodeId="1"
-        label={`${treeData.name} ${treeData.address.country}`}
+        label={`${treeData.name} (${treeData.address.country})`}
       >
-        {treeData.children.length > 0 && (treeData.children.map((item) => <CustomizedTreeView treeData={treeData.children} />)
-          
-        )}
+        {treeData.children.length > 0 &&
+          treeData.children.map((item) => <Tree treeData={item} />)}
       </StyledTreeItem>
     </TreeView>
   );
 }
-
-const tree = () => {
-  return (
-    <>
-      <Layout>
-        <CustomizedTreeView treeData={treeData} />
-      </Layout>
-    </>
-  );
-};
-
-export default tree;
