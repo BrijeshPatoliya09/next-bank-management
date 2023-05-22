@@ -5,11 +5,10 @@ export default async (req, res) => {
   try {
     const mango = {
       selector: {
-        // $and: [{ docType: "Bank" }, { level: { $or: getLevel(0) } }],
         $and: [
           { docType: "Bank" },
           { level: { $or: getLevel(1) } },
-          // { "address.state": "Gujarat" },
+          { "address.state": "Gujarat" },   
         ],
       },
       fields: ["_id", "name", "address", "parentalId", "level"],
@@ -64,8 +63,8 @@ export default async (req, res) => {
     //     };
     //   });
 
-    const dummy = convertToNestedTree(data.data.docs);
-    const newData = [...data.data.docs].filter((item) => item.level == 2)
+    convertToNestedTree(data.data.docs);
+    const newData = [...data.data.docs].filter((item) => item.level == 1);
 
     res.status(200).json({ status: true, message: "success", data: newData });
   } catch (err) {

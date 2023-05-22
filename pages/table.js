@@ -1,9 +1,9 @@
 import React from "react";
 import Layout from "../component/Layout";
 import Tree from "../component/tree/Tree";
+import { enc, keyStore } from "../helper/common";
 
 const table = ({ data }) => {
-  console.log(data);
   return (
     <>
       <Layout>
@@ -17,7 +17,7 @@ const table = ({ data }) => {
                   </h6>
                 </div>
               </div>
-              <div className="card-body px-0 pb-2">
+              <div className="card-body px-3 pb-2">
                 {/* <div className="table-responsive px-5">
                   <table className="table align-items-center mb-0">
                     <thead>
