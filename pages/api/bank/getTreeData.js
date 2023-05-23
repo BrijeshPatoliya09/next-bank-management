@@ -1,16 +1,11 @@
-import { convertToNestedTree, getLevel } from "../../helper/common";
-import dbConnect from "../../helper/connection";
+import { convertToNestedTree, getLevelData } from "../../../helper/common";
+import dbConnect from "../../../helper/connection";
 
 export default async (req, res) => {
+  const { bankData } = req.body;
   try {
     const mango = {
-      selector: {
-        $and: [
-          { docType: "Bank" },
-          { level: { $or: getLevel(1) } },
-          { "address.state": "Gujarat" },   
-        ],
-      },
+      selector: getLevelData(bankData),
       fields: ["_id", "name", "address", "parentalId", "level"],
       sort: ["level"],
     };
@@ -64,7 +59,9 @@ export default async (req, res) => {
     //   });
 
     convertToNestedTree(data.data.docs);
-    const newData = [...data.data.docs].filter((item) => item.level == 1);
+    const newData = [...data.data.docs].filter(
+      (item) => item.level == bankData.level
+    );
 
     res.status(200).json({ status: true, message: "success", data: newData });
   } catch (err) {

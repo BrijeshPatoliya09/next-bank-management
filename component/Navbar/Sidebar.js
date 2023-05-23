@@ -5,6 +5,14 @@ import React from "react";
 const Sidebar = () => {
   const router = useRouter();
 
+  const logoutHandler = async () => {
+    const res = await fetch(`${process.env.baseUrl}/api/auth/logout`);
+    const data = await res.json();
+    if (data.message) {
+      router.push("/auth/login");
+    }
+  };
+
   const path = router.pathname;
   return (
     <>
@@ -60,6 +68,19 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link
+                className={`nav-link text-white ${
+                  path == "/bank/create" ? "active bg-gradient-primary" : ""
+                }`}
+                href="/bank/create"
+              >
+                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i className="material-icons opacity-10">local_pharmacy</i>
+                </span>
+                <span className="nav-link-text ms-1">Create bank</span>
+              </Link>
+            </li>
+            <li className="nav-item">
               <a className="nav-link text-white " href="./pages/billing.html">
                 <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">receipt_long</i>
@@ -67,7 +88,7 @@ const Sidebar = () => {
                 <span className="nav-link-text ms-1">Billing</span>
               </a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a
                 className="nav-link text-white "
                 href="./pages/virtual-reality.html"
@@ -77,7 +98,7 @@ const Sidebar = () => {
                 </span>
                 <span className="nav-link-text ms-1">Virtual Reality</span>
               </a>
-            </li>
+            </li> */}
             <li className="nav-item">
               <a className="nav-link text-white " href="./pages/rtl.html">
                 <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -121,13 +142,25 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <a
+                type="button"
+                className="nav-link text-white "
+                onClick={logoutHandler}
+              >
+                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i className="material-icons opacity-10">logout</i>
+                </span>
+                <span className="nav-link-text ms-1">Logout</span>
+              </a>
+            </li>
+            {/* <li className="nav-item">
               <Link className="nav-link text-white " href="/auth/registeration">
                 <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">assignment</i>
                 </span>
                 <span className="nav-link-text ms-1">Sign Up</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="sidenav-footer position-absolute w-100 bottom-0 ">

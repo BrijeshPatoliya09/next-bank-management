@@ -2,6 +2,8 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { checkEmail } from "../../helper/common";
+import { useRouter } from "next/router";
+import { withSessionSsr } from "../../helper/session";
 
 const login = () => {
   const [user, setUser] = useState({
@@ -10,6 +12,9 @@ const login = () => {
   });
   const [login, setLogin] = useState(true);
   const [otp, setOtp] = useState("");
+  const [loader, setLoader] = useState(false);
+
+  const router = useRouter();
 
   const changeHandler = (e) => {
     const { value, name } = e.target;
@@ -32,35 +37,49 @@ const login = () => {
         return toast.error("Please enter valid email");
       }
 
-      const res = await fetch(`${process.env.baseUrl}/api/auth/login`, {
-        method: "POST",
-        body: JSON.stringify(user),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      if (!loader) {
+        setLoader(true);
+        const res = await fetch(`${process.env.baseUrl}/api/auth/login`, {
+          method: "POST",
+          body: JSON.stringify(user),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      const data = await res.json();
-      if (data.status) {
-        setLogin(false);
-      } else {
-        toast.error(data.message);
+        const data = await res.json();
+        setLoader(false);
+
+        if (data.status) {
+          setLogin(false);
+        } else {
+          toast.error(data.message);
+        }
       }
     } else {
-      if (otp.trim()) {
+      if (!otp.trim()) {
         return toast.error("Please enter OTP");
       }
 
-      const res = await fetch(`${process.env.baseUrl}/api/auth/verify2fa`, {
-        method: "POST",
-        body: JSON.stringify({ email: user.email, otp }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      if (!loader) {
+        setLoader(true);
+        const res = await fetch(`${process.env.baseUrl}/api/auth/verify2fa`, {
+          method: "POST",
+          body: JSON.stringify({ email: user.email, otp }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      const data = await res.json();
-      console.log(data);
+        const data = await res.json();
+        setLoader(false);
+        if (data.status) {
+          toast.success(data.message);
+          setTimeout(() => router.push("/"), 1000);
+        } else {
+          toast.error(data.message);
+        }
+      }
     }
   };
 
@@ -119,9 +138,15 @@ const login = () => {
                       <div className="text-center">
                         <button
                           type="submit"
-                          className="btn bg-gradient-primary w-100 my-4 mb-2"
+                          className="btn d-flex justify-content-center align-items-center bg-gradient-primary w-100 my-4 mb-2"
                           onClick={submitHandler}
+                          disabled={loader}
                         >
+                          {loader && (
+                            <div class="spinner-border me-2" role="status">
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                          )}
                           {login ? "Sign in" : "Verify OTP"}
                         </button>
                       </div>
@@ -215,5 +240,21 @@ const login = () => {
     </>
   );
 };
+
+export const getServerSideProps = withSessionSsr(async ({ req }) => {
+  const user = req.session.user;
+  if (user) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {},
+    };
+  }
+});
 
 export default login;

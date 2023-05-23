@@ -29,6 +29,7 @@ export function dec(encryptedMessage, secret) {
 export function keyStore(a) {
   const q = {
     empPsw: "Y#hD5xd1p*ZV^OM0(N/3v0*}ze~VAK:E",
+    idEnc: "W#hDV8xd5p*ZV^OM0(N/3v0*}ze~KSY:E",
   };
   return q[a];
 }
@@ -65,3 +66,47 @@ export function convertToNestedTree(data) {
 
   return Array.isArray(root) ? root : [root];
 }
+
+export const getLevelData = (data) => {
+  let temp = "";
+
+  if (data.level == 1) {
+    temp = {
+      $and: [{ docType: "Bank" }, { level: { $or: getLevel(1) } }],
+    };
+  } else if (data.level == 2) {
+    temp = {
+      $and: [
+        { docType: "Bank" },
+        { level: { $or: getLevel(2) } },
+        { "address.country": data.address.country },
+      ],
+    };
+  } else if (data.level == 3) {
+    temp = {
+      $and: [
+        { docType: "Bank" },
+        { level: { $or: getLevel(3) } },
+        { "address.state": data.address.state },
+      ],
+    };
+  } else if (data.level == 4) {
+    temp = {
+      $and: [
+        { docType: "Bank" },
+        { level: { $or: getLevel(4) } },
+        { "address.city": data.address.city },
+      ],
+    };
+  } else if (data.level == 5) {
+    temp = {
+      $and: [
+        { docType: "Bank" },
+        { level: { $or: getLevel(5) } },
+        { "address.zone": data.address.zone },
+      ],
+    };
+  }
+
+  return temp;
+};

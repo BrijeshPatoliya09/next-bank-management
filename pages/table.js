@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../component/Layout";
 import Tree from "../component/tree/Tree";
 import { enc, keyStore } from "../helper/common";
+import { withSessionSsr } from "../helper/session";
 
 const table = ({ data }) => {
   return (
@@ -13,7 +14,7 @@ const table = ({ data }) => {
               <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                   <h6 className="text-white text-capitalize ps-3">
-                    Authors table
+                    Bank Tree
                   </h6>
                 </div>
               </div>
@@ -642,14 +643,46 @@ const table = ({ data }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const res = await fetch(`${process.env.baseUrl}/api/getData`);
-  const data = await res.json();
+export const getServerSideProps = withSessionSsr(async ({ req }) => {
+  const user = req.session.user;
 
-  return {
-    props: {
-      data: data.data,
-    },
-  };
-}
+  if (user) {
+    const empRes = await fetch(`${process.env.baseUrl}/api/employee/getData`, {
+      method: "PUT",
+      body: JSON.stringify({ userId: user.userId }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const empData = await empRes.json();
+
+    const res = await fetch(`${process.env.baseUrl}/api/bank/getTreeData`, {
+      method: "PUT",
+      body: JSON.stringify({
+        bankData: {
+          address: empData.data[0].bankInfo[0].address,
+          level: empData.data[0].bankInfo[0].level,
+        },
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+
+    return {
+      props: {
+        data: data.data,
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+});
+
 export default table;
