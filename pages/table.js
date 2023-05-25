@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../component/Layout";
 import Tree from "../component/tree/Tree";
 import { enc, keyStore } from "../helper/common";
 import { withSessionSsr } from "../helper/session";
 
-const table = ({ data }) => {
+const table = ({ data, empData }) => {
+  const [activeEmployee, setActiveEmployeeData] = useState(
+    empData[0].bankInfo[0]._id
+  );
+
+  const getEmployeeData = async () => {
+    const res = await fetch(
+      `${process.env.baseUrl}/api/employee/getEmployeesDate`,
+      {
+        method: "POST",
+        body: JSON.stringify(activeEmployee),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await res.json();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getEmployeeData();
+  }, [activeEmployee]);
+
   return (
     <>
       <Layout>
@@ -13,9 +37,7 @@ const table = ({ data }) => {
             <div className="card my-4">
               <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                  <h6 className="text-white text-capitalize ps-3">
-                    Bank Tree
-                  </h6>
+                  <h6 className="text-white text-capitalize ps-3">Bank Tree</h6>
                 </div>
               </div>
               <div className="card-body px-3 pb-2">
@@ -278,7 +300,12 @@ const table = ({ data }) => {
                   </table>
                 </div> */}
                 {data.map((item) => (
-                  <Tree treeData={item} />
+                  <Tree
+                    key={item._id}
+                    treeData={item}
+                    onSetActiveEmp={setActiveEmployeeData}
+                    empId={activeEmployee}
+                  />
                 ))}
               </div>
             </div>
@@ -673,6 +700,7 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
     return {
       props: {
         data: data.data,
+        empData: empData.data,
       },
     };
   } else {

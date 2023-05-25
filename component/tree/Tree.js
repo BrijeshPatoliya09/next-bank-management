@@ -10,6 +10,7 @@ import TreeItem, {
   treeItemClasses,
 } from "@mui/lab/TreeItem";
 import { Typography } from "@mui/material";
+import { useState } from "react";
 
 function MinusSquare(props) {
   return (
@@ -62,6 +63,7 @@ const CustomContent = React.forwardRef(function CustomContent(props, ref) {
 
   const handleSelectionClick = (event) => {
     handleSelection(event);
+    label.onSetActiveEmp(label._id);
   };
 
   return (
@@ -76,7 +78,9 @@ const CustomContent = React.forwardRef(function CustomContent(props, ref) {
       <Typography
         onClick={handleSelectionClick}
         component="div"
-        className={`${classes.label} card d-flex px-3 py-2`}
+        className={`${classes.label} card d-flex px-3 py-2 w-100 ${
+          label.active ? "tree_active border border-0" : "tree_hover"
+        }`}
         style={{ borderLeft: `3px solid ${label.color ? label.color : "red"}` }}
       >
         {label.color ? label.title : label}
@@ -111,7 +115,7 @@ const StyledTreeItem = styled((props) => <CustomTreeItem {...props} />)(
   })
 );
 
-export default function Tree({ treeData }) {
+export default function Tree({ treeData, onSetActiveEmp, empId }) {
   const colorHandler = (data) => {
     let color;
 
@@ -129,6 +133,12 @@ export default function Tree({ treeData }) {
 
     return color;
   };
+  let active = false;
+  if (empId == treeData._id) {
+    active = true;
+  } else {
+    active = false;
+  }
 
   return (
     <TreeView
@@ -143,10 +153,20 @@ export default function Tree({ treeData }) {
         label={{
           title: `${treeData.name} (${treeData.address.country})`,
           color: colorHandler(treeData),
+          _id: treeData._id,
+          onSetActiveEmp,
+          active,
         }}
       >
         {treeData.children.length > 0 &&
-          treeData.children.map((item) => <Tree treeData={item} />)}
+          treeData.children.map((item) => (
+            <Tree
+              key={item._id}
+              treeData={item}
+              onSetActiveEmp={onSetActiveEmp}
+              empId={empId}
+            />
+          ))}
       </StyledTreeItem>
     </TreeView>
   );

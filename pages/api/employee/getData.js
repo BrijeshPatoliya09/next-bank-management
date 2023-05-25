@@ -26,8 +26,6 @@ export default async (req, res) => {
       };
     });
 
-    console.log(newData);
-
     res.status(200).json({ status: true, message: "success", data: newData });
   } catch (err) {
     console.log(err);

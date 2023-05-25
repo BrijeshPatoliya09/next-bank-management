@@ -1,0 +1,12 @@
+.tree_hover {
+  transition: all 0.3s;
+}
+
+.tree_hover:hover {
+  background-color: #f5f5f5;
+}
+
+.tree_active {
+  background-color: rgb(64, 64, 205);
+  color: white;
+}

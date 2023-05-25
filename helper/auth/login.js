@@ -1,5 +1,5 @@
-import { checkEmail, dec, keyStore } from "../../../helper/common";
-import dbConnect from "../../../helper/connection";
+import { checkEmail, dec, keyStore } from "../common";
+import dbConnect from "../connection";
 // import speakeasy from "speakeasy";
 
 export default async (req, res) => {
