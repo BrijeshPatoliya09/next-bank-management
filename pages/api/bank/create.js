@@ -1,4 +1,4 @@
-import { convertToNestedTree, getLevelData } from "../../../helper/common";
+import { getLevelData } from "../../../helper/common";
 import dbConnect from "../../../helper/connection";
 
 export default async (req, res) => {
@@ -75,12 +75,33 @@ export default async (req, res) => {
         .json({ status: false, message: validationBankdetail[0] });
     }
 
+    const mangoParent = {
+      selector: getLevelData(
+        {
+          address,
+          level: bankDetail.level == 1 ? 1 : bankDetail.level - 1,
+        },
+        true
+      ),
+      fields: ["_id"],
+    };
+
+    const parentData = (await dbConnect().mango("bank-management", mangoParent))
+      .data.docs;
+
+    if (parentData.length == 0) {
+      return res
+        .status(422)
+        .json({ status: false, message: "Please enter address fiels" });
+    }
+
     await dbConnect().insert("bank-management", {
       ...bankDetail,
       address,
       time,
       timeStamp: Math.floor(Date.now() / 1000),
-      docType: "Bank"
+      docType: "Bank",
+      parentalId: parentData[0]._id,
     });
 
     res.status(200).json({ status: true, message: "success" });

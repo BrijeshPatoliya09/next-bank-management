@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../component/Layout";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
@@ -12,8 +12,9 @@ import { Country, State, City } from "country-state-city";
 import { SingleInputTimeRangeField } from "@mui/x-date-pickers-pro";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { ToastContainer, toast } from "react-toastify";
+import { withSessionSsr } from "../../helper/session";
 
-const create = () => {
+const create = ({ empLevel }) => {
   const [address, setAddress] = useState({
     country: "",
     state: "",
@@ -30,7 +31,6 @@ const create = () => {
     first: [],
     second: [],
   });
-
   const [loader, setLoader] = useState(false);
 
   const handleAdressChange = (e) => {
@@ -193,7 +193,7 @@ const create = () => {
                   </FormControl>
                   <FormControl className="col-4 p-1">
                     <InputLabel id="demo-simple-select-label">
-                      Select State
+                      Select City
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
@@ -317,11 +317,21 @@ const create = () => {
                       label="Select Level"
                       onChange={handleBankdetailChange}
                     >
-                      <MenuItem value={1}>Level 1</MenuItem>
-                      <MenuItem value={2}>Level 2</MenuItem>
-                      <MenuItem value={3}>Level 3</MenuItem>
-                      <MenuItem value={4}>Level 4</MenuItem>
-                      <MenuItem value={5}>Level 5</MenuItem>
+                      {empLevel == 1 && (
+                        <MenuItem value={1}>World Bank</MenuItem>
+                      )}
+                      {empLevel < 2 && (
+                        <MenuItem value={2}>National Bank</MenuItem>
+                      )}
+                      {empLevel < 3 && address.country && (
+                        <MenuItem value={3}>State Bank</MenuItem>
+                      )}
+                      {empLevel < 4 && address.state && (
+                        <MenuItem value={4}>City Bank</MenuItem>
+                      )}
+                      {empLevel < 5 && address.city && (
+                        <MenuItem value={5}>Zone Bank</MenuItem>
+                      )}
                     </Select>
                   </FormControl>
                 </div>
@@ -351,5 +361,42 @@ const create = () => {
     </Layout>
   );
 };
+
+export const getServerSideProps = withSessionSsr(async ({ req }) => {
+  const user = req.session.user;
+
+  if (user) {
+    const empRes = await fetch(`${process.env.baseUrl}/api/employee/getData`, {
+      method: "PUT",
+      body: JSON.stringify({ userId: user.userId }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const empData = await empRes.json();
+
+    if (empData.data[0].bankInfo[0].level == 5) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: {
+        empLevel: empData.data[0].bankInfo[0].level,
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+});
 
 export default create;

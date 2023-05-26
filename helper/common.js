@@ -67,18 +67,21 @@ export function convertToNestedTree(data) {
   return Array.isArray(root) ? root : [root];
 }
 
-export const getLevelData = (data) => {
+export const getLevelData = (data, parent) => {
   let temp = "";
 
   if (data.level == 1) {
     temp = {
-      $and: [{ docType: "Bank" }, { level: { $or: getLevel(1) } }],
+      $and: [
+        { docType: "Bank" },
+        { level: !parent ? { $or: getLevel(1) } : 1 },
+      ],
     };
   } else if (data.level == 2) {
     temp = {
       $and: [
         { docType: "Bank" },
-        { level: { $or: getLevel(2) } },
+        { level: !parent ? { $or: getLevel(2) } : 2 },
         { "address.country": data.address.country },
       ],
     };
@@ -86,7 +89,7 @@ export const getLevelData = (data) => {
     temp = {
       $and: [
         { docType: "Bank" },
-        { level: { $or: getLevel(3) } },
+        { level: !parent ? { $or: getLevel(3) } : 3 },
         { "address.state": data.address.state },
       ],
     };
@@ -94,7 +97,7 @@ export const getLevelData = (data) => {
     temp = {
       $and: [
         { docType: "Bank" },
-        { level: { $or: getLevel(4) } },
+        { level: !parent ? { $or: getLevel(4) } : 4 },
         { "address.city": data.address.city },
       ],
     };
@@ -102,7 +105,7 @@ export const getLevelData = (data) => {
     temp = {
       $and: [
         { docType: "Bank" },
-        { level: { $or: getLevel(5) } },
+        { level: !parent ? { $or: getLevel(5) } : 5 },
         { "address.zone": data.address.zone },
       ],
     };
