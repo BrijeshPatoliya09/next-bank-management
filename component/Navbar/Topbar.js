@@ -1,4 +1,5 @@
 import React from "react";
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Topbar = () => {
   return (
@@ -32,7 +33,11 @@ const Topbar = () => {
             <div className="ms-md-auto pe-md-3 d-flex align-items-center">
               <div className="input-group input-group-outline">
                 {/* <label className="form-label">Type here...</label> */}
-                <input type="text" className="form-control" placeholder="Type here..." />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Type here..."
+                />
               </div>
             </div>
             <ul className="navbar-nav  justify-content-end">
@@ -45,7 +50,7 @@ const Topbar = () => {
                   <span className="d-sm-inline d-none">Sign In</span>
                 </a>
               </li>
-              <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
+              {/* <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
                 <a
                   href="#"
                   className="nav-link text-body p-0"
@@ -57,6 +62,15 @@ const Topbar = () => {
                     <i className="sidenav-toggler-line"></i>
                   </span>
                 </a>
+              </li> */}
+              <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
+                <button
+                  className="btn p-0 text-body p-0"
+                >
+                  <span className="sidenav-toggler-inner">
+                    <MenuIcon />
+                  </span>
+                </button>
               </li>
               <li className="nav-item px-3 d-flex align-items-center">
                 <a href="#" className="nav-link text-body p-0">

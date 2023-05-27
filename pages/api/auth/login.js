@@ -1,6 +1,5 @@
 import { checkEmail, dec, keyStore } from "../../../helper/common";
 import dbConnect from "../../../helper/connection";
-// import speakeasy from "speakeasy";
 
 export default async (req, res) => {
   const { email, password } = req.body;
@@ -19,13 +18,6 @@ export default async (req, res) => {
             .data.docs;
           if (userData && userData.length > 0) {
             if (password == dec(userData[0].password, keyStore("empPsw"))) {
-              // const tem_secret = speakeasy.generateSecret({
-              //   name: "2faName",
-              // });
-              // await dbConnect().update("bank-management", {
-              //   ...userData[0],
-              //   secretKey: tem_secret.base32,
-              // });
               res.status(200).json({ status: true, message: "success" });
             } else {
               res.status(401).json({

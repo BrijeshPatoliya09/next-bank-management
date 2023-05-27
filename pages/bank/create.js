@@ -151,86 +151,82 @@ const create = ({ empLevel }) => {
             </div>
             <div className="card-body px-3 pb-2">
               <div className="d-flex flex-wrap">
-                <div className="w-100">
-                  <FormControl className="col-4 p-1">
-                    <InputLabel id="demo-simple-select-label">
-                      Select Country
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      name="country"
-                      value={address.country}
-                      label="Select Country"
-                      onChange={handleAdressChange}
-                    >
-                      {Country.getAllCountries().map((country, i) => (
-                        <MenuItem value={country.name} key={i}>
-                          {country.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl className="col-4 p-1">
-                    <InputLabel id="demo-simple-select-label">
-                      Select State
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      name="state"
-                      value={address.state}
-                      label="Select State"
-                      onChange={handleAdressChange}
-                      disabled={!address.country}
-                    >
-                      {State.getStatesOfCountry(
-                        getIsoCode(address.country, "country") || ""
-                      ).map((state, i) => (
-                        <MenuItem value={state.name} key={i}>
-                          {state.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl className="col-4 p-1">
-                    <InputLabel id="demo-simple-select-label">
-                      Select City
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      name="city"
-                      value={address.city}
-                      label="Select City"
-                      onChange={handleAdressChange}
-                      disabled={!address.country || !address.state}
-                    >
-                      {City.getCitiesOfState(
-                        getIsoCode(address.country, "country") || "",
-                        getIsoCode(address.state, "state", address.country)
-                      ).map((city, i) => (
-                        <MenuItem value={city.name} key={i}>
-                          {city.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div className="w-100 mt-3">
-                  <TextField
-                    className="col-4 p-1"
-                    name="zone"
-                    label="Zone"
-                    variant="outlined"
+                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
+                  <InputLabel id="demo-simple-select-label">
+                    Select Country
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    name="country"
+                    value={address.country}
+                    label="Select Country"
                     onChange={handleAdressChange}
-                  />
-                  <TextField
-                    className="col-4 p-1"
-                    type="number"
-                    name="zipCode"
-                    label="Zip Code"
-                    variant="outlined"
+                  >
+                    {Country.getAllCountries().map((country, i) => (
+                      <MenuItem value={country.name} key={i}>
+                        {country.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
+                  <InputLabel id="demo-simple-select-label">
+                    Select State
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    name="state"
+                    value={address.state}
+                    label="Select State"
                     onChange={handleAdressChange}
-                  />
-                </div>
+                    disabled={!address.country}
+                  >
+                    {State.getStatesOfCountry(
+                      getIsoCode(address.country, "country") || ""
+                    ).map((state, i) => (
+                      <MenuItem value={state.name} key={i}>
+                        {state.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
+                  <InputLabel id="demo-simple-select-label">
+                    Select City
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    name="city"
+                    value={address.city}
+                    label="Select City"
+                    onChange={handleAdressChange}
+                    disabled={!address.country || !address.state}
+                  >
+                    {City.getCitiesOfState(
+                      getIsoCode(address.country, "country") || "",
+                      getIsoCode(address.state, "state", address.country)
+                    ).map((city, i) => (
+                      <MenuItem value={city.name} key={i}>
+                        {city.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  name="zone"
+                  label="Zone"
+                  variant="outlined"
+                  onChange={handleAdressChange}
+                />
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="number"
+                  name="zipCode"
+                  label="Zip Code"
+                  variant="outlined"
+                  onChange={handleAdressChange}
+                />
               </div>
             </div>
           </div>
@@ -246,40 +242,34 @@ const create = ({ empLevel }) => {
             </div>
             <div className="card-body px-3 pb-2">
               <div className="d-flex flex-wrap">
-                <div className="w-100 ">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <SingleInputTimeRangeField
-                      className="col-6 p-1"
-                      label="First Shift"
-                      onChange={(e) => {
-                        const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
-                        const secondDate = Math.floor(
-                          e[1]?.$d.getTime() / 1000
-                        );
-                        setBankTime({
-                          ...bankTime,
-                          first: [firstDate, secondDate],
-                        });
-                      }}
-                    />
-                  </LocalizationProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <SingleInputTimeRangeField
-                      className="col-6 p-1"
-                      label="Second Shift"
-                      onChange={(e) => {
-                        const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
-                        const secondDate = Math.floor(
-                          e[1]?.$d.getTime() / 1000
-                        );
-                        setBankTime({
-                          ...bankTime,
-                          second: [firstDate, secondDate],
-                        });
-                      }}
-                    />
-                  </LocalizationProvider>
-                </div>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <SingleInputTimeRangeField
+                    className="col-sm-6 col-12 p-1"
+                    label="First Shift"
+                    onChange={(e) => {
+                      const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
+                      const secondDate = Math.floor(e[1]?.$d.getTime() / 1000);
+                      setBankTime({
+                        ...bankTime,
+                        first: [firstDate, secondDate],
+                      });
+                    }}
+                  />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <SingleInputTimeRangeField
+                    className="col-sm-6 col-12 p-1"
+                    label="Second Shift"
+                    onChange={(e) => {
+                      const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
+                      const secondDate = Math.floor(e[1]?.$d.getTime() / 1000);
+                      setBankTime({
+                        ...bankTime,
+                        second: [firstDate, secondDate],
+                      });
+                    }}
+                  />
+                </LocalizationProvider>
               </div>
             </div>
           </div>
@@ -297,44 +287,40 @@ const create = ({ empLevel }) => {
             </div>
             <div className="card-body px-3 pb-2">
               <div className="d-flex flex-wrap">
-                <div className="w-100">
-                  <TextField
-                    className="col-4 p-1"
-                    name="name"
-                    value={bankDetail.name}
-                    label="Bank Name"
-                    variant="outlined"
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  name="name"
+                  value={bankDetail.name}
+                  label="Bank Name"
+                  variant="outlined"
+                  onChange={handleBankdetailChange}
+                />
+                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
+                  <InputLabel id="demo-simple-select-label">
+                    Select Level
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    name="level"
+                    value={bankDetail.level}
+                    label="Select Level"
                     onChange={handleBankdetailChange}
-                  />
-                  <FormControl className="col-4 p-1">
-                    <InputLabel id="demo-simple-select-label">
-                      Select Level
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      name="level"
-                      value={bankDetail.level}
-                      label="Select Level"
-                      onChange={handleBankdetailChange}
-                    >
-                      {empLevel == 1 && (
-                        <MenuItem value={1}>World Bank</MenuItem>
-                      )}
-                      {empLevel < 2 && (
-                        <MenuItem value={2}>National Bank</MenuItem>
-                      )}
-                      {empLevel < 3 && address.country && (
-                        <MenuItem value={3}>State Bank</MenuItem>
-                      )}
-                      {empLevel < 4 && address.state && (
-                        <MenuItem value={4}>City Bank</MenuItem>
-                      )}
-                      {empLevel < 5 && address.city && (
-                        <MenuItem value={5}>Zone Bank</MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
-                </div>
+                  >
+                    {empLevel == 1 && <MenuItem value={1}>World Bank</MenuItem>}
+                    {empLevel < 2 && (
+                      <MenuItem value={2}>National Bank</MenuItem>
+                    )}
+                    {empLevel < 3 && address.country && (
+                      <MenuItem value={3}>State Bank</MenuItem>
+                    )}
+                    {empLevel < 4 && address.state && (
+                      <MenuItem value={4}>City Bank</MenuItem>
+                    )}
+                    {empLevel < 5 && address.city && (
+                      <MenuItem value={5}>Zone Bank</MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
               </div>
             </div>
           </div>
