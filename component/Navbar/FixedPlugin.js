@@ -1,11 +1,11 @@
 import React from "react";
 
-const FixedPlugin = () => {
+const FixedPlugin = ({onSideBar}) => {
   return (
     <>
       <div className="fixed-plugin">
-        <a className="fixed-plugin-button text-dark position-fixed px-3 py-2">
-          <i className="material-icons py-2">settings</i>
+        <a onClick={() => onSideBar((tog) => !tog)} className="fixed-plugin-button text-dark position-fixed px-3 py-2">
+          <i className="material-icons py-2">menu</i>
         </a>
         <div className="card shadow-lg">
           <div className="card-header pb-0 pt-3">

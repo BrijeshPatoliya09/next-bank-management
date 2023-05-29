@@ -1,5 +1,4 @@
 import React from "react";
-import MenuIcon from '@mui/icons-material/Menu';
 
 const Topbar = () => {
   return (
@@ -50,7 +49,7 @@ const Topbar = () => {
                   <span className="d-sm-inline d-none">Sign In</span>
                 </a>
               </li>
-              {/* <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
                 <a
                   href="#"
                   className="nav-link text-body p-0"
@@ -62,15 +61,6 @@ const Topbar = () => {
                     <i className="sidenav-toggler-line"></i>
                   </span>
                 </a>
-              </li> */}
-              <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
-                <button
-                  className="btn p-0 text-body p-0"
-                >
-                  <span className="sidenav-toggler-inner">
-                    <MenuIcon />
-                  </span>
-                </button>
               </li>
               <li className="nav-item px-3 d-flex align-items-center">
                 <a href="#" className="nav-link text-body p-0">
