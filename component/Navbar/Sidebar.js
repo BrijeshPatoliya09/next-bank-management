@@ -80,66 +80,10 @@ const Sidebar = () => {
                 <span className="nav-link-text ms-1">Create bank</span>
               </Link>
             </li>
-            <li className="nav-item">
-              <a className="nav-link text-white " href="./pages/billing.html">
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">receipt_long</i>
-                </span>
-                <span className="nav-link-text ms-1">Billing</span>
-              </a>
-            </li>
-            {/* <li className="nav-item">
-              <a
-                className="nav-link text-white "
-                href="./pages/virtual-reality.html"
-              >
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">view_in_ar</i>
-                </span>
-                <span className="nav-link-text ms-1">Virtual Reality</span>
-              </a>
-            </li> */}
-            <li className="nav-item">
-              <a className="nav-link text-white " href="./pages/rtl.html">
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">
-                    format_textdirection_r_to_l
-                  </i>
-                </span>
-                <span className="nav-link-text ms-1">RTL</span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link text-white "
-                href="./pages/notifications.html"
-              >
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">notifications</i>
-                </span>
-                <span className="nav-link-text ms-1">Notifications</span>
-              </a>
-            </li>
             <li className="nav-item mt-3">
               <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
                 Account pages
               </h6>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-white " href="./pages/profile.html">
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">person</i>
-                </span>
-                <span className="nav-link-text ms-1">Profile</span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link text-white " href="/auth/login">
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">login</i>
-                </span>
-                <span className="nav-link-text ms-1">Sign In</span>
-              </Link>
             </li>
             <li className="nav-item">
               <a

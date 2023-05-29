@@ -7,8 +7,6 @@ import BankShowEdit from "../component/bank/BankShowEdit";
 import EmployeeCreate from "../component/employee/EmployeeCreate";
 import EmployeeTable from "../component/employee/EmployeeTable";
 
-let initial = false;
-
 const table = ({ data, empData }) => {
   const [activeEmployee, setActiveEmployeeData] = useState(
     empData[0].bankInfo[0]._id
@@ -17,13 +15,15 @@ const table = ({ data, empData }) => {
   const [bankData, setBankData] = useState(empData[0].bankInfo);
   const [empModel, setEmpModel] = useState(0);
   const [empEdit, setEmpEdit] = useState("");
+  const [empCount, setEmpCount] = useState("");
+  const [empType, setEmpType] = useState(false);
 
-  const getEmployeeData = async () => {
+  const getEmployeeData = async (page = 0, sort = { name: "asc" }) => {
     const res = await fetch(
       `${process.env.baseUrl}/api/employee/getEmployeesData`,
       {
         method: "POST",
-        body: JSON.stringify(activeEmployee),
+        body: JSON.stringify({ activeEmployee, page, sort }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -33,13 +33,19 @@ const table = ({ data, empData }) => {
     const data = await res.json();
     setEmployeeData(data.data.empData);
     setBankData(data.data.bankData);
+    setEmpCount(data.data.count);
+    if (
+      activeEmployee == empData[0].bankInfo[0]._id &&
+      empData[0].employeeType == 1
+    ) {
+      setEmpType(true);
+    } else {
+      setEmpType(false);
+    }
   };
 
   useEffect(() => {
-    // if (initial) {
     getEmployeeData();
-    //   initial = true;
-    // }
   }, [activeEmployee]);
 
   return (
@@ -72,6 +78,9 @@ const table = ({ data, empData }) => {
             employeeData={employeeData}
             onSetEmpModel={setEmpModel}
             onSetEmpEdit={setEmpEdit}
+            onGetEmpData={getEmployeeData}
+            empCount={empCount}
+            empType={empType}
           />
         )}
         {empModel == 1 && (

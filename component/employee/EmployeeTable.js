@@ -1,8 +1,38 @@
 import moment from "moment";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import ReactPaginate from "react-paginate";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { dec, keyStore } from "../../helper/common";
 
-const EmployeeTable = ({ employeeData, onSetEmpModel, onSetEmpEdit }) => {
+let initial = false;
+
+const EmployeeTable = ({
+  employeeData,
+  onSetEmpModel,
+  onSetEmpEdit,
+  onGetEmpData,
+  empCount,
+  empType,
+}) => {
+  const [page, setPage] = useState(0);
+  const [sort, setSort] = useState({ name: "asc" });
+
+  const sortDataHandler = (info) => {
+    if (sort[info] == "asc") {
+      setSort({ [info]: "desc" });
+    } else {
+      setSort({ [info]: "asc" });
+    }
+  };
+
+  useEffect(() => {
+    if (initial) {
+      onGetEmpData(page, sort);
+    }
+    initial = true;
+  }, [page, sort]);
+
   return (
     <>
       <div className="row">
@@ -21,26 +51,106 @@ const EmployeeTable = ({ employeeData, onSetEmpModel, onSetEmpEdit }) => {
                   <thead>
                     <tr>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        Name
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("name")}
+                        >
+                          Name
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                        Email
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("email")}
+                        >
+                          Email
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
+                      </th>
+                      {empType && (
+                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 mb- ">
+                          <button className="btn p-0">Password</button>
+                        </th>
+                      )}
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("contact")}
+                        >
+                          Contact
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                        Contact
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("DOB")}
+                        >
+                          Date of Birth
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                        Date of Birth
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("education")}
+                        >
+                          Education
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                        Education
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("joinningDate")}
+                        >
+                          Joinning Date
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                        Joinning Date
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("department")}
+                        >
+                          Department
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                        Department
-                      </th>
+                      {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("status")}
+                        >
+                          Status
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
+                      </th> */}
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         Action
                       </th>
@@ -60,7 +170,7 @@ const EmployeeTable = ({ employeeData, onSetEmpModel, onSetEmpEdit }) => {
 
                         const DOB = new Date(item.DOB);
                         return (
-                          <tr key={item._id}>
+                          <tr>
                             <td>
                               <div className="d-flex px-2">
                                 <div>
@@ -80,6 +190,13 @@ const EmployeeTable = ({ employeeData, onSetEmpModel, onSetEmpEdit }) => {
                                 {item.email}
                               </p>
                             </td>
+                            {empType && (
+                              <td>
+                                <p className="text-sm font-weight-bold mb-0">
+                                  {dec(item.password, keyStore("empPsw"))}
+                                </p>
+                              </td>
+                            )}
                             <td>
                               <p className="text-sm font-weight-bold mb-0">
                                 {item.contact}
@@ -174,19 +291,32 @@ const EmployeeTable = ({ employeeData, onSetEmpModel, onSetEmpEdit }) => {
                   </tbody>
                 </table>
               </div>
-              <div className="d-flex justify-content-center px-3 pb-2">
+              <div className="d-flex justify-content-between px-3 pb-2">
                 <div>
                   <button
                     type="button"
                     className="btn d-flex justify-content-center align-items-center bg-gradient-primary w-100 my-4 mb-2"
                     style={{ fontSize: "14px" }}
                     onClick={() => {
-                      onSetEmpEdit("")
+                      onSetEmpEdit("");
                       onSetEmpModel(1);
                     }}
                   >
                     Add Employee
                   </button>
+                </div>
+                <div className="d-flex justify-content-center align-items-center">
+                  <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="next >"
+                    className="pageinate my-4 mb-2"
+                    onPageChange={(e) => setPage(e.selected)}
+                    pageRangeDisplayed={3}
+                    // forcePage={page}
+                    pageCount={Math.ceil(empCount / 8)}
+                    previousLabel="< previous"
+                    renderOnZeroPageCount={null}
+                  />
                 </div>
               </div>
             </div>

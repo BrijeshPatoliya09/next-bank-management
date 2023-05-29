@@ -1,4 +1,4 @@
-import { getLevelData } from "../../../helper/common";
+import { checkEmail, getLevelData } from "../../../helper/common";
 import dbConnect from "../../../helper/connection";
 
 export default async (req, res) => {

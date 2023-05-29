@@ -2,7 +2,7 @@
 import { generate } from "generate-password";
 import dbConnect from "../../../helper/connection";
 import speakeasy from "speakeasy";
-import { enc, keyStore } from "../../../helper/common";
+import { checkEmail, enc, keyStore } from "../../../helper/common";
 
 export default async (req, res) => {
   const {
@@ -52,6 +52,7 @@ export default async (req, res) => {
       bankId,
       secretKey: tem_secret.base32,
       password: enc(password, keyStore("empPsw")),
+      employeeType: 0,
       docType: "Employee",
     });
 

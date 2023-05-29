@@ -1,3 +1,4 @@
+
 .tree_hover {
   transition: all 0.3s;
 }
@@ -9,4 +10,25 @@
 .tree_active {
   background-color: rgb(82, 82, 169);
   color: white;
+}
+
+.pageinate {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+.pageinate li a {
+  user-select: none;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.pageinate .selected a {
+  font-size: 15px;
+  background-color: #ec407a;
+  color: white;
+  padding: 18px;
 }
