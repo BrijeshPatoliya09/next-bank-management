@@ -185,7 +185,7 @@ const BankShowEdit = ({ bankData, onGetEmpData }) => {
 
   return (
     <>
-      <div className="row">
+      <div className="row mb-3">
         <div className="col-12">
           <div className="card my-4">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">

@@ -12,6 +12,11 @@
   color: white;
 }
 
+.tree_highlight {
+  background-color: rgb(217, 217, 242);
+  /* color: white; */
+}
+
 .pageinate {
   list-style: none;
   display: flex;

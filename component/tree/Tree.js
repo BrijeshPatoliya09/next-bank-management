@@ -80,7 +80,7 @@ const CustomContent = React.forwardRef(function CustomContent(props, ref) {
         component="div"
         className={`${classes.label} card d-flex px-3 py-2 w-100 ${
           label.active ? "tree_active border border-0" : "tree_hover"
-        }`}
+        } ${label.highLight && "tree_highlight"}`}
         style={{ borderLeft: `3px solid ${label.color ? label.color : "red"}` }}
       >
         {label.color ? label.title : label}
@@ -115,7 +115,13 @@ const StyledTreeItem = styled((props) => <CustomTreeItem {...props} />)(
   })
 );
 
-export default function Tree({ treeData, onSetActiveEmp, empId }) {
+export default function Tree({
+  treeData,
+  onSetActiveEmp,
+  empId,
+  select,
+  selectCheck,
+}) {
   const colorHandler = (data) => {
     let color;
 
@@ -140,22 +146,30 @@ export default function Tree({ treeData, onSetActiveEmp, empId }) {
     active = false;
   }
 
+  let highLight = false;
+  if (select == treeData._id) {
+    highLight = true;
+  }
+
   return (
     <TreeView
       aria-label="customized"
-      //   defaultExpanded={["2"]}
+
+      expanded={selectCheck && selectCheck !== highLight ? [treeData._id] : []}
       defaultCollapseIcon={<MinusSquare />}
+      defa
       defaultExpandIcon={<PlusSquare />}
       defaultEndIcon={<CloseSquare />}
     >
       <StyledTreeItem
-        nodeId="1"
+        nodeId={treeData._id}
         label={{
           title: `${treeData.name} (${treeData.address.country})`,
           color: colorHandler(treeData),
           _id: treeData._id,
           onSetActiveEmp,
           active,
+          highLight,
         }}
       >
         {treeData.children.length > 0 &&
@@ -165,6 +179,8 @@ export default function Tree({ treeData, onSetActiveEmp, empId }) {
               treeData={item}
               onSetActiveEmp={onSetActiveEmp}
               empId={empId}
+              select={highLight ? "" : select}
+              selectCheck={highLight ? false : true}
             />
           ))}
       </StyledTreeItem>

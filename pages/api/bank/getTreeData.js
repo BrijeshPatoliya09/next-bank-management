@@ -58,12 +58,21 @@ export default async (req, res) => {
     //     };
     //   });
 
+    const selectBox = data.data.docs.map((item) => ({
+      name: item.name,
+      _id: item._id,
+      address: item.address,
+      level: item.level,
+    }));
+
     convertToNestedTree(data.data.docs);
     const newData = [...data.data.docs].filter(
       (item) => item.level == bankData.level
     );
 
-    res.status(200).json({ status: true, message: "success", data: newData });
+    res
+      .status(200)
+      .json({ status: true, message: "success", data: { newData, selectBox } });
   } catch (err) {
     console.log(err);
     res.status(404).json({ status: false, message: "Something went wrong" });

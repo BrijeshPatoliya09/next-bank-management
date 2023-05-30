@@ -4,6 +4,20 @@ import EditIcon from "@mui/icons-material/Edit";
 import ReactPaginate from "react-paginate";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { dec, keyStore } from "../../helper/common";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import {
+  DateRangePicker,
+  SingleInputDateRangeField,
+} from "@mui/x-date-pickers-pro";
+import dayjs from "dayjs";
 
 let initial = false;
 
@@ -14,9 +28,18 @@ const EmployeeTable = ({
   onGetEmpData,
   empCount,
   empType,
+  departmentSelect,
 }) => {
   const [page, setPage] = useState(0);
   const [sort, setSort] = useState({ name: "asc" });
+  const [filter, setFilter] = useState({
+    name: "",
+    department: "",
+    joinningDate: [],
+  });
+
+  const [applyFilter, setApplyFilter] = useState(false);
+  const [toggleFilter, setToggleFilter] = useState(false);
 
   const sortDataHandler = (info) => {
     if (sort[info] == "asc") {
@@ -26,12 +49,17 @@ const EmployeeTable = ({
     }
   };
 
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setFilter({ ...filter, [name]: value });
+  };
+
   useEffect(() => {
     if (initial) {
-      onGetEmpData(page, sort);
+      onGetEmpData(page, sort, filter);
     }
     initial = true;
-  }, [page, sort]);
+  }, [page, sort, applyFilter]);
 
   return (
     <>
@@ -39,13 +67,110 @@ const EmployeeTable = ({
         <div className="col-12">
           <div className="card my-4">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex">
                 <h6 className="text-white text-capitalize ps-3">
                   Employee table
                 </h6>
+                <div className="ms-auto me-3">
+                  <button
+                    type="button"
+                    onClick={() => setToggleFilter(!toggleFilter)}
+                    className="btn btn-outline-primary btn-sm mb-0 bg-white"
+                  >
+                    Filter
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="card-body px-0 pb-2">
+            <div className="card-body px-0 pb-2 ">
+              {toggleFilter && (
+                <div className="filter px-4">
+                  <div className="d-flex justify-content-center">
+                    <TextField
+                      className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
+                      type="text"
+                      name="name"
+                      label="Name"
+                      onChange={changeHandler}
+                      value={filter.name}
+                      variant="outlined"
+                    />
+                    <FormControl className="col-lg-3 col-sm-6 col-12 p-1 mt-2">
+                      <InputLabel id="demo-simple-select-label">
+                        Select Department
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        name="department"
+                        label="Select Department"
+                        onChange={changeHandler}
+                        value={filter.department}
+                      >
+                        {departmentSelect
+                          .filter(
+                            (item, i) => departmentSelect.indexOf(item) == i
+                          )
+                          .map((item, i) => (
+                            <MenuItem key={i} value={item}>
+                              {item}
+                            </MenuItem>
+                          ))}
+                      </Select>
+                    </FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateRangePicker
+                        slots={{ field: SingleInputDateRangeField }}
+                        className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
+                        label="Date of joinning"
+                        value={
+                          filter.joinningDate.length == 0
+                            ? [dayjs([]), dayjs([])]
+                            : [
+                                dayjs(new Date(filter.joinningDate[0] * 1000)),
+                                dayjs(new Date(filter.joinningDate[1] * 1000)),
+                              ]
+                        }
+                        onChange={(e) =>
+                          setFilter({
+                            ...filter,
+                            joinningDate: [
+                              Math.floor(e[0]?.$d.getTime() / 1000),
+                              Math.floor(e[1]?.$d.getTime() / 1000),
+                            ],
+                          })
+                        }
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <div className="d-flex justify-content-center">
+                    <button
+                      type="button"
+                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
+                      style={{ fontSize: "14px" }}
+                      onClick={() => {
+                        setApplyFilter(!applyFilter);
+                      }}
+                    >
+                      Filter
+                    </button>
+                    <button
+                      type="button"
+                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary ms-3 my-4 mb-2"
+                      style={{ fontSize: "14px" }}
+                      onClick={() => {
+                        onGetEmpData();
+                        setFilter({
+                          name: "",
+                          department: "",
+                          joinningDate: [],
+                        });
+                      }}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="table-responsive p-0">
                 <table className="table align-items-center justify-content-center mb-0">
                   <thead>
@@ -157,7 +282,6 @@ const EmployeeTable = ({
                       {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
                           Completion
                         </th> */}
-                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -295,7 +419,7 @@ const EmployeeTable = ({
                 <div>
                   <button
                     type="button"
-                    className="btn d-flex justify-content-center align-items-center bg-gradient-primary w-100 my-4 mb-2"
+                    className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
                     style={{ fontSize: "14px" }}
                     onClick={() => {
                       onSetEmpEdit("");

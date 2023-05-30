@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../component/Layout";
-import Tree from "../component/tree/Tree";
 import { withSessionSsr } from "../helper/session";
 import { ToastContainer, toast } from "react-toastify";
 import BankShowEdit from "../component/bank/BankShowEdit";
 import EmployeeCreate from "../component/employee/EmployeeCreate";
 import EmployeeTable from "../component/employee/EmployeeTable";
+import BankTree from "../component/bank/BankTree";
 
-const table = ({ data, empData }) => {
+const table = ({ data, empData, treeSelectBox }) => {
   const [activeEmployee, setActiveEmployeeData] = useState(
     empData[0].bankInfo[0]._id
   );
@@ -18,12 +18,23 @@ const table = ({ data, empData }) => {
   const [empCount, setEmpCount] = useState("");
   const [empType, setEmpType] = useState(false);
 
-  const getEmployeeData = async (page = 0, sort = { name: "asc" }) => {
+  //EmployeTable
+  const [departmentSelect, setDepartmentSelect] = useState([]);
+
+  const getEmployeeData = async (
+    page = 0,
+    sort = { name: "asc" },
+    filter = {
+      name: "",
+      department: "",
+      joinningDate: [],
+    }
+  ) => {
     const res = await fetch(
       `${process.env.baseUrl}/api/employee/getEmployeesData`,
       {
         method: "POST",
-        body: JSON.stringify({ activeEmployee, page, sort }),
+        body: JSON.stringify({ activeEmployee, page, sort, filter }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -34,6 +45,9 @@ const table = ({ data, empData }) => {
     setEmployeeData(data.data.empData);
     setBankData(data.data.bankData);
     setEmpCount(data.data.count);
+    setDepartmentSelect(
+      data.data.departmentSelect.map((item) => item.department)
+    );
     if (
       activeEmployee == empData[0].bankInfo[0]._id &&
       empData[0].employeeType == 1
@@ -51,27 +65,12 @@ const table = ({ data, empData }) => {
   return (
     <>
       <Layout>
-        <div className="row">
-          <div className="col-12">
-            <div className="card my-4">
-              <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                  <h6 className="text-white text-capitalize ps-3">Bank Tree</h6>
-                </div>
-              </div>
-              <div className="card-body px-3 pb-2">
-                {data.map((item) => (
-                  <Tree
-                    key={item._id}
-                    treeData={item}
-                    onSetActiveEmp={setActiveEmployeeData}
-                    empId={activeEmployee}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        <BankTree
+          data={data}
+          setActiveEmployeeData={setActiveEmployeeData}
+          activeEmployee={activeEmployee}
+          select={treeSelectBox}
+        />
         <BankShowEdit bankData={bankData[0]} onGetEmpData={getEmployeeData} />
         {empModel == 0 && (
           <EmployeeTable
@@ -81,6 +80,7 @@ const table = ({ data, empData }) => {
             onGetEmpData={getEmployeeData}
             empCount={empCount}
             empType={empType}
+            departmentSelect={departmentSelect}
           />
         )}
         {empModel == 1 && (
@@ -126,7 +126,8 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
 
     return {
       props: {
-        data: data.data,
+        data: data.data.newData,
+        treeSelectBox: data.data.selectBox,
         empData: empData.data,
       },
     };
