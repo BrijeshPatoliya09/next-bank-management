@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    baseUrl: process.env.baseUrl
+    baseUrl: process.env.baseUrl,
+    apiUrl: `${process.env.baseUrl}/api`,
   },
-  reactStrictMode: true
-}
+  reactStrictMode: true,
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
