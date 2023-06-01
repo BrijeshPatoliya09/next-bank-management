@@ -138,7 +138,7 @@ const create = ({ empLevel }) => {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="row">
         <div className="col-12">
           <div className="card my-4">
@@ -343,8 +343,7 @@ const create = ({ empLevel }) => {
           </button>
         </div>
       </div>
-      <ToastContainer />
-    </AdminLayout>
+    </>
   );
 };
 
@@ -364,7 +363,7 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
     if (empData.data[0].bankInfo[0].level == 5) {
       return {
         redirect: {
-          destination: "/",
+          destination: "/admin",
           permanent: false,
         },
       };
@@ -378,7 +377,7 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
   } else {
     return {
       redirect: {
-        destination: "/auth/login",
+        destination: "admin/auth/login",
         permanent: false,
       },
     };

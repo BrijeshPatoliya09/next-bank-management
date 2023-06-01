@@ -125,7 +125,7 @@ const registeration = () => {
                     <p className="mb-2 text-sm mx-auto">
                       Already have an account?
                       <Link
-                        href="/auth/login"
+                        href="/admin/auth/login"
                         className="text-primary text-gradient font-weight-bold"
                       >
                         Sign in

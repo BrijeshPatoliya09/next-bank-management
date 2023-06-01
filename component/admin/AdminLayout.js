@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Navbar/Sidebar";
 import Topbar from "./Navbar/Topbar";
 import Footer from "./Navbar/Footer";
 import FixedPlugin from "./Navbar/FixedPlugin";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { ToastContainer } from "react-toastify";
 
 const AdminLayout = ({ children }) => {
+  const router = useRouter();
   const [sideBar, setSideBar] = useState(true);
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoader(false);
+    }, 500);
+  }, []);
   return (
     <>
       <Head>
@@ -40,7 +51,7 @@ const AdminLayout = ({ children }) => {
         />
         <script
           src="https://kit.fontawesome.com/42d5adcbca.js"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         ></script>
         <link
           href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
@@ -52,33 +63,53 @@ const AdminLayout = ({ children }) => {
           rel="stylesheet"
         />
       </Head>
-      <div>
-        {sideBar && <Sidebar />}
-        <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-          <Topbar />
-          <div className="container-fluid py-4">
-            {children}
-            <Footer />
+      <body>
+        {loader ? (
+          <div className="bg-white w-100 h-100">
+            {/* <div
+              className="spinner-border"
+              style="width: 3rem; height: 3rem;"
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </div> */}
           </div>
-        </main>
-        <FixedPlugin onSideBar={setSideBar} />
-        
+        ) : (
+          <></>
+        )}
+        {router.pathname.includes("login") ? (
+          <>{children}</>
+        ) : (
+          <>
+            {sideBar && <Sidebar />}
+            <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+              <Topbar />
+              <div className="container-fluid py-4">
+                {children}
+                <Footer />
+              </div>
+            </main>
+            <FixedPlugin onSideBar={setSideBar} />
+          </>
+        )}
+        <ToastContainer />
+
         <script
           src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
           integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         ></script>
         <script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
           integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         ></script>
-        <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
-        <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
-        <script src="/assets/js/plugins/chartjs.min.js"></script>
+        <script src="/assets/js/admin/plugins/perfect-scrollbar.min.js"></script>
+        <script src="/assets/js/admin/plugins/smooth-scrollbar.min.js"></script>
+        <script src="/assets/js/admin/plugins/chartjs.min.js"></script>
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         {/* <script src="/assets/js/material-dashboard.min.js?v=3.0.0"></script> */}
-      </div>
+      </body>
     </>
   );
 };

@@ -75,7 +75,7 @@ const login = () => {
         setLoader(false);
         if (data.status) {
           toast.success(data.message);
-          setTimeout(() => router.push("/"), 1000);
+          setTimeout(() => router.push("/admin"), 1000);
         } else {
           toast.error(data.message);
         }
@@ -234,7 +234,6 @@ const login = () => {
               </div>
             </div>
           </footer>
-          <ToastContainer />
         </div>
       </main>
     </>
@@ -246,7 +245,7 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
   if (user) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/admin",
         permanent: false,
       },
     };

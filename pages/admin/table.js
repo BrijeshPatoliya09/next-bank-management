@@ -71,7 +71,6 @@ const table = ({ data, empData, treeSelectBox }) => {
 
   return (
     <>
-      <AdminLayout>
         <BankTree
           data={data}
           setActiveEmployeeData={setActiveEmployeeData}
@@ -99,8 +98,6 @@ const table = ({ data, empData, treeSelectBox }) => {
             empEdit={empEdit}
           />
         )}
-        <ToastContainer />
-      </AdminLayout>
     </>
   );
 };
@@ -142,7 +139,7 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
   } else {
     return {
       redirect: {
-        destination: "/auth/login",
+        destination: "/admin/auth/login",
         permanent: false,
       },
     };

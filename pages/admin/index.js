@@ -1,9 +1,7 @@
-import AdminLayout from "../../component/admin/AdminLayout";
 
 export default function Home() {
   return (
     <>
-      <AdminLayout>
         <div className="row">
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div className="card">
@@ -672,7 +670,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </AdminLayout>
     </>
   );
 }

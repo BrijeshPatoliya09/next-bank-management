@@ -9,7 +9,7 @@ const Sidebar = () => {
     const res = await fetch(`${process.env.apiUrl}/admin/auth/logout`);
     const data = await res.json();
     if (data.message) {
-      router.push("/auth/login");
+      router.push("/admin/auth/login");
     }
   };
 
@@ -26,7 +26,7 @@ const Sidebar = () => {
             aria-hidden="true"
             id="iconSidenav"
           ></i>
-          <Link className="navbar-brand m-0" href="/">
+          <Link className="navbar-brand m-0" href="/admin">
             <img
               src="/assets/image/admin/logo-ct.png"
               className="navbar-brand-img h-100"
@@ -44,9 +44,9 @@ const Sidebar = () => {
             <li className="nav-item">
               <Link
                 className={`nav-link text-white ${
-                  path == "/" ? "active bg-gradient-primary" : ""
+                  path == "/admin" ? "active bg-gradient-primary" : ""
                 }`}
-                href="/"
+                href="/admin"
               >
                 <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">dashboard</i>
@@ -57,9 +57,9 @@ const Sidebar = () => {
             <li className="nav-item">
               <Link
                 className={`nav-link text-white ${
-                  path == "/table" ? "active bg-gradient-primary" : ""
+                  path == "/admin/table" ? "active bg-gradient-primary" : ""
                 }`}
-                href="/table"
+                href="/admin/table"
               >
                 <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">table_view</i>
@@ -70,9 +70,9 @@ const Sidebar = () => {
             <li className="nav-item">
               <Link
                 className={`nav-link text-white ${
-                  path == "/bank/create" ? "active bg-gradient-primary" : ""
+                  path == "/admin/bank/create" ? "active bg-gradient-primary" : ""
                 }`}
-                href="/bank/create"
+                href="/admin/bank/create"
               >
                 <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">local_pharmacy</i>
