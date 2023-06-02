@@ -1,3 +1,4 @@
+import { Link } from "@mui/material";
 import React from "react";
 
 const Header = () => {
@@ -21,13 +22,10 @@ const Header = () => {
                       <nav>
                         <ul id="navigation">
                           <li className="active">
-                            <a href="index.html">Home</a>
+                            <Link href="/user">Home</Link>
                           </li>
                           <li>
                             <a href="about.html">About</a>
-                          </li>
-                          <li>
-                            <a href="services.html">Services</a>
                           </li>
                           <li>
                             <a href="blog.html">Blog</a>
@@ -41,13 +39,12 @@ const Header = () => {
                               <li>
                                 <a href="elements.html">Element</a>
                               </li>
-                              <li>
-                                <a href="apply.html">Apply Now</a>
-                              </li>
                             </ul>
                           </li>
                           <li>
-                            <a href="contact.html">Contact</a>
+                            <Link href="/user/auth/registerAccount">
+                              Contact
+                            </Link>
                           </li>
                         </ul>
                       </nav>

@@ -46,10 +46,10 @@ const UserLayout = ({ children }) => {
       <body>
         {loader ? (
           <div id="preloader-active">
-            <div class="preloader d-flex align-items-center justify-content-center">
-              <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
+            <div className="preloader d-flex align-items-center justify-content-center">
+              <div className="preloader-inner position-relative">
+                <div className="preloader-circle"></div>
+                <div className="preloader-img pere-text">
                   <img src="/assets/image/user/logo/logo.png" alt="" />
                 </div>
               </div>
