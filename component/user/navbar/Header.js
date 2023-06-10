@@ -1,7 +1,21 @@
 import { Link } from "@mui/material";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 const Header = () => {
+  const router = useRouter();
+  const [loggedIn, setLoggedIn] = useState("");
+
+  const getLoginUser = async () => {
+    const res = await fetch(`${process.env.apiUrl}/user/auth/getLoginUser`);
+    const data = await res.json();
+    setLoggedIn(data.data);
+  };
+
+  useEffect(() => {
+    getLoginUser();
+  }, []);
+
   return (
     <>
       <header>
@@ -21,7 +35,11 @@ const Header = () => {
                     <div className="main-menu f-right d-none d-lg-block">
                       <nav>
                         <ul id="navigation">
-                          <li className="active">
+                          <li
+                            className={
+                              router.pathname == "/user" ? "active" : ""
+                            }
+                          >
                             <Link href="/user">Home</Link>
                           </li>
                           <li>
@@ -41,18 +59,32 @@ const Header = () => {
                               </li>
                             </ul>
                           </li>
-                          <li>
+                          {loggedIn && (
+                            <li
+                              className={
+                                router.pathname.includes("payment")
+                                  ? "active"
+                                  : ""
+                              }
+                            >
+                              <Link href="/user/transaction/payment">
+                                Payment
+                              </Link>
+                            </li>
+                          )}
+                          <li
+                            className={
+                              router.pathname.includes("registerAccount")
+                                ? "active"
+                                : ""
+                            }
+                          >
                             <Link href="/user/auth/registerAccount">
-                              Contact
+                              Register
                             </Link>
                           </li>
                         </ul>
                       </nav>
-                    </div>
-                    <div className="header-right-btn f-right d-none d-lg-block">
-                      <a href="#" className="btn header-btn">
-                        +880.762.009.00{" "}
-                      </a>
                     </div>
                   </div>
                 </div>

@@ -15,7 +15,7 @@ const AdminLayout = ({ children }) => {
   useEffect(() => {
     setTimeout(() => {
       setLoader(false);
-    }, 500);
+    }, 1000);
   }, []);
   return (
     <>
@@ -65,31 +65,26 @@ const AdminLayout = ({ children }) => {
       </Head>
       <body>
         {loader ? (
-          <div className="bg-white w-100 h-100">
-            {/* <div
-              className="spinner-border"
-              style="width: 3rem; height: 3rem;"
-              role="status"
-            >
-              <span className="visually-hidden">Loading...</span>
-            </div> */}
+          <div className="w-100 vh-100 d-flex">
+            <div className="loader"></div>
           </div>
         ) : (
-          <></>
-        )}
-        {router.pathname.includes("login") ? (
-          <>{children}</>
-        ) : (
           <>
-            {sideBar && <Sidebar />}
-            <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-              <Topbar />
-              <div className="container-fluid py-4">
-                {children}
-                <Footer />
-              </div>
-            </main>
-            <FixedPlugin onSideBar={setSideBar} />
+            {router.pathname.includes("login") ? (
+              <>{children}</>
+            ) : (
+              <>
+                {sideBar && <Sidebar />}
+                <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+                  <Topbar />
+                  <div className="container-fluid py-4">
+                    {children}
+                    <Footer />
+                  </div>
+                </main>
+                <FixedPlugin onSideBar={setSideBar} />
+              </>
+            )}
           </>
         )}
         <ToastContainer />

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AdminLayout from "../../component/admin/AdminLayout";
 import { withSessionSsr } from "../../helper/session";
-import { ToastContainer, toast } from "react-toastify";
 import BankShowEdit from "../../component/admin/bank/BankShowEdit";
 import EmployeeCreate from "../../component/admin/employee/EmployeeCreate";
 import EmployeeTable from "../../component/admin/employee/EmployeeTable";
@@ -71,39 +69,39 @@ const table = ({ data, empData, treeSelectBox }) => {
 
   return (
     <>
-        <BankTree
-          data={data}
-          setActiveEmployeeData={setActiveEmployeeData}
-          activeEmployee={activeEmployee}
-          select={treeSelectBox}
+      <BankTree
+        data={data}
+        setActiveEmployeeData={setActiveEmployeeData}
+        activeEmployee={activeEmployee}
+        select={treeSelectBox}
+      />
+      <BankShowEdit bankData={bankData[0]} onGetEmpData={getEmployeeData} />
+      {empModel == 0 && (
+        <EmployeeTable
+          employeeData={employeeData}
+          onSetEmpModel={setEmpModel}
+          onSetEmpEdit={setEmpEdit}
+          onGetEmpData={getEmployeeData}
+          empCount={empCount}
+          empType={empType}
+          departmentSelect={departmentSelect}
+          bankEmpLoader={loader}
         />
-        <BankShowEdit bankData={bankData[0]} onGetEmpData={getEmployeeData} />
-        {empModel == 0 && (
-          <EmployeeTable
-            employeeData={employeeData}
-            onSetEmpModel={setEmpModel}
-            onSetEmpEdit={setEmpEdit}
-            onGetEmpData={getEmployeeData}
-            empCount={empCount}
-            empType={empType}
-            departmentSelect={departmentSelect}
-            bankEmpLoader={loader}
-          />
-        )}
-        {empModel == 1 && (
-          <EmployeeCreate
-            onSetEmpModel={setEmpModel}
-            bankId={activeEmployee}
-            onGetEmpData={getEmployeeData}
-            empEdit={empEdit}
-          />
-        )}
+      )}
+      {empModel == 1 && (
+        <EmployeeCreate
+          onSetEmpModel={setEmpModel}
+          bankId={activeEmployee}
+          onGetEmpData={getEmployeeData}
+          empEdit={empEdit}
+        />
+      )}
     </>
   );
 };
 
 export const getServerSideProps = withSessionSsr(async ({ req }) => {
-  const user = req.session.user;
+  const user = req.session.admin;
 
   if (user) {
     const empRes = await fetch(`${process.env.apiUrl}/admin/employee/getData`, {

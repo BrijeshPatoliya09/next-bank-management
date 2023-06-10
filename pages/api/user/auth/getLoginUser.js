@@ -2,13 +2,10 @@ import { withSessionRoute } from "../../../../helper/session";
 
 export default withSessionRoute(async (req, res) => {
   try {
-    const session = req.session;
-    delete session.admin;
-    await session.save();
-    
-    res.status(200).json({ status: true, message: "session destroyed" });
-  } catch (error) {
-    console.log(error);
+    const user = req.session.user;
+    res.status(404).json({ status: true, message: "Success", data: user });
+  } catch (err) {
+    console.log(err);
     res.status(404).json({ status: false, message: "Something went wrong" });
   }
 });

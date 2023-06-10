@@ -348,7 +348,7 @@ const create = ({ empLevel }) => {
 };
 
 export const getServerSideProps = withSessionSsr(async ({ req }) => {
-  const user = req.session.user;
+  const user = req.session.admin;
 
   if (user) {
     const empRes = await fetch(`${process.env.apiUrl}/admin/employee/getData`, {

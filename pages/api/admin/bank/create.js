@@ -1,4 +1,4 @@
-import { getLevelData } from "../../../../helper/common";
+import { generateIFSC, getLevelData } from "../../../../helper/common";
 import dbConnect from "../../../../helper/connection";
 
 export default async (req, res) => {
@@ -104,7 +104,9 @@ export default async (req, res) => {
       ...bankDetail,
       address,
       time,
+      ifscCode: generateIFSC(bankDetail.name),
       timeStamp: Math.floor(Date.now() / 1000),
+      funds: 0,
       docType: "Bank",
       parentalId: parentData[0]._id,
     });

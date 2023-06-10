@@ -22,7 +22,7 @@ export default withSessionRoute(async (req, res) => {
       });
 
       if (verify) {
-        req.session.user = { userId: userData[0]._id };
+        req.session.admin = { userId: userData[0]._id };
         await req.session.save();
 
         res

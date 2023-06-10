@@ -30,6 +30,7 @@ export function keyStore(a) {
   const q = {
     empPsw: "Y#hD5xd1p*ZV^OM0(N/3v0*}ze~VAK:E",
     idEnc: "W#hDV8xd5p*ZV^OM0(N/3v0*}ze~KSY:E",
+    userPsw: "X#lA5xE8p*ZV^KD5(N/6c0*}ze~LWU:E",
   };
   return q[a];
 }
@@ -112,4 +113,26 @@ export const getLevelData = (data, parent) => {
   }
 
   return temp;
+};
+
+export const generateIFSC = (name) => {
+  let temp;
+  if (name.includes("(")) {
+    temp = name.split("(")[0].trim();
+  } else {
+    temp = name;
+  }
+
+  const temp2 = temp.split(" ").map((item) => {
+    const letter = item.split("");
+    return letter[0].toUpperCase();
+  });
+
+  let temp3 = temp2.join("") + (Math.random() * 99999999999).toFixed();
+
+  if (temp3.length > 11) {
+    temp3 = temp3.substring(0, 11);
+  }
+
+  return temp3;
 };

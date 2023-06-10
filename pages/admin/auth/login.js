@@ -1,6 +1,5 @@
-import Link from "next/link";
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { checkEmail } from "../../../helper/common";
 import { useRouter } from "next/router";
 import { withSessionSsr } from "../../../helper/session";
@@ -241,7 +240,7 @@ const login = () => {
 };
 
 export const getServerSideProps = withSessionSsr(async ({ req }) => {
-  const user = req.session.user;
+  const user = req.session.admin;
   if (user) {
     return {
       redirect: {

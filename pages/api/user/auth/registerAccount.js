@@ -1,6 +1,11 @@
-import { checkEmail, checkName } from "../../../../helper/common";
+import {
+  checkEmail,
+  checkName,
+  enc,
+  keyStore,
+} from "../../../../helper/common";
 import dbConnect from "../../../../helper/connection";
-import { v4 as uuidv4 } from "uuid";
+import { generate } from "generate-password";
 
 export default async (req, res) => {
   const { body } = req;
@@ -44,14 +49,41 @@ export default async (req, res) => {
         .json({ status: false, message: "Please enter valid pin code" });
     }
 
-    await dbConnect().insert("bank-management", {
-      ...body,
-      accountReqCode: uuidv4(),
-      accountStatus: 0,
-      docType: "User",
-    });
+    const data = (
+      await dbConnect().mango("bank-management", {
+        selector: {
+          email: body.email,
+        },
+        fields: ["email"],
+      })
+    ).data.docs;
 
-    res.status(200).json({ status: true, message: "success" });
+    if (data.length == 0) {
+      await dbConnect().insert("bank-management", {
+        ...body,
+        password: enc(
+          generate({
+            length: 12,
+            uppercase: true,
+            lowercase: true,
+            numbers: true,
+            symbols: true,
+            strict: true,
+          }) + "@",
+          keyStore("userPsw")
+        ),
+        accountReqCode: (Math.random() * 99999999).toFixed(),
+        accountStatus: 0,
+        createdAt: Math.floor(new Date().getTime() / 1000),
+        docType: "User",
+      });
+
+      res.status(200).json({ status: true, message: "success" });
+    } else {
+      res
+        .status(404)
+        .json({ status: false, message: "User already exist with that email" });
+    }
   } catch (err) {
     console.log(err);
     res.status(404).json({ status: false, message: "Something went wrong" });

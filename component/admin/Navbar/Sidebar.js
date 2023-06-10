@@ -70,7 +70,9 @@ const Sidebar = () => {
             <li className="nav-item">
               <Link
                 className={`nav-link text-white ${
-                  path == "/admin/bank/create" ? "active bg-gradient-primary" : ""
+                  path == "/admin/bank/create"
+                    ? "active bg-gradient-primary"
+                    : ""
                 }`}
                 href="/admin/bank/create"
               >
@@ -78,6 +80,21 @@ const Sidebar = () => {
                   <i className="material-icons opacity-10">local_pharmacy</i>
                 </span>
                 <span className="nav-link-text ms-1">Create bank</span>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={`nav-link text-white ${
+                  path == "/admin/user/userTable"
+                    ? "active bg-gradient-primary"
+                    : ""
+                }`}
+                href="/admin/user/userTable"
+              >
+                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i class="bi bi-person-lines-fill fs-5"></i>
+                </span>
+                <span className="nav-link-text ms-1">User Table</span>
               </Link>
             </li>
             <li className="nav-item mt-3">

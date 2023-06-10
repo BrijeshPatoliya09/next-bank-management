@@ -5,14 +5,16 @@ import { ToastContainer } from "react-toastify";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Header from "./navbar/Header";
 import Footer from "./navbar/Footer";
+import { useRouter } from "next/router";
 
 const UserLayout = ({ children }) => {
+  const router = useRouter();
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
       setLoader(false);
-    }, 1000);
+    }, 700);
   }, []);
   return (
     <>
@@ -42,6 +44,7 @@ const UserLayout = ({ children }) => {
         <link rel="stylesheet" href="/assets/css/user/slick.css" />
         <link rel="stylesheet" href="/assets/css/user/nice-select.css" />
         <link rel="stylesheet" href="/assets/css/user/style.css" />
+        <link rel="stylesheet" href="/assets/css/user/login.css" />
       </Head>
       <body>
         {loader ? (
@@ -56,23 +59,24 @@ const UserLayout = ({ children }) => {
             </div>
           </div>
         ) : (
-          <></>
-        )}
-
-        {!loader && (
           <>
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            {router.pathname.includes("login") ? (
+              <>{children}</>
+            ) : (
+              <>
+                {" "}
+                <Header />
+                <main>{children}</main>
+                <Footer />
+              </>
+            )}
           </>
         )}
 
         <ToastContainer />
 
-        <script src="/assets/js/user/vendor/modernizr-3.5.0.min.js"></script>
+        {/* <script src="/assets/js/user/vendor/modernizr-3.5.0.min.js"></script>
         <script src="/assets/js/user/vendor/jquery-1.12.4.min.js"></script>
-        <script src="/assets/js/user/popper.min.js"></script>
-        <script src="/assets/js/user/bootstrap.min.js"></script>
         <script src="/assets/js/user/jquery.slicknav.min.js"></script>
 
         <script src="/assets/js/user/slick.min.js"></script>
@@ -90,7 +94,7 @@ const UserLayout = ({ children }) => {
         <script src="/assets/js/user/jquery.ajaxchimp.min.js"></script>
 
         <script src="/assets/js/user/plugins.js"></script>
-        <script src="/assets/js/user/main.js"></script>
+        <script src="/assets/js/user/main.js"></script> */}
       </body>
     </>
   );

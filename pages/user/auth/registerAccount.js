@@ -22,13 +22,17 @@ const registerAccount = () => {
     nationalProofImage: "",
     nomineeName: "",
     accountType: "",
+    bank: "",
   });
+
+  const [bankSelect, setBankSelect] = useState([]);
+
+  const [loader, setLoader] = useState(false);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
-
   const imgUploadHandler = async (imgData) => {
     const formData = new FormData();
     formData.append("file", imgData);
@@ -75,6 +79,20 @@ const registerAccount = () => {
     }
   };
 
+  const getNearBank = async (bankName) => {
+    const res = await fetch(`${process.env.apiUrl}/user/bank/getNearBanks`, {
+      method: "POST",
+      body: JSON.stringify(bankName),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    setBankSelect(data.data);
+  };
+
   const submitHandler = async () => {
     //!User
     let validationUser = [];
@@ -107,16 +125,27 @@ const registerAccount = () => {
       return toast.error("Please enter valid pin code");
     }
 
-    const res = await fetch(`${process.env.apiUrl}/user/auth/registerAccount`, {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (!loader) {
+      setLoader(true);
+      const res = await fetch(
+        `${process.env.apiUrl}/user/auth/registerAccount`,
+        {
+          method: "POST",
+          body: JSON.stringify(user),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    const data = await res.json();
-    console.log(data);
+      const data = await res.json();
+      setLoader(false);
+      if (data.status) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    }
   };
   return (
     <>
@@ -268,7 +297,7 @@ const registerAccount = () => {
                             tabIndex="0"
                           >
                             <option value="" className="option selected focus">
-                              Choose Categories
+                              Choose Country
                             </option>
                             {Country.getAllCountries().map((country, i) => (
                               <option value={country.name} key={i}>
@@ -314,7 +343,14 @@ const registerAccount = () => {
                             className="nice-select"
                             tabIndex="0"
                             value={user.city}
-                            onChange={changeHandler}
+                            onChange={async (e) => {
+                              setUser({ ...user, city: e.target.value });
+                              await getNearBank({
+                                country: user.country,
+                                state: user.state,
+                                city: e.target.value,
+                              });
+                            }}
                             disabled={!user.state}
                           >
                             <option value="" className="option selected focus">
@@ -360,7 +396,7 @@ const registerAccount = () => {
                             value={user.nationalProof}
                           >
                             <option value="" className="option selected focus">
-                              Choose City
+                              Choose National Proof
                             </option>
                             <option value="Adhar Card" className="option">
                               Adhar Card
@@ -379,7 +415,7 @@ const registerAccount = () => {
                       <div className="single-form">
                         <label>National Proof Number</label>
                         <input
-                          type="number"
+                          type="text"
                           name="nationalProofNumber"
                           placeholder="Enter Pin Code"
                           onChange={changeHandler}
@@ -427,7 +463,7 @@ const registerAccount = () => {
                         </div>
                       )}
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-4">
                       <div className="single-form">
                         <label>Nominee Name</label>
                         <input
@@ -438,7 +474,7 @@ const registerAccount = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-4">
                       <div className="single-form">
                         <label>Account</label>
                         <div className="select-option mb-10">
@@ -462,14 +498,49 @@ const registerAccount = () => {
                         </div>
                       </div>
                     </div>
+                    <div className="col-lg-4">
+                      <div className="single-form">
+                        <label>Banks</label>
+                        <div className="select-option mb-10">
+                          <select
+                            name="bank"
+                            className="nice-select"
+                            tabIndex="0"
+                            value={user.bank}
+                            onChange={changeHandler}
+                            disabled={bankSelect.length == 0}
+                          >
+                            <option value="" className="option selected focus">
+                              {bankSelect.length > 0
+                                ? "Choose Bank"
+                                : user.city
+                                ? "There is no bank service available"
+                                : "Please enter city, state, country name"}
+                            </option>
+                            {bankSelect &&
+                              bankSelect.map((item) => (
+                                <option value={item.ifscCode}>
+                                  {item.name} ({item.address.city})
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </form>
                 <div className="d-flex justify-content-center">
                   <button
                     type="button"
-                    className="btn btn-primary p-3 border-0 fw-bold apply-btn mt-30"
+                    className="btn d-flex justify-content-center align-items-center btn-primary p-3 border-0 fw-bold apply-btn mt-30"
                     onClick={submitHandler}
+                    disabled={loader}
                   >
+                    {loader && (
+                      <div class="spinner-border me-2" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    )}
                     APPLY NOW{" "}
                   </button>
                 </div>

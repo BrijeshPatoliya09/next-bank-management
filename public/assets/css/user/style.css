@@ -290,6 +290,7 @@ a:focus,
 /* line 71, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_common.scss */
 a {
   color: #635c5c;
+  text-decoration: none;
 }
 
 /* line 74, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_common.scss */
