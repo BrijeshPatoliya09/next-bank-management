@@ -12,6 +12,15 @@ const Header = () => {
     setLoggedIn(data.data);
   };
 
+  const logoutHandler = async () => {
+    const res = await fetch(`${process.env.apiUrl}/user/auth/logout`);
+    const data = await res.json();
+
+    if (data.status) {
+      router.push("/user/auth/login");
+    }
+  };
+
   useEffect(() => {
     getLoginUser();
   }, []);
@@ -83,6 +92,22 @@ const Header = () => {
                               Register
                             </Link>
                           </li>
+                          {loggedIn ? (
+                            <li>
+                              <a>
+                                <i class="bi bi-person-circle fs-5"></i>
+                              </a>
+                              <ul className="submenu">
+                                <li>
+                                  <a onClick={logoutHandler}>Logout</a>
+                                </li>
+                              </ul>
+                            </li>
+                          ) : (
+                            <li>
+                              <Link href="/user/auth/login">Login</Link>
+                            </li>
+                          )}
                         </ul>
                       </nav>
                     </div>

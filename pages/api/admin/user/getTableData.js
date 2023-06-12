@@ -41,6 +41,7 @@ export default async (req, res) => {
       await dbConnect().mango("bank-management", {
         selector: {
           docType: "User",
+          ...querry,
         },
         fields: ["email"],
       })

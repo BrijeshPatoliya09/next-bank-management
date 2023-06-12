@@ -30,7 +30,7 @@ export default withSessionRoute(async (req, res) => {
           // ).data.docs[0];
 
           if (type == 0) {
-            if (getUset.balance >= amount) {
+            if (Number(getUset.balance) >= amount) {
               const user2 = (
                 await dbConnect().mango("bank-management", {
                   selector: {
@@ -41,19 +41,9 @@ export default withSessionRoute(async (req, res) => {
                 })
               ).data.docs[0];
 
-              // await dbConnect().update("bank-management", {
-              //   ...getBank,
-              //   funds: getBank.funds - amount,
-              // });
-
-              // await dbConnect().update("bank-management", {
-              //   ...getUset,
-              //   balance: getUset.balance - amount,
-              // });
-
               await dbConnect().insert("bank-management", {
-                userId: user.userId,
-                fromId: user2._id,
+                userId: user2._id,
+                fromId: user.userId,
                 type: "b2c",
                 amount,
                 createdAt: Math.floor(new Date().getTime() / 1000),
@@ -80,16 +70,6 @@ export default withSessionRoute(async (req, res) => {
                 fields: ["_id"],
               })
             ).data.docs[0];
-
-            // await dbConnect().update("bank-management", {
-            //   ...getBank,
-            //   funds: getBank.funds + amount,
-            // });
-
-            // await dbConnect().update("bank-management", {
-            //   ...getUset,
-            //   balance: getUset.balance + amount,
-            // });
 
             await dbConnect().insert("bank-management", {
               userId: user2._id,

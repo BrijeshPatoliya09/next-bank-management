@@ -1,11 +1,8 @@
 import {
   checkEmail,
   checkName,
-  enc,
-  keyStore,
 } from "../../../../helper/common";
 import dbConnect from "../../../../helper/connection";
-import { generate } from "generate-password";
 
 export default async (req, res) => {
   const { body } = req;
@@ -61,17 +58,6 @@ export default async (req, res) => {
     if (data.length == 0) {
       await dbConnect().insert("bank-management", {
         ...body,
-        password: enc(
-          generate({
-            length: 12,
-            uppercase: true,
-            lowercase: true,
-            numbers: true,
-            symbols: true,
-            strict: true,
-          }) + "@",
-          keyStore("userPsw")
-        ),
         accountReqCode: (Math.random() * 99999999).toFixed(),
         accountStatus: 0,
         createdAt: Math.floor(new Date().getTime() / 1000),

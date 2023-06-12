@@ -1,6 +1,7 @@
 import dbConnect from "../../../../helper/connection";
 import { v4 as uuidv4 } from "uuid";
 import { generate } from "generate-password";
+import { enc, keyStore } from "../../../../helper/common";
 
 export default async (req, res) => {
   const {
@@ -26,14 +27,17 @@ export default async (req, res) => {
       ...data,
       balance: 0,
       accountStatus: status,
-      password: generate({
-        length: 8,
-        lowercase: true,
-        numbers: true,
-        uppercase: true,
-        symbols: true,
-        strict: true,
-      }),
+      password: enc(
+        generate({
+          length: 12,
+          uppercase: true,
+          lowercase: true,
+          numbers: true,
+          symbols: true,
+          strict: true,
+        }) + "@",
+        keyStore("userPsw")
+      ),
       ...accNum,
     });
 

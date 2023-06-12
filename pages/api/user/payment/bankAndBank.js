@@ -40,6 +40,8 @@ export default withSessionRoute(async (req, res) => {
                 })
               ).data.docs[0];
 
+              console.log(user2);
+
               if (user2.length > 0) {
                 const bank2 = (
                   await dbConnect().mango("bank-management", {
@@ -95,7 +97,7 @@ export default withSessionRoute(async (req, res) => {
                 res.status(200).json({ status: true, message: "success" });
               } else {
                 res.status(404).json({
-                  status: true,
+                  status: false,
                   message: "User doesnt exist with this account no.",
                 });
               }

@@ -3,15 +3,17 @@ import { checkEmail, dec, keyStore } from "../../../helper/common";
 import { checkPassword } from "../../../helper/common";
 import { toast } from "react-toastify";
 import { withSessionSsr } from "../../../helper/session";
+import { useRouter } from "next/router";
 
 const login = () => {
+  const router = useRouter();
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
   const [loader, setLoader] = useState(false);
-  console.log(dec("CAM3PJio7Cl5oh8EqA==", keyStore("userPsw")));
+  console.log(dec("MC4yGZLJ7VF1iltLqA==", keyStore("userPsw")));
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -40,6 +42,7 @@ const login = () => {
 
       if (data.status) {
         toast.success(data.message);
+        setTimeout(() => router.push("/user"), 800);
       } else {
         toast.error(data.message);
       }
