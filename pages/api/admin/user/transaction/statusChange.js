@@ -13,41 +13,61 @@ export default async (req, res) => {
       })
     ).data.docs[0];
 
-    const getUset = (
-      await dbConnect().mango("bank-management", {
-        selector: {
-          docType: "User",
-          _id: transactionData.fromId,
-        },
-      })
-    ).data.docs[0];
-
-    const getBank = (
-      await dbConnect().mango("bank-management", {
-        selector: {
-          docType: "Bank",
-          _id: transactionData.userId,
-        },
-      })
-    ).data.docs[0];
-
     if (transactionData.docType == "Credit") {
+      const getUser = (
+        await dbConnect().mango("bank-management", {
+          selector: {
+            docType: "User",
+            _id: transactionData.userId,
+          },
+        })
+      ).data.docs[0];
+
+      const getfrom = (
+        await dbConnect().mango("bank-management", {
+          selector: {
+            docType: "Bank",
+            _id: transactionData.fromId,
+          },
+        })
+      ).data.docs[0];
+
+      console.log(getUser, getfrom);
+
       await dbConnect().update("bank-management", {
-        ...getBank,
-        funds: getBank.funds + Number(transactionData.amount),
+        ...getfrom,
+        funds: getfrom.funds + Number(transactionData.amount),
       });
       await dbConnect().update("bank-management", {
-        ...getUset,
-        balance: getUset.balance + Number(transactionData.amount),
+        ...getUser,
+        balance: getUser.balance + Number(transactionData.amount),
       });
     } else {
+      const getUser = (
+        await dbConnect().mango("bank-management", {
+          selector: {
+            docType: "User",
+            _id: transactionData.userId,
+          },
+        })
+      ).data.docs[0];
+
+      const getfrom = (
+        await dbConnect().mango("bank-management", {
+          selector: {
+            docType: "Bank",
+            _id: transactionData.fromId,
+          },
+        })
+      ).data.docs[0];
+
       await dbConnect().update("bank-management", {
-        ...getBank,
-        funds: getBank.funds - Number(transactionData.amount),
+        ...getfrom,
+        funds: getfrom.funds - Number(transactionData.amount),
       });
       await dbConnect().update("bank-management", {
-        ...getUset,
-        balance: getUset.balance - Number(transactionData.amount),
+        ...getUser,
+        balance: getUser.balance - Number(transactionData.amount),
       });
     }
 

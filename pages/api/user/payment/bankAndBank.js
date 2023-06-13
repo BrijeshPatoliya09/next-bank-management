@@ -20,15 +20,6 @@ export default withSessionRoute(async (req, res) => {
               })
             ).data.docs[0];
 
-            const getBank = (
-              await dbConnect().mango("bank-management", {
-                selector: {
-                  docType: "Bank",
-                  ifscCode: getUset.bank,
-                },
-              })
-            ).data.docs[0];
-
             if (getUset.balance >= amount) {
               const user2 = (
                 await dbConnect().mango("bank-management", {
@@ -40,61 +31,100 @@ export default withSessionRoute(async (req, res) => {
                 })
               ).data.docs[0];
 
-              console.log(user2);
+              if (user2) {
+                if (Number(amount) > 50000) {
+                  const getBank = (
+                    await dbConnect().mango("bank-management", {
+                      selector: {
+                        docType: "Bank",
+                        ifscCode: getUset.bank,
+                      },
+                    })
+                  ).data.docs[0];
 
-              if (user2.length > 0) {
-                const bank2 = (
-                  await dbConnect().mango("bank-management", {
-                    selector: {
-                      docType: "Bank",
-                      ifscCode: user2.bank,
-                    },
-                  })
-                ).data.docs[0];
+                  const bank2 = (
+                    await dbConnect().mango("bank-management", {
+                      selector: {
+                        docType: "Bank",
+                        ifscCode: user2.bank,
+                      },
+                    })
+                  ).data.docs[0];
 
-                await dbConnect().update("bank-management", {
-                  ...getUset,
-                  balance: getUset.balance - amount,
-                });
+                  await dbConnect().update("bank-management", {
+                    ...getUset,
+                    balance: Number(getUset.balance) - Number(amount),
+                  });
 
-                await dbConnect().update("bank-management", {
-                  ...getBank,
-                  funds: getBank.funds - amount,
-                });
+                  await dbConnect().update("bank-management", {
+                    ...getBank,
+                    funds: Number(getBank.funds) - Number(amount),
+                  });
 
-                await dbConnect().update("bank-management", {
-                  ...user2,
-                  balance: user2.balance + amount,
-                });
+                  await dbConnect().update("bank-management", {
+                    ...user2,
+                    balance: Number(user2.balance) + Number(amount),
+                  });
 
-                await dbConnect().update("bank-management", {
-                  ...bank2,
-                  funds: bank2.funds + amount,
-                });
+                  await dbConnect().update("bank-management", {
+                    ...bank2,
+                    funds: Number(bank2.funds) + Number(amount),
+                  });
 
-                await dbConnect().insert("bank-management", {
-                  userId: user.userId,
-                  fromId: user2._id,
-                  type: "b2b",
-                  amount,
-                  createdAt: Math.floor(new Date().getTime() / 1000),
-                  status: 1,
-                  description,
-                  docType: "Debit",
-                });
+                  await dbConnect().insert("bank-management", {
+                    userId: user.userId,
+                    fromId: user2._id,
+                    type: "b2b",
+                    amount,
+                    createdAt: Math.floor(new Date().getTime() / 1000),
+                    status: 1,
+                    description,
+                    docType: "Debit",
+                  });
 
-                await dbConnect().insert("bank-management", {
-                  userId: user2._id,
-                  fromId: user.userId,
-                  amount,
-                  type: "b2b",
-                  createdAt: Math.floor(new Date().getTime() / 1000),
-                  status: 1,
-                  description,
-                  docType: "Credit",
-                });
+                  await dbConnect().insert("bank-management", {
+                    userId: user2._id,
+                    fromId: user.userId,
+                    amount,
+                    type: "b2b",
+                    createdAt: Math.floor(new Date().getTime() / 1000),
+                    status: 1,
+                    description,
+                    docType: "Credit",
+                  });
 
-                res.status(200).json({ status: true, message: "success" });
+                  res.status(200).json({
+                    status: true,
+                    message: "Transaction completed successfully",
+                  });
+                } else {
+                  await dbConnect().insert("bank-management", {
+                    userId: user.userId,
+                    fromId: user2._id,
+                    type: "b2b",
+                    amount,
+                    createdAt: Math.floor(new Date().getTime() / 1000),
+                    status: 0,
+                    description,
+                    docType: "Debit",
+                  });
+
+                  await dbConnect().insert("bank-management", {
+                    userId: user2._id,
+                    fromId: user.userId,
+                    amount,
+                    type: "b2b",
+                    createdAt: Math.floor(new Date().getTime() / 1000),
+                    status: 0,
+                    description,
+                    docType: "Credit",
+                  });
+
+                  res.status(200).json({
+                    status: true,
+                    message: "Transaction has been registered",
+                  });
+                }
               } else {
                 res.status(404).json({
                   status: false,

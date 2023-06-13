@@ -113,7 +113,19 @@ const transactionTable = () => {
                           className="btn p-0"
                           //   onClick={() => sortDataHandler("")}
                         >
-                          User
+                          From
+                          {/* <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          /> */}
+                        </button>
+                      </th>
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
+                        <button
+                          className="btn p-0"
+                          //   onClick={() => sortDataHandler("")}
+                        >
+                          To
                           {/* <FilterListIcon
                             className="ms-1"
                             style={{ fontSize: "16px" }}
@@ -185,15 +197,30 @@ const transactionTable = () => {
                           <tr>
                             <td className="px-4">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.user.firstName} {item.user.lastName}
+                                {item.user == "Bank"
+                                  ? item.user
+                                  : `${item.user.firstName} ${item.user.lastName}`}
                               </p>
                               <p className="text-md text-secondary mb-0">
-                                {item.user.accountNumber}
+                                {item.user != "Bank" && item.user.accountNumber}
                               </p>
                             </td>
                             <td className="px-4">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.type == "c2b" ? "Deposit" : "withdraw"}
+                                {item.from == "Bank"
+                                  ? item.from
+                                  : `${item.from.firstName} ${item.from.lastName}`}
+                              </p>
+                              <p className="text-md text-secondary mb-0">
+                                {item.from != "Bank" && item.from.accountNumber}
+                              </p>
+                            </td>
+                            <td className="px-4">
+                              <p className="text-md font-weight-bold mb-0">
+                                {item.type == "c2b" && "Deposit"}
+                                {item.type == "b2c" && "Withdraw"}
+                                {item.type == "b2b" && "Other bank"}
+                                {item.type == "c2c" && "Other Accountholder"}
                               </p>
                             </td>
                             <td className="px-4">

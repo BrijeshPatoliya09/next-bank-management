@@ -20,15 +20,6 @@ export default withSessionRoute(async (req, res) => {
             })
           ).data.docs[0];
 
-          // const getBank = (
-          //   await dbConnect().mango("bank-management", {
-          //     selector: {
-          //       docType: "Bank",
-          //       ifscCode: getUset.bank,
-          //     },
-          //   })
-          // ).data.docs[0];
-
           if (type == 0) {
             if (Number(getUset.balance) >= amount) {
               const user2 = (
@@ -72,8 +63,8 @@ export default withSessionRoute(async (req, res) => {
             ).data.docs[0];
 
             await dbConnect().insert("bank-management", {
-              userId: user2._id,
-              fromId: user.userId,
+              userId: user.userId,
+              fromId: user2._id,
               amount,
               type: "c2b",
               createdAt: Math.floor(new Date().getTime() / 1000),

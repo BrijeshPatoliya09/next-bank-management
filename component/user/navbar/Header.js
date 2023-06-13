@@ -69,16 +69,25 @@ const Header = () => {
                             </ul>
                           </li>
                           {loggedIn && (
-                            <li
-                              className={
-                                router.pathname.includes("payment")
-                                  ? "active"
-                                  : ""
-                              }
-                            >
-                              <Link href="/user/transaction/payment">
-                                Payment
-                              </Link>
+                            <li>
+                              <a>Transaction</a>
+                              <ul className="submenu">
+                                <li>
+                                  <Link href="/user/transaction/bank">
+                                    Bank and Bank
+                                  </Link>
+                                </li>
+                                <li>
+                                  <Link href="/user/transaction/bankCustomer">
+                                    Bank and Customer
+                                  </Link>
+                                </li>
+                                <li>
+                                  <Link href="/user/transaction/customer">
+                                    Customer and Customer
+                                  </Link>
+                                </li>
+                              </ul>
                             </li>
                           )}
                           <li

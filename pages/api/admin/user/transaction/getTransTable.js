@@ -6,7 +6,7 @@ export default async (req, res) => {
     const mango = {
       selector: {
         docType: { $or: ["Credit", "Debit"] },
-        type: { $or: ["c2b", "b2c"] },
+        // type: { $or: ["c2b", "b2c"] },
       },
       skip: page * 10,
       sort: [sort],
@@ -15,7 +15,10 @@ export default async (req, res) => {
     const transactionData = (await dbConnect().mango("bank-management", mango))
       .data.docs;
 
-    const user = transactionData.map((item) => item.fromId);
+    const user = transactionData.reduce(
+      (item, data) => [...item, data.fromId, data.userId],
+      []
+    );
 
     const userData = (
       await dbConnect().mango("bank-management", {
@@ -31,7 +34,7 @@ export default async (req, res) => {
       const { data } = await dbConnect().mango("bank-management", {
         selector: {
           docType: { $or: ["Credit", "Debit"] },
-          type: { $or: ["c2b", "b2c"] },
+          // type: { $or: ["c2b", "b2c"] },
         },
         fields: ["createdAt"],
         bookmark,
@@ -52,7 +55,12 @@ export default async (req, res) => {
       data: {
         userData: transactionData.map((item, i) => ({
           ...item,
-          user: userData.filter((filData) => filData._id === item.fromId)[0],
+          user:
+            userData.filter((filData) => filData._id === item.userId)[0] ||
+            "Bank",
+          from:
+            userData.filter((filData) => filData._id === item.fromId)[0] ||
+            "Bank",
         })),
         count: (await fetchCountData()).length,
       },
