@@ -1,7 +1,7 @@
 import dbConnect from "../../../../helper/connection";
 
 export default async (req, res) => {
-  const { page, sort, filter } = req.body;
+  const { page, sort, filter, activeEmployee } = req.body;
   try {
     let querry = {};
 
@@ -23,11 +23,17 @@ export default async (req, res) => {
       };
     }
 
-    console.log(querry);
+    const getBank = (
+      await dbConnect().mango("bank-management", {
+        selector: { _id: activeEmployee },
+        fields: ["ifscCode"],
+      })
+    ).data.docs[0];
 
     const mango = {
       selector: {
         docType: "User",
+        bank: getBank.ifscCode,
         ...querry,
       },
       skip: page * 10,

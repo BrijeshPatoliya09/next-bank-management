@@ -43,6 +43,7 @@ const table = ({ data, empData, treeSelectBox }) => {
       );
 
       const data = await res.json();
+      console.log(data);
       setLoader(false);
 
       setEmployeeData(data.data.empData);

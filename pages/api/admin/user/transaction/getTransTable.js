@@ -1,12 +1,38 @@
 import dbConnect from "../../../../../helper/connection";
 
 export default async (req, res) => {
-  const { page, sort } = req.body;
+  const { page, sort, activeEmployee } = req.body;
   try {
+    const getBank = (
+      await dbConnect().mango("bank-management", {
+        selector: { _id: activeEmployee },
+        fields: ["ifscCode"],
+      })
+    ).data.docs[0];
+
+    const getAllUsers = (
+      await dbConnect().mango("bank-management", {
+        selector: {
+          docType: "User",
+          bank: getBank.ifscCode,
+        },
+        fields: ["_id"],
+      })
+    ).data.docs;
+
+    const allUserId = getAllUsers.map((item) => item._id);
+
     const mango = {
       selector: {
-        docType: { $or: ["Credit", "Debit"] },
-        // type: { $or: ["c2b", "b2c"] },
+        $and: [
+          { docType: { $or: ["Credit", "Debit"] } },
+          {
+            $or: [
+              { userId: { $or: [...allUserId, activeEmployee] } },
+              { fromId: { $or: [...allUserId, activeEmployee] } },
+            ],
+          },
+        ],
       },
       skip: page * 10,
       sort: [sort],
@@ -14,6 +40,7 @@ export default async (req, res) => {
     };
     const transactionData = (await dbConnect().mango("bank-management", mango))
       .data.docs;
+
 
     const user = transactionData.reduce(
       (item, data) => [...item, data.fromId, data.userId],
@@ -26,7 +53,7 @@ export default async (req, res) => {
           docType: "User",
           _id: { $or: user },
         },
-        fields: ["_id", "firstName", "lastName", "accountNumber"],
+        fields: ["_id", "firstName", "lastName", "accountNumber", "bank"],
       })
     ).data.docs;
 

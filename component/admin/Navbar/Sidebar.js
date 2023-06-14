@@ -97,6 +97,21 @@ const Sidebar = () => {
                 <span className="nav-link-text ms-1">User Table</span>
               </Link>
             </li>
+            <li className="nav-item">
+              <Link
+                className={`nav-link text-white ${
+                  path == "/admin/transaction/transactionTable"
+                    ? "active bg-gradient-primary"
+                    : ""
+                }`}
+                href="/admin/transaction/transactionTable"
+              >
+                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i class="bi bi-cash-coin fs-5"></i>
+                </span>
+                <span className="nav-link-text ms-1">transaction</span>
+              </Link>
+            </li>
             <li className="nav-item mt-3">
               <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
                 Account pages

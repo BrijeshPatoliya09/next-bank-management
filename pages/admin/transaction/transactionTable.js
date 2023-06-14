@@ -19,8 +19,13 @@ import {
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import BankTree from "../../../component/admin/bank/BankTree";
 
-const transactionTable = () => {
+const transactionTable = ({ data, empData, treeSelectBox }) => {
+  const [activeEmployee, setActiveEmployeeData] = useState(
+    empData[0].bankInfo[0]._id
+  );
+
   const date = moment(new Date()).subtract(1, "months");
   const [userData, setUserData] = useState([]);
   const [page, setPage] = useState(0);
@@ -44,7 +49,7 @@ const transactionTable = () => {
         `${process.env.apiUrl}/admin/user/transaction/getTransTable`,
         {
           method: "POST",
-          body: JSON.stringify({ page, sort }),
+          body: JSON.stringify({ page, sort, activeEmployee }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -61,7 +66,7 @@ const transactionTable = () => {
 
   useEffect(() => {
     getTransData();
-  }, [page, sort]);
+  }, [page, sort, activeEmployee]);
 
   const statusChangeHandler = async (statusData) => {
     const res = await fetch(
@@ -86,12 +91,20 @@ const transactionTable = () => {
 
   return (
     <>
+      <BankTree
+        data={data}
+        setActiveEmployeeData={setActiveEmployeeData}
+        activeEmployee={activeEmployee}
+        select={treeSelectBox}
+      />
       <div className="row">
         <div className="col-12">
           <div className="card my-4">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex">
-                <h6 className="text-white text-capitalize ps-3">User table</h6>
+                <h6 className="text-white text-capitalize ps-3">
+                  Transaction Table
+                </h6>
                 <div className="ms-auto me-3">
                   <button
                     type="button"
@@ -202,7 +215,9 @@ const transactionTable = () => {
                                   : `${item.user.firstName} ${item.user.lastName}`}
                               </p>
                               <p className="text-md text-secondary mb-0">
-                                {item.user != "Bank" && item.user.accountNumber}
+                                {item.user != "Bank"
+                                  ? item.user.accountNumber
+                                  : "(Bank Itself)"}
                               </p>
                             </td>
                             <td className="px-4">
@@ -212,7 +227,9 @@ const transactionTable = () => {
                                   : `${item.from.firstName} ${item.from.lastName}`}
                               </p>
                               <p className="text-md text-secondary mb-0">
-                                {item.from != "Bank" && item.from.accountNumber}
+                                {item.from != "Bank"
+                                  ? item.from.accountNumber
+                                  : "(Bank Itself)"}
                               </p>
                             </td>
                             <td className="px-4">
@@ -224,7 +241,17 @@ const transactionTable = () => {
                               </p>
                             </td>
                             <td className="px-4">
-                              <p className="text-md font-weight-bold mb-0">
+                              {console.log(
+                                item.user.bank ==
+                                  empData[0].bankInfo[0].ifscCode
+                              )}
+                              <p
+                                className={`text-md font-weight-bold mb-0 ${
+                                  item.user.bank ==
+                                    empData[0].bankInfo[0].ifscCode ||
+                                  (item.type == "b2c" && "text-danger")
+                                }`}
+                              >
                                 {item.amount}
                               </p>
                             </td>
@@ -330,8 +357,35 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
   const user = req.session.admin;
 
   if (user) {
+    const empRes = await fetch(`${process.env.apiUrl}/admin/employee/getData`, {
+      method: "PUT",
+      body: JSON.stringify({ userId: user.userId }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const empData = await empRes.json();
+
+    const res = await fetch(`${process.env.apiUrl}/admin/bank/getTreeData`, {
+      method: "PUT",
+      body: JSON.stringify({
+        bankData: {
+          address: empData.data[0].bankInfo[0].address,
+          level: empData.data[0].bankInfo[0].level,
+        },
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+
     return {
-      props: {},
+      props: {
+        data: data.data.newData,
+        treeSelectBox: data.data.selectBox,
+        empData: empData.data,
+      },
     };
   } else {
     return {

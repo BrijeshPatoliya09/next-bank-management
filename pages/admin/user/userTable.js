@@ -18,8 +18,13 @@ import {
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import { withSessionSsr } from "../../../helper/session";
+import BankTree from "../../../component/admin/bank/BankTree";
 
-const userTable = () => {
+const userTable = ({ data, empData, treeSelectBox }) => {
+  const [activeEmployee, setActiveEmployeeData] = useState(
+    empData[0].bankInfo[0]._id
+  );
+
   const date = moment(new Date()).subtract(1, "months");
   const [userData, setUserData] = useState([]);
   const [page, setPage] = useState(0);
@@ -62,7 +67,7 @@ const userTable = () => {
       setLoader(true);
       const res = await fetch(`${process.env.apiUrl}/admin/user/getTableData`, {
         method: "POST",
-        body: JSON.stringify({ page, sort, filter }),
+        body: JSON.stringify({ page, sort, filter, activeEmployee }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -83,10 +88,16 @@ const userTable = () => {
     ) {
       getUserData();
     }
-  }, [page, sort, filter]);
+  }, [page, sort, filter, activeEmployee]);
 
   return (
     <>
+      <BankTree
+        data={data}
+        setActiveEmployeeData={setActiveEmployeeData}
+        activeEmployee={activeEmployee}
+        select={treeSelectBox}
+      />
       <div className="row">
         <div className="col-12">
           <div className="card my-4">
@@ -461,8 +472,35 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
   const user = req.session.admin;
 
   if (user) {
+    const empRes = await fetch(`${process.env.apiUrl}/admin/employee/getData`, {
+      method: "PUT",
+      body: JSON.stringify({ userId: user.userId }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const empData = await empRes.json();
+
+    const res = await fetch(`${process.env.apiUrl}/admin/bank/getTreeData`, {
+      method: "PUT",
+      body: JSON.stringify({
+        bankData: {
+          address: empData.data[0].bankInfo[0].address,
+          level: empData.data[0].bankInfo[0].level,
+        },
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+
     return {
-      props: {},
+      props: {
+        data: data.data.newData,
+        treeSelectBox: data.data.selectBox,
+        empData: empData.data,
+      },
     };
   } else {
     return {

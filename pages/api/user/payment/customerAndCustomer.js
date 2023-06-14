@@ -21,6 +21,7 @@ export default withSessionRoute(async (req, res) => {
               await dbConnect().mango("bank-management", {
                 selector: {
                   docType: "Debit",
+                  type: "c2c",
                   userId: user.userId,
                   createdAt: { $gt: currentTime, $lt: nextTime },
                 },
@@ -28,8 +29,6 @@ export default withSessionRoute(async (req, res) => {
                 fields: ["amount"],
               })
             ).data.docs;
-
-            console.log(timeData);
 
             if (timeData.length <= 10) {
               if (
