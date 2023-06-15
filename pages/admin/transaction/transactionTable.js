@@ -22,11 +22,23 @@ import { toast } from "react-toastify";
 import BankTree from "../../../component/admin/bank/BankTree";
 
 const transactionTable = ({ data, empData, treeSelectBox }) => {
-  const [activeEmployee, setActiveEmployeeData] = useState(
-    empData[0].bankInfo[0]._id
-  );
+  const [activeEmployee, setActiveEmployeeData] = useState({
+    bankId: empData[0].bankInfo[0]._id,
+    ifsc: empData[0].bankInfo[0].ifscCode,
+  });
+  const [toggleFilter, setToggleFilter] = useState(false);
+  const [applyFilter, setApplyFilter] = useState(false);
 
   const date = moment(new Date()).subtract(1, "months");
+  const [filter, setFilter] = useState({
+    name: "",
+    type: "",
+    createdAt: [
+      Math.floor(date["_d"].getTime() / 1000),
+      Math.floor(date["_i"].getTime() / 1000),
+    ],
+  });
+
   const [userData, setUserData] = useState([]);
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState("");
@@ -49,7 +61,11 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
         `${process.env.apiUrl}/admin/user/transaction/getTransTable`,
         {
           method: "POST",
-          body: JSON.stringify({ page, sort, activeEmployee }),
+          body: JSON.stringify({
+            page,
+            sort,
+            activeEmployee: activeEmployee.bankId,
+          }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -66,7 +82,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
 
   useEffect(() => {
     getTransData();
-  }, [page, sort, activeEmployee]);
+  }, [page, sort, activeEmployee, applyFilter]);
 
   const statusChangeHandler = async (statusData) => {
     const res = await fetch(
@@ -94,7 +110,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
       <BankTree
         data={data}
         setActiveEmployeeData={setActiveEmployeeData}
-        activeEmployee={activeEmployee}
+        activeEmployee={activeEmployee.bankId}
         select={treeSelectBox}
       />
       <div className="row">
@@ -108,7 +124,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                 <div className="ms-auto me-3">
                   <button
                     type="button"
-                    // onClick={() => setToggleFilter(!toggleFilter)}
+                    onClick={() => setToggleFilter(!toggleFilter)}
                     className="btn btn-outline-primary btn-sm mb-0 bg-white"
                   >
                     Filter
@@ -117,6 +133,88 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
               </div>
             </div>
             <div className="card-body px-0 pb-2 ">
+              {toggleFilter && (
+                <div className="filter px-4">
+                  <div className="d-flex justify-content-center">
+                    <TextField
+                      className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
+                      type="text"
+                      name="name"
+                      label="Name"
+                      // onChange={changeHandler}
+                      // value={filter.name}
+                      variant="outlined"
+                    />
+                    <FormControl className="col-lg-3 col-sm-6 col-12 p-1 mt-2">
+                      <InputLabel id="demo-simple-select-label">
+                        Select Department
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        name="department"
+                        label="Select Department"
+                        onChange={(e) =>
+                          setFilter({ ...filter, type: e.target.value })
+                        }
+                      >
+                        <MenuItem value="b2b">Bank to Bank</MenuItem>
+                        <MenuItem value="b2c">Bank to Customer</MenuItem>
+                        <MenuItem value="c2b">Customer to Bank</MenuItem>
+                        <MenuItem value="c2c">Customer to Customer</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateRangePicker
+                        slots={{ field: SingleInputDateRangeField }}
+                        className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
+                        label="Date of joinning"
+                        value={[
+                          dayjs(new Date(filter.createdAt[0] * 1000)),
+                          dayjs(new Date(filter.createdAt[1] * 1000)),
+                        ]}
+                        onChange={(e) =>
+                          setFilter({
+                            ...filter,
+                            createdAt: [
+                              Math.floor(e[0]?.$d.getTime() / 1000),
+                              Math.floor(e[1]?.$d.getTime() / 1000),
+                            ],
+                          })
+                        }
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <div className="d-flex justify-content-center">
+                    <button
+                      type="button"
+                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
+                      style={{ fontSize: "14px" }}
+                      onClick={() => {
+                        setApplyFilter(!applyFilter);
+                      }}
+                      disabled={loader}
+                    >
+                      Filter
+                    </button>
+                    <button
+                      type="button"
+                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary ms-3 my-4 mb-2"
+                      style={{ fontSize: "14px" }}
+                      // onClick={() => {
+                      //   onGetEmpData();
+                      //   setFilter({
+                      //     name: "",
+                      //     department: "",
+                      //     joinningDate: [],
+                      //   });
+                      // }}
+                      // disabled={bankEmpLoader}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="table-responsive p-0">
                 <table className="table align-items-center justify-content-center mb-0">
                   <thead>
@@ -150,7 +248,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                           className="btn p-0"
                           onClick={() => sortDataHandler("type")}
                         >
-                          Transaction
+                          Type
                           <FilterListIcon
                             className="ms-1"
                             style={{ fontSize: "16px" }}
@@ -234,23 +332,37 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                             </td>
                             <td className="px-4">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.type == "c2b" && "Deposit"}
-                                {item.type == "b2c" && "Withdraw"}
-                                {item.type == "b2b" && "Other bank"}
-                                {item.type == "c2c" && "Other Accountholder"}
+                                {item.type == "c2b" && "Customer to Bank"}
+                                {item.type == "b2c" && "Bank to Customer"}
+                                {item.type == "b2b" && "Bank to Bank"}
+                                {item.type == "c2c" && "Customer to Customer"}
                               </p>
                             </td>
                             <td className="px-4">
                               {console.log(
-                                item.user.bank ==
-                                  empData[0].bankInfo[0].ifscCode
+                                item.user.bank,
+                                item.from.bank,
+                                activeEmployee.ifsc
                               )}
                               <p
-                                className={`text-md font-weight-bold mb-0 ${
-                                  item.user.bank ==
-                                    empData[0].bankInfo[0].ifscCode ||
-                                  (item.type == "b2c" && "text-danger")
-                                }`}
+                                className={`text-md font-weight-bold mb-0 
+                                ${item.type == "b2c" && "text-danger"}
+                                ${item.type == "c2b" && "text-success"}
+                                ${
+                                  item.user.bank == activeEmployee.ifsc &&
+                                  item.from.bank == activeEmployee.ifsc
+                                    ? ""
+                                    : item.user.bank == activeEmployee.ifsc &&
+                                      item.type !== "b2c" &&
+                                      item.type !== "c2b"
+                                    ? "text-danger"
+                                    : item.from.bank == activeEmployee.ifsc &&
+                                      item.type !== "b2c" &&
+                                      item.type !== "c2b"
+                                    ? "text-success"
+                                    : ""
+                                }
+                                `}
                               >
                                 {item.amount}
                               </p>

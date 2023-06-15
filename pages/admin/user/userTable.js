@@ -21,9 +21,10 @@ import { withSessionSsr } from "../../../helper/session";
 import BankTree from "../../../component/admin/bank/BankTree";
 
 const userTable = ({ data, empData, treeSelectBox }) => {
-  const [activeEmployee, setActiveEmployeeData] = useState(
-    empData[0].bankInfo[0]._id
-  );
+  const [activeEmployee, setActiveEmployeeData] = useState({
+    bankId: empData[0].bankInfo[0]._id,
+    ifsc: empData[0].bankInfo[0].ifscCode,
+  });
 
   const date = moment(new Date()).subtract(1, "months");
   const [userData, setUserData] = useState([]);
@@ -67,7 +68,12 @@ const userTable = ({ data, empData, treeSelectBox }) => {
       setLoader(true);
       const res = await fetch(`${process.env.apiUrl}/admin/user/getTableData`, {
         method: "POST",
-        body: JSON.stringify({ page, sort, filter, activeEmployee }),
+        body: JSON.stringify({
+          page,
+          sort,
+          filter,
+          activeEmployee: activeEmployee.bankId,
+        }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -95,7 +101,7 @@ const userTable = ({ data, empData, treeSelectBox }) => {
       <BankTree
         data={data}
         setActiveEmployeeData={setActiveEmployeeData}
-        activeEmployee={activeEmployee}
+        activeEmployee={activeEmployee.bankId}
         select={treeSelectBox}
       />
       <div className="row">

@@ -20,7 +20,7 @@ export default withSessionRoute(async (req, res) => {
             const timeData = (
               await dbConnect().mango("bank-management", {
                 selector: {
-                  docType: "Debit",
+                  docType: "Transaction",
                   type: "c2c",
                   userId: user.userId,
                   createdAt: { $gt: currentTime, $lt: nextTime },
@@ -87,18 +87,7 @@ export default withSessionRoute(async (req, res) => {
                         createdAt: Math.floor(new Date().getTime() / 1000),
                         status: 1,
                         description,
-                        docType: "Debit",
-                      });
-
-                      await dbConnect().insert("bank-management", {
-                        userId: user2._id,
-                        fromId: user.userId,
-                        amount,
-                        type: "c2c",
-                        createdAt: Math.floor(new Date().getTime() / 1000),
-                        status: 1,
-                        description,
-                        docType: "Credit",
+                        docType: "Transaction",
                       });
 
                       res.status(200).json({

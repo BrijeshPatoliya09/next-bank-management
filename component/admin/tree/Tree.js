@@ -11,6 +11,7 @@ import TreeItem, {
 } from "@mui/lab/TreeItem";
 import { Typography } from "@mui/material";
 import { useState } from "react";
+import { useEffect } from "react";
 
 function MinusSquare(props) {
   return (
@@ -64,8 +65,8 @@ const CustomContent = React.forwardRef(function CustomContent(props, ref) {
 
   const handleSelectionClick = (event) => {
     handleSelection(event);
-    label.onSetActiveEmp(label._id);
-    handleExpansionClick(event)
+    label.onSetActiveEmp({ bankId: label._id, ifsc: label.ifscCode });
+    handleExpansionClick(event);
   };
 
   return (
@@ -124,7 +125,20 @@ export default function Tree({
   select,
   selectCheck,
 }) {
-  const [expand, setExpand] = useState([]);
+  let highLight = false;
+  if (select.length > 0) {
+    if (select[0]._id == treeData._id) {
+      highLight = true;
+    }
+  }
+
+  const [expand, setExpand] = useState(
+    selectCheck &&
+      selectCheck !== highLight &&
+      select[0].level !== treeData.level
+      ? [treeData._id]
+      : []
+  );
 
   const expandHandler = () => {
     if (expand.length > 0) {
@@ -151,6 +165,7 @@ export default function Tree({
 
     return color;
   };
+
   let active = false;
   if (empId == treeData._id) {
     active = true;
@@ -158,58 +173,57 @@ export default function Tree({
     active = false;
   }
 
-  let highLight = false;
-  if (select.length > 0) {
-    if (select[0]._id == treeData._id) {
-      highLight = true;
-    }
-  }
-
-  return (
-    <TreeView
-      aria-label="customized"
-      expanded={
-        selectCheck &&
+  console.log(
+    expand.length > 0
+      ? expand
+      : selectCheck &&
         selectCheck !== highLight &&
         select[0].level !== treeData.level
-          ? [treeData._id]
-          : expand
-      }
-      defaultCollapseIcon={<MinusSquare />}
-      defa
-      defaultExpandIcon={<PlusSquare />}
-      defaultEndIcon={<CloseSquare />}
-    >
-      <StyledTreeItem
-        nodeId={treeData._id}
-        label={{
-          title: `${treeData.name} (${treeData.address.country})`,
-          color: colorHandler(treeData),
-          _id: treeData._id,
-          onSetActiveEmp,
-          active,
-          highLight,
-          expandHandler,
-        }}
+      ? [treeData._id]
+      : expand
+  );
+  return (
+    <>
+      <TreeView
+        aria-label="customized"
+        expanded={ expand
+        }
+        defaultCollapseIcon={<MinusSquare />}
+        defaultExpandIcon={<PlusSquare />}
+        defaultEndIcon={<CloseSquare />}
       >
-        {treeData.children.length > 0 &&
-          treeData.children.map((item) => (
-            <Tree
-              key={item._id}
-              treeData={item}
-              onSetActiveEmp={onSetActiveEmp}
-              empId={empId}
-              select={highLight ? "" : select}
-              selectCheck={
-                select.length > 0
-                  ? select[0].level == treeData.level || highLight
-                    ? false
-                    : true
-                  : false
-              }
-            />
-          ))}
-      </StyledTreeItem>
-    </TreeView>
+        <StyledTreeItem
+          nodeId={treeData._id}
+          label={{
+            title: `${treeData.name} (${treeData.address.country})`,
+            color: colorHandler(treeData),
+            _id: treeData._id,
+            ifscCode: treeData.ifscCode,
+            onSetActiveEmp,
+            active,
+            highLight,
+            expandHandler,
+          }}
+        >
+          {treeData.children.length > 0 &&
+            treeData.children.map((item) => (
+              <Tree
+                key={item._id}
+                treeData={item}
+                onSetActiveEmp={onSetActiveEmp}
+                empId={empId}
+                select={highLight ? "" : select}
+                selectCheck={
+                  select.length > 0
+                    ? select[0].level == treeData.level || highLight
+                      ? false
+                      : true
+                    : false
+                }
+              />
+            ))}
+        </StyledTreeItem>
+      </TreeView>
+    </>
   );
 }

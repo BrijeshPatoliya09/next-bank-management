@@ -79,18 +79,7 @@ export default withSessionRoute(async (req, res) => {
                     createdAt: Math.floor(new Date().getTime() / 1000),
                     status: 1,
                     description,
-                    docType: "Debit",
-                  });
-
-                  await dbConnect().insert("bank-management", {
-                    userId: user2._id,
-                    fromId: user.userId,
-                    amount,
-                    type: "b2b",
-                    createdAt: Math.floor(new Date().getTime() / 1000),
-                    status: 1,
-                    description,
-                    docType: "Credit",
+                    docType: "Transaction",
                   });
 
                   res.status(200).json({
@@ -106,19 +95,8 @@ export default withSessionRoute(async (req, res) => {
                     createdAt: Math.floor(new Date().getTime() / 1000),
                     status: 0,
                     description,
-                    docType: "Debit",
+                    docType: "Transaction",
                   });
-
-                  // await dbConnect().insert("bank-management", {
-                  //   userId: user2._id,
-                  //   fromId: user.userId,
-                  //   amount,
-                  //   type: "b2b",
-                  //   createdAt: Math.floor(new Date().getTime() / 1000),
-                  //   status: 0,
-                  //   description,
-                  //   docType: "Credit",
-                  // });
 
                   res.status(200).json({
                     status: true,

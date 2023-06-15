@@ -6,9 +6,10 @@ import EmployeeTable from "../../component/admin/employee/EmployeeTable";
 import BankTree from "../../component/admin/bank/BankTree";
 
 const table = ({ data, empData, treeSelectBox }) => {
-  const [activeEmployee, setActiveEmployeeData] = useState(
-    empData[0].bankInfo[0]._id
-  );
+  const [activeEmployee, setActiveEmployeeData] = useState({
+    bankId: empData[0].bankInfo[0]._id,
+    ifsc: empData[0].bankInfo[0].ifscCode,
+  });
   const [employeeData, setEmployeeData] = useState([]);
   const [bankData, setBankData] = useState(empData[0].bankInfo);
   const [empModel, setEmpModel] = useState(0);
@@ -35,7 +36,12 @@ const table = ({ data, empData, treeSelectBox }) => {
         `${process.env.apiUrl}/admin/employee/getEmployeesData`,
         {
           method: "POST",
-          body: JSON.stringify({ activeEmployee, page, sort, filter }),
+          body: JSON.stringify({
+            activeEmployee: activeEmployee.bankId,
+            page,
+            sort,
+            filter,
+          }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -55,7 +61,7 @@ const table = ({ data, empData, treeSelectBox }) => {
     }
 
     if (
-      activeEmployee == empData[0].bankInfo[0]._id &&
+      activeEmployee.bankId == empData[0].bankInfo[0]._id &&
       empData[0].employeeType == 1
     ) {
       setEmpType(true);
@@ -73,7 +79,7 @@ const table = ({ data, empData, treeSelectBox }) => {
       <BankTree
         data={data}
         setActiveEmployeeData={setActiveEmployeeData}
-        activeEmployee={activeEmployee}
+        activeEmployee={activeEmployee.bankId}
         select={treeSelectBox}
       />
       <BankShowEdit bankData={bankData[0]} onGetEmpData={getEmployeeData} />
@@ -92,7 +98,7 @@ const table = ({ data, empData, treeSelectBox }) => {
       {empModel == 1 && (
         <EmployeeCreate
           onSetEmpModel={setEmpModel}
-          bankId={activeEmployee}
+          bankId={activeEmployee.bankId}
           onGetEmpData={getEmployeeData}
           empEdit={empEdit}
         />

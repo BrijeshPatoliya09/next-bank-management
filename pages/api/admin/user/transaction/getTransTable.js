@@ -25,7 +25,7 @@ export default async (req, res) => {
     const mango = {
       selector: {
         $and: [
-          { docType: { $or: ["Credit", "Debit"] } },
+          { docType: "Transaction" },
           {
             $or: [
               { userId: { $or: [...allUserId, activeEmployee] } },
@@ -40,7 +40,6 @@ export default async (req, res) => {
     };
     const transactionData = (await dbConnect().mango("bank-management", mango))
       .data.docs;
-
 
     const user = transactionData.reduce(
       (item, data) => [...item, data.fromId, data.userId],
@@ -60,8 +59,15 @@ export default async (req, res) => {
     const fetchCountData = async (bookmark = null, docs = []) => {
       const { data } = await dbConnect().mango("bank-management", {
         selector: {
-          docType: { $or: ["Credit", "Debit"] },
-          // type: { $or: ["c2b", "b2c"] },
+          $and: [
+            { docType: "Transaction" },
+            {
+              $or: [
+                { userId: { $or: [...allUserId, activeEmployee] } },
+                { fromId: { $or: [...allUserId, activeEmployee] } },
+              ],
+            },
+          ],
         },
         fields: ["createdAt"],
         bookmark,

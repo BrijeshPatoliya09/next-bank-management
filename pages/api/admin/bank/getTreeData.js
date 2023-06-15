@@ -6,7 +6,7 @@ export default async (req, res) => {
   try {
     const mango = {
       selector: getLevelData(bankData),
-      fields: ["_id", "name", "address", "parentalId", "level"],
+      fields: ["_id", "name", "address", "parentalId", "level", "ifscCode"],
       sort: ["level"],
     };
 
@@ -58,6 +58,7 @@ export default async (req, res) => {
     //     };
     //   });
 
+    
     const selectBox = data.data.docs.map((item) => ({
       name: item.name,
       _id: item._id,

@@ -33,14 +33,14 @@ export default withSessionRoute(async (req, res) => {
               ).data.docs[0];
 
               await dbConnect().insert("bank-management", {
-                userId: user.userId,
-                fromId: user2._id,
+                userId: user2._id,
+                fromId: user.userId,
                 type: "b2c",
                 amount,
                 createdAt: Math.floor(new Date().getTime() / 1000),
                 status: 0,
                 description,
-                docType: "Debit",
+                docType: "Transaction",
               });
 
               res
@@ -63,14 +63,14 @@ export default withSessionRoute(async (req, res) => {
             ).data.docs[0];
 
             await dbConnect().insert("bank-management", {
-              userId: user2._id,
-              fromId: user.userId,
+              userId: user.userId,
+              fromId: user2._id,
               amount,
               type: "c2b",
               createdAt: Math.floor(new Date().getTime() / 1000),
               status: 0,
               description,
-              docType: "Credit",
+              docType: "Transaction",
             });
 
             res
