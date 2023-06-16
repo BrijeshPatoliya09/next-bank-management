@@ -132,13 +132,7 @@ export default function Tree({
     }
   }
 
-  const [expand, setExpand] = useState(
-    selectCheck &&
-      selectCheck !== highLight &&
-      select[0].level !== treeData.level
-      ? [treeData._id]
-      : []
-  );
+  const [expand, setExpand] = useState([]);
 
   const expandHandler = () => {
     if (expand.length > 0) {
@@ -173,20 +167,18 @@ export default function Tree({
     active = false;
   }
 
-  console.log(
-    expand.length > 0
-      ? expand
-      : selectCheck &&
-        selectCheck !== highLight &&
-        select[0].level !== treeData.level
-      ? [treeData._id]
-      : expand
-  );
   return (
     <>
       <TreeView
         aria-label="customized"
-        expanded={ expand
+        expanded={
+          expand.length > 0
+            ? expand
+            : selectCheck &&
+              selectCheck !== highLight &&
+              select[0].level !== treeData.level
+            ? [treeData._id]
+            : expand
         }
         defaultCollapseIcon={<MinusSquare />}
         defaultExpandIcon={<PlusSquare />}

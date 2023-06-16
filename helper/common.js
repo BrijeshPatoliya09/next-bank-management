@@ -136,3 +136,31 @@ export const generateIFSC = (name) => {
 
   return temp3;
 };
+
+export const imgUploadHandler = async (imgData) => {
+  const formData = new FormData();
+  formData.append("file", imgData);
+
+  const res = await fetch(`${process.env.apiUrl}/user/fileUpload/proofImage`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  return data.imgUrl;
+};
+
+export const removeImgHandler = async (imgData) => {
+  const res = await fetch(
+    `${process.env.apiUrl}/user/fileUpload/proofImageRemove`,
+    {
+      method: "POST",
+      body: JSON.stringify(imgData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const data = await res.json();
+};

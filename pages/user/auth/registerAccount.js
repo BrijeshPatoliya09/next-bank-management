@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Country, State, City } from "country-state-city";
 import { toast } from "react-toastify";
-import { checkEmail, checkName } from "../../../helper/common";
+import {
+  checkEmail,
+  checkName,
+  imgUploadHandler,
+  removeImgHandler,
+} from "../../../helper/common";
 
 const registerAccount = () => {
   const [user, setUser] = useState({
@@ -32,36 +37,6 @@ const registerAccount = () => {
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
-  };
-  const imgUploadHandler = async (imgData) => {
-    const formData = new FormData();
-    formData.append("file", imgData);
-
-    const res = await fetch(
-      `${process.env.apiUrl}/user/fileUpload/proofImage`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const data = await res.json();
-    return data.imgUrl;
-  };
-
-  const removeImgHandler = async (imgData) => {
-    const res = await fetch(
-      `${process.env.apiUrl}/user/fileUpload/proofImageRemove`,
-      {
-        method: "POST",
-        body: JSON.stringify(imgData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const data = await res.json();
   };
 
   const getIsoCode = (name, type, country) => {
