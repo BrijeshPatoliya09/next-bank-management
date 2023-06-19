@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { imgUploadHandler, removeImgHandler } from "../../../helper/common";
+import {
+  collateralDocUploadHandler,
+  loanDocUploadHandler,
+} from "../../../helper/common";
+import { toast } from "react-toastify";
 
 const loanForm = () => {
   const [loader, setLoader] = useState(false);
@@ -7,12 +11,13 @@ const loanForm = () => {
     type: "",
     amount: "",
     duration: "",
+    doccument: "",
   });
 
   const [collteral, setCollateral] = useState({
     name: "",
     value: "",
-    image: "",
+    doccument: "",
   });
 
   const submitHandler = async () => {
@@ -24,9 +29,53 @@ const loanForm = () => {
         loan[eachData] == "" ||
         loan[eachData] == undefined
       ) {
-        validationUser.push(`Please enter loan ${eachData}`);
+        validationLoan.push(`Please enter loan ${eachData}`);
       }
     });
+
+    //!collateral
+    let validationCollateral = [];
+    Object.keys(collteral).map((eachData) => {
+      if (
+        !collteral[eachData] ||
+        collteral[eachData] == "" ||
+        collteral[eachData] == undefined
+      ) {
+        validationCollateral.push(`Please enter collateral ${eachData}`);
+      }
+    });
+
+    console.log(validationLoan);
+
+    if (validationLoan.length > 0) {
+      return toast.error(validationLoan[0]);
+    } else if (validationCollateral.length > 0) {
+      return toast.error(validationCollateral[0]);
+    } else if (loan.amount < 100000) {
+      return toast.error("Please enter valid amount");
+    } else if (collteral.value < loan.amount) {
+      return toast.error("Please enter valid collateral value");
+    }
+
+    if (!loader) {
+      setLoader(loader);
+      const res = await fetch(`${process.env.apiUrl}/user/loan/loanApply`, {
+        method: "POST",
+        body: JSON.stringify({ loan, collteral }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+      setLoader(false);
+
+      if (data.status) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    }
   };
 
   return (
@@ -66,11 +115,11 @@ const loanForm = () => {
                             <option value="" className="option selected focus">
                               Choose Loan Type
                             </option>
-                            <option value={0}>Personal Loan</option>
-                            <option value={1}>Student Loan</option>
-                            <option value={2}>Business Loan</option>
-                            <option value={3}>House Loan</option>
-                            <option value={4}>Mortgage Loan</option>
+                            <option value={0}>Personal Loan (12%)</option>
+                            <option value={1}>Student Loan (9%)</option>
+                            <option value={2}>Business Loan (12%)</option>
+                            <option value={3}>House Loan (15%)</option>
+                            <option value={4}>Mortgage Loan (15%)</option>
                           </select>
                         </div>
                       </div>
@@ -99,6 +148,9 @@ const loanForm = () => {
                             className="nice-select"
                             tabIndex="0"
                             disabled={!loan.type}
+                            onChange={(e) =>
+                              setLoan({ ...loan, duration: e.target.value })
+                            }
                           >
                             <option value="" className="option selected focus">
                               {!loan.type
@@ -129,6 +181,24 @@ const loanForm = () => {
                         </div>
                       </div>
                     </div>
+                    <div className="col-lg-12">
+                      <div className="single-form">
+                        <label>Loan Doccument</label>
+                        <input
+                          type="file"
+                          accept="application/pdf,application/vnd.ms-excel"
+                          onChange={async (e) => {
+                            const url = await loanDocUploadHandler(
+                              e.target.files[0]
+                            );
+                            setLoan({
+                              ...loan,
+                              doccument: `/assets/doc/user/loan/${url}`,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -145,6 +215,12 @@ const loanForm = () => {
                           type="text"
                           name="accountNo"
                           placeholder="Enter Collateral"
+                          onChange={(e) =>
+                            setCollateral({
+                              ...collteral,
+                              name: e.target.value,
+                            })
+                          }
                         />
                       </div>
                     </div>
@@ -168,45 +244,22 @@ const loanForm = () => {
                       </div>
                     </div>
                     <div className="col-lg-12">
-                      {collteral.image ? (
-                        <div>
-                          <img
-                            src={collteral.image}
-                            style={{
-                              width: "60px",
-                              position: "relative",
-                            }}
-                          />
-                          <span
-                            onClick={() => {
-                              removeImgHandler(collteral.image);
-                              setCollateral({ ...collteral, image: "" });
-                            }}
-                            className="pl-2 position-absolute top-0 start-0 translate-middle"
-                            style={{ cursor: "pointer" }}
-                          >
-                            <i className="bi bi-x-circle"></i>
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="single-form">
-                          <label>Collateral Image</label>
-                          <input
-                            type="file"
-                            name="collateralImage"
-                            accept="image/*"
-                            onChange={async (e) => {
-                              const url = await imgUploadHandler(
-                                e.target.files[0]
-                              );
-                              setCollateral({
-                                ...collteral,
-                                image: `/assets/image/user/${url}`,
-                              });
-                            }}
-                          />
-                        </div>
-                      )}
+                      <div className="single-form">
+                        <label>Collateral Doccument</label>
+                        <input
+                          type="file"
+                          accept="application/pdf,application/vnd.ms-excel,image/jpeg,image/jpg"
+                          onChange={async (e) => {
+                            const url = await collateralDocUploadHandler(
+                              e.target.files[0]
+                            );
+                            setCollateral({
+                              ...collteral,
+                              doccument: `/assets/image/user/collateral/${url}`,
+                            });
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </form>

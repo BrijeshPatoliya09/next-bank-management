@@ -2,7 +2,12 @@
 import { generate } from "generate-password";
 import dbConnect from "../../../../helper/connection";
 import speakeasy from "speakeasy";
-import { checkEmail, checkName, enc, keyStore } from "../../../../helper/connection";
+import {
+  checkEmail,
+  checkName,
+  enc,
+  keyStore,
+} from "../../../../helper/connection";
 
 export default async (req, res) => {
   const {

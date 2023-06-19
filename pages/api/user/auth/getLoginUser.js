@@ -1,6 +1,6 @@
 import { withSessionRoute } from "../../../../helper/session";
 
-export default withSessionRoute(async (req, res) => {
+export default  (async (req, res) => {
   try {
     const user = req.session.user;
     res.status(404).json({ status: true, message: "Success", data: user });

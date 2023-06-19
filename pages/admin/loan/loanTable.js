@@ -42,38 +42,36 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
   const [userData, setUserData] = useState([]);
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState("");
-  const [sort, setSort] = useState({ createdAt: "asc" });
+  const [sort, setSort] = useState({ createdAt: 0 });
 
   const [loader, setLoader] = useState(false);
 
   const sortDataHandler = (info) => {
-    if (sort[info] == "asc") {
-      setSort({ [info]: "desc" });
+    if (sort[info] == 0) {
+      setSort({ [info]: 1 });
     } else {
-      setSort({ [info]: "asc" });
+      setSort({ [info]: 0 });
     }
   };
 
   const getTransData = async () => {
     if (!loader) {
       setLoader(true);
-      const res = await fetch(
-        `${process.env.apiUrl}/admin/user/transaction/getTransTable`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            page,
-            sort,
-            activeEmployee: activeEmployee.bankId,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await fetch(`${process.env.apiUrl}/admin/loan/getLoanTable`, {
+        method: "POST",
+        body: JSON.stringify({
+          page,
+          sort,
+          activeEmployee: activeEmployee.ifsc,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       const data = await res.json();
       setLoader(false);
+      console.log(data);
 
       setPageCount(data.data.count);
       setUserData(data.data.userData);
@@ -82,28 +80,28 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
 
   useEffect(() => {
     getTransData();
-  }, [page, sort, activeEmployee, applyFilter]);
+  }, [page, sort, activeEmployee]);
 
-  const statusChangeHandler = async (statusData) => {
-    const res = await fetch(
-      `${process.env.apiUrl}/admin/user/transaction/statusChange`,
-      {
-        method: "POST",
-        body: JSON.stringify(statusData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  // const statusChangeHandler = async (statusData) => {
+  //   const res = await fetch(
+  //     `${process.env.apiUrl}/admin/user/transaction/statusChange`,
+  //     {
+  //       method: "POST",
+  //       body: JSON.stringify(statusData),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
 
-    const data = await res.json();
+  //   const data = await res.json();
 
-    if (data.status) {
-      toast.success("Status changed Successfully");
-    } else {
-      toast.error(data.message);
-    }
-  };
+  //   if (data.status) {
+  //     toast.success("Status changed Successfully");
+  //   } else {
+  //     toast.error(data.message);
+  //   }
+  // };
 
   return (
     <>
@@ -133,7 +131,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
               </div>
             </div>
             <div className="card-body px-0 pb-2 ">
-              {toggleFilter && (
+              {/* {toggleFilter && (
                 <div className="filter px-4">
                   <div className="d-flex justify-content-center">
                     <TextField
@@ -214,41 +212,41 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                     </button>
                   </div>
                 </div>
-              )}
+              )} */}
               <div className="table-responsive p-0">
                 <table className="table align-items-center justify-content-center mb-0">
                   <thead>
                     <tr>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
+                      {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                         <button
                           className="btn p-0"
-                          //   onClick={() => sortDataHandler("")}
+                          onClick={() => sortDataHandler("userAccountNo")}
                         >
-                          From
-                          {/* <FilterListIcon
+                          Acount No.
+                          <FilterListIcon
                             className="ms-1"
                             style={{ fontSize: "16px" }}
-                          /> */}
+                          />
                         </button>
-                      </th>
+                      </th> */}
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                         <button
                           className="btn p-0"
-                          //   onClick={() => sortDataHandler("")}
+                          onClick={() => sortDataHandler("userName")}
                         >
-                          To
-                          {/* <FilterListIcon
+                          User
+                          <FilterListIcon
                             className="ms-1"
                             style={{ fontSize: "16px" }}
-                          /> */}
+                          />
                         </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
                           className="btn p-0"
-                          onClick={() => sortDataHandler("type")}
+                          onClick={() => sortDataHandler("duration")}
                         >
-                          Type
+                          Duration
                           <FilterListIcon
                             className="ms-1"
                             style={{ fontSize: "16px" }}
@@ -265,6 +263,50 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                             className="ms-1"
                             style={{ fontSize: "16px" }}
                           />
+                        </button>
+                      </th>
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("type")}
+                        >
+                          Loan Type
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
+                      </th>
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        <button className="btn p-0">Loan Doccument</button>
+                      </th>
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("collateral.name")}
+                        >
+                          Collateral
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
+                      </th>
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        <button
+                          className="btn p-0"
+                          onClick={() => sortDataHandler("collateral.value")}
+                        >
+                          Collateral Value
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
+                      </th>
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        <button className="btn p-0">
+                          Collateral Doccument
                         </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -294,9 +336,6 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button className="btn p-0">Action</button>
                       </th>
-                      {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
-                          Completion
-                        </th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -308,58 +347,54 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                           <tr>
                             <td className="px-4">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.user == "Bank"
-                                  ? item.user
-                                  : `${item.user.firstName} ${item.user.lastName}`}
+                                {item.userName}
                               </p>
                               <p className="text-md text-secondary mb-0">
-                                {item.user != "Bank"
-                                  ? item.user.accountNumber
-                                  : "(Bank Itself)"}
+                                {item.userAccountNo}
                               </p>
                             </td>
                             <td className="px-4">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.from == "Bank"
-                                  ? item.from
-                                  : `${item.from.firstName} ${item.from.lastName}`}
-                              </p>
-                              <p className="text-md text-secondary mb-0">
-                                {item.from != "Bank"
-                                  ? item.from.accountNumber
-                                  : "(Bank Itself)"}
+                                {item.duration.length > 1
+                                  ? item.duration / 12 + " Year"
+                                  : item.duration + " Month"}
                               </p>
                             </td>
                             <td className="px-4">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.type == "c2b" && "Customer to Bank"}
-                                {item.type == "b2c" && "Bank to Customer"}
-                                {item.type == "b2b" && "Bank to Bank"}
-                                {item.type == "c2c" && "Customer to Customer"}
-                              </p>
-                            </td>
-                            <td className="px-4">
-                              <p
-                                className={`text-md font-weight-bold mb-0 
-                                ${item.type == "b2c" && "text-danger"}
-                                ${item.type == "c2b" && "text-success"}
-                                ${
-                                  item.user.bank == activeEmployee.ifsc &&
-                                  item.from.bank == activeEmployee.ifsc
-                                    ? ""
-                                    : item.user.bank == activeEmployee.ifsc &&
-                                      item.type !== "b2c" &&
-                                      item.type !== "c2b"
-                                    ? "text-danger"
-                                    : item.from.bank == activeEmployee.ifsc &&
-                                      item.type !== "b2c" &&
-                                      item.type !== "c2b"
-                                    ? "text-success"
-                                    : ""
-                                }
-                                `}
-                              >
                                 {item.amount}
+                              </p>
+                            </td>
+                            <td className="px-4">
+                              <p className="text-md font-weight-bold mb-0">
+                                {item.type == 0 && "Personal Loan"}
+                                {item.type == 1 && "Student Loan"}
+                                {item.type == 2 && "Business Loan"}
+                                {item.type == 3 && "House Loan"}
+                                {item.type == 4 && "Mortgage Loan"}
+                              </p>
+                            </td>
+                            <td className="px-4">
+                              <a
+                                className="btn btn-primary mb-0"
+                                href={item.doccument}
+                              >
+                                See DOC
+                              </a>
+                            </td>
+                            <td className="px-4">
+                              <p className="text-md font-weight-bold mb-0">
+                                {item.collteral.name}
+                              </p>
+                            </td>
+                            <td className="px-4">
+                              <p className="text-md font-weight-bold mb-0">
+                                {item.collteral.value}
+                              </p>
+                            </td>
+                            <td className="px-4">
+                              <p className="text-md font-weight-bold mb-0">
+                                {item.collteral.value}
                               </p>
                             </td>
                             <td className="px-4">
@@ -371,9 +406,13 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                 <span className="badge badge-md bg-gradient-success p-2">
                                   Verified
                                 </span>
-                              ) : (
+                              ) : item.status == 2 ? (
                                 <span className="badge badge-md bg-gradient-danger p-2">
                                   Rejected
+                                </span>
+                              ) : (
+                                <span className="badge badge-md bg-gradient-warning p-2">
+                                  Closed
                                 </span>
                               )}
                             </td>
@@ -383,7 +422,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                               </p>
                             </td>
                             <td className="px-4">
-                              {item.status == 0 ? (
+                              {item.status == 0 || item.status == 1 ? (
                                 <FormControl className="mb-0">
                                   <InputLabel id="demo-simple-select-label">
                                     Select Department
@@ -393,36 +432,41 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                     name="action"
                                     label="Select Status"
                                     value={0}
-                                    onChange={async (e) => {
-                                      if (e.target.value !== 0) {
-                                        const alert = await Swal.fire({
-                                          title: `Do you want to ${
-                                            e.target.value == 1
-                                              ? "Accept"
-                                              : "Reject"
-                                          } this transaction ?`,
-                                          icon: "warning",
-                                          showCancelButton: true,
-                                          cancelButtonText: "Cancel",
-                                          confirmButtonColor: "#5773FF",
-                                          cancelButtonColor: "#9e9e9e",
-                                          confirmButtonText: "Yes",
-                                          allowEscapeKey: true,
-                                        });
-                                        if (alert.isConfirmed) {
-                                          await statusChangeHandler({
-                                            status: e.target.value,
-                                            transId: item._id,
-                                            revId: item._rev,
-                                          });
-                                          await getTransData();
-                                        }
-                                      }
-                                    }}
+                                    // onChange={async (e) => {
+                                    //   if (e.target.value !== 0) {
+                                    //     const alert = await Swal.fire({
+                                    //       title: `Do you want to ${
+                                    //         e.target.value == 1
+                                    //           ? "Accept"
+                                    //           : "Reject"
+                                    //       } this transaction ?`,
+                                    //       icon: "warning",
+                                    //       showCancelButton: true,
+                                    //       cancelButtonText: "Cancel",
+                                    //       confirmButtonColor: "#5773FF",
+                                    //       cancelButtonColor: "#9e9e9e",
+                                    //       confirmButtonText: "Yes",
+                                    //       allowEscapeKey: true,
+                                    //     });
+                                    //     if (alert.isConfirmed) {
+                                    //       await statusChangeHandler({
+                                    //         status: e.target.value,
+                                    //         transId: item._id,
+                                    //         revId: item._rev,
+                                    //       });
+                                    //       await getTransData();
+                                    //     }
+                                    //   }
+                                    // }}
                                   >
                                     <MenuItem value={0}>Pending</MenuItem>
                                     <MenuItem value={1}>Verified</MenuItem>
-                                    <MenuItem value={2}>Rejected</MenuItem>
+                                    {item.status == 0 && (
+                                      <MenuItem value={2}>Rejected</MenuItem>
+                                    )}
+                                    {item.status == 1 && (
+                                      <MenuItem value={3}>Closed</MenuItem>
+                                    )}
                                   </Select>
                                 </FormControl>
                               ) : (

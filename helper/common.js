@@ -150,17 +150,43 @@ export const imgUploadHandler = async (imgData) => {
   return data.imgUrl;
 };
 
-export const removeImgHandler = async (imgData) => {
+export const loanDocUploadHandler = async (doc) => {
+  const formData = new FormData();
+  formData.append("file", doc);
+
+  const res = await fetch(`${process.env.apiUrl}/user/fileUpload/loanDoc`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  return data.imgUrl;
+};
+
+export const collateralDocUploadHandler = async (doc) => {
+  const formData = new FormData();
+  formData.append("file", doc);
+
   const res = await fetch(
-    `${process.env.apiUrl}/user/fileUpload/proofImageRemove`,
+    `${process.env.apiUrl}/user/fileUpload/collateralDoc`,
     {
       method: "POST",
-      body: JSON.stringify(imgData),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: formData,
     }
   );
+
+  const data = await res.json();
+  return data.imgUrl;
+};
+
+export const removeImgHandler = async (imgData) => {
+  const res = await fetch(`${process.env.apiUrl}/user/fileUpload/docRemove`, {
+    method: "POST",
+    body: JSON.stringify(imgData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   const data = await res.json();
 };
