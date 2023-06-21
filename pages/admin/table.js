@@ -82,7 +82,7 @@ const table = ({ data, empData, treeSelectBox }) => {
         activeEmployee={activeEmployee.bankId}
         select={treeSelectBox}
       />
-      <BankShowEdit bankData={bankData[0]} onGetEmpData={getEmployeeData} />
+      <BankShowEdit bankData={bankData[0]} onGetEmpData={getEmployeeData} empType={empType} />
       {empModel == 0 && (
         <EmployeeTable
           employeeData={employeeData}

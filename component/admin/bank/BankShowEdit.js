@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { checkName } from "../../../helper/common";
 import { toast } from "react-toastify";
 
-const BankShowEdit = ({ bankData, onGetEmpData }) => {
+const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
   const router = useRouter();
   const [address, setAddress] = useState({
     country: "",
@@ -132,7 +132,7 @@ const BankShowEdit = ({ bankData, onGetEmpData }) => {
       return toast.error("Please enter valid time");
     } else if (validationBankdetail.length > 0) {
       return toast.error(validationBankdetail[0]);
-    } else if(!checkName(bankDetail.name)) {
+    } else if (!checkName(bankDetail.name)) {
       return toast.error("Please enter valid bank name");
     }
 
@@ -323,7 +323,7 @@ const BankShowEdit = ({ bankData, onGetEmpData }) => {
                   />
                 </LocalizationProvider>
                 <div className="w-100 mt-3 mb-2 d-flex justify-content-center">
-                  {!editMode && (
+                  {!editMode && empType && (
                     <>
                       <div className="ms-4">
                         <button

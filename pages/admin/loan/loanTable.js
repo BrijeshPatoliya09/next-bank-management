@@ -82,26 +82,23 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
     getTransData();
   }, [page, sort, activeEmployee]);
 
-  // const statusChangeHandler = async (statusData) => {
-  //   const res = await fetch(
-  //     `${process.env.apiUrl}/admin/user/transaction/statusChange`,
-  //     {
-  //       method: "POST",
-  //       body: JSON.stringify(statusData),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
+  const statusChangeHandler = async (statusData) => {
+    const res = await fetch(`${process.env.apiUrl}/admin/loan/statusChange`, {
+      method: "POST",
+      body: JSON.stringify(statusData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  //   const data = await res.json();
+    const data = await res.json();
 
-  //   if (data.status) {
-  //     toast.success("Status changed Successfully");
-  //   } else {
-  //     toast.error(data.message);
-  //   }
-  // };
+    if (data.status) {
+      toast.success("Status changed Successfully");
+    } else {
+      toast.error(data.message);
+    }
+  };
 
   return (
     <>
@@ -278,9 +275,6 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                         </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        <button className="btn p-0">Loan Doccument</button>
-                      </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
                           className="btn p-0"
                           onClick={() => sortDataHandler("collateral.name")}
@@ -302,11 +296,6 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                             className="ms-1"
                             style={{ fontSize: "16px" }}
                           />
-                        </button>
-                      </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        <button className="btn p-0">
-                          Collateral Doccument
                         </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -334,6 +323,9 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                         </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        <button className="btn p-0">Doccument</button>
+                      </th>
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button className="btn p-0">Action</button>
                       </th>
                     </tr>
@@ -355,7 +347,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                             </td>
                             <td className="px-4">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.duration.length > 1
+                                {item.duration.toString().length > 1
                                   ? item.duration / 12 + " Year"
                                   : item.duration + " Month"}
                               </p>
@@ -374,27 +366,14 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                 {item.type == 4 && "Mortgage Loan"}
                               </p>
                             </td>
-                            <td className="px-4">
-                              <a
-                                className="btn btn-primary mb-0"
-                                href={item.doccument}
-                              >
-                                See DOC
-                              </a>
-                            </td>
-                            <td className="px-4">
+                            <td className="px-4 text-center">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.collteral.name}
+                                {item.collateral.name}
                               </p>
                             </td>
-                            <td className="px-4">
+                            <td className="px-4 text-center">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.collteral.value}
-                              </p>
-                            </td>
-                            <td className="px-4">
-                              <p className="text-md font-weight-bold mb-0">
-                                {item.collteral.value}
+                                {item.collateral.value}
                               </p>
                             </td>
                             <td className="px-4">
@@ -422,6 +401,34 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                               </p>
                             </td>
                             <td className="px-4">
+                              <a
+                                className="btn btn-primary mb-0 me-1"
+                                href={item.doccument}
+                              >
+                                Loan
+                              </a>
+                              {item.collateral.doccument.includes("jpg") ||
+                              item.collateral.doccument.includes("jpeg") ? (
+                                <a href={item.collateral.doccument}>
+                                  <img
+                                    src={item.collateral.doccument}
+                                    alt
+                                    className="img-fluid"
+                                    style={{
+                                      width: "60px",
+                                    }}
+                                  />
+                                </a>
+                              ) : (
+                                <a
+                                  className="btn btn-primary mb-0"
+                                  href={item.collateral.doccument}
+                                >
+                                  collateral
+                                </a>
+                              )}
+                            </td>
+                            <td className="px-4">
                               {item.status == 0 || item.status == 1 ? (
                                 <FormControl className="mb-0">
                                   <InputLabel id="demo-simple-select-label">
@@ -431,35 +438,37 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                     labelId="demo-simple-select-label"
                                     name="action"
                                     label="Select Status"
-                                    value={0}
-                                    // onChange={async (e) => {
-                                    //   if (e.target.value !== 0) {
-                                    //     const alert = await Swal.fire({
-                                    //       title: `Do you want to ${
-                                    //         e.target.value == 1
-                                    //           ? "Accept"
-                                    //           : "Reject"
-                                    //       } this transaction ?`,
-                                    //       icon: "warning",
-                                    //       showCancelButton: true,
-                                    //       cancelButtonText: "Cancel",
-                                    //       confirmButtonColor: "#5773FF",
-                                    //       cancelButtonColor: "#9e9e9e",
-                                    //       confirmButtonText: "Yes",
-                                    //       allowEscapeKey: true,
-                                    //     });
-                                    //     if (alert.isConfirmed) {
-                                    //       await statusChangeHandler({
-                                    //         status: e.target.value,
-                                    //         transId: item._id,
-                                    //         revId: item._rev,
-                                    //       });
-                                    //       await getTransData();
-                                    //     }
-                                    //   }
-                                    // }}
+                                    value={item.status}
+                                    onChange={async (e) => {
+                                      if (e.target.value !== 0) {
+                                        const alert = await Swal.fire({
+                                          title: `Do you want to ${
+                                            e.target.value == 1
+                                              ? "Accept"
+                                              : "Reject"
+                                          } this Loan Request ?`,
+                                          icon: "warning",
+                                          showCancelButton: true,
+                                          cancelButtonText: "Cancel",
+                                          confirmButtonColor: "#5773FF",
+                                          cancelButtonColor: "#9e9e9e",
+                                          confirmButtonText: "Yes",
+                                          allowEscapeKey: true,
+                                        });
+                                        if (alert.isConfirmed) {
+                                          await statusChangeHandler({
+                                            status: e.target.value,
+                                            loanId: item._id,
+                                            revId: item._rev,
+                                          });
+                                          await getTransData();
+                                        }
+                                      }
+                                    }}
                                   >
-                                    <MenuItem value={0}>Pending</MenuItem>
+                                    {item.status == 0 && (
+                                      <MenuItem value={0}>Pending</MenuItem>
+                                    )}
                                     <MenuItem value={1}>Verified</MenuItem>
                                     {item.status == 0 && (
                                       <MenuItem value={2}>Rejected</MenuItem>

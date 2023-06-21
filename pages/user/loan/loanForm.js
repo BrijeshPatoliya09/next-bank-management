@@ -255,7 +255,7 @@ const loanForm = () => {
                             );
                             setCollateral({
                               ...collteral,
-                              doccument: `/assets/image/user/collateral/${url}`,
+                              doccument: `/assets/doc/user/collateral/${url}`,
                             });
                           }}
                         />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { checkEmail } from "../../../helper/common";
+import { checkEmail, dec, keyStore } from "../../../helper/common";
 import { useRouter } from "next/router";
 import { withSessionSsr } from "../../../helper/session";
 
@@ -20,6 +20,8 @@ const login = () => {
     setUser({ ...user, [name]: value });
   };
 
+  console.log(dec("c/LRvYkTLK4RT/Y3", keyStore("empPsw")));
+  
   const submitHandler = async (e) => {
     e.preventDefault();
 

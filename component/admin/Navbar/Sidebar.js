@@ -64,7 +64,7 @@ const Sidebar = () => {
                 <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">table_view</i>
                 </span>
-                <span className="nav-link-text ms-1">Tables</span>
+                <span className="nav-link-text ms-1">Employee</span>
               </Link>
             </li>
             <li className="nav-item">
@@ -79,7 +79,7 @@ const Sidebar = () => {
                 <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">local_pharmacy</i>
                 </span>
-                <span className="nav-link-text ms-1">Create bank</span>
+                <span className="nav-link-text ms-1">Bank Registration</span>
               </Link>
             </li>
             <li className="nav-item">
@@ -109,7 +109,22 @@ const Sidebar = () => {
                 <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="bi bi-cash-coin fs-5"></i>
                 </span>
-                <span className="nav-link-text ms-1">transaction</span>
+                <span className="nav-link-text ms-1">Transaction Table</span>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={`nav-link text-white ${
+                  path == "/admin/loan/loanTable"
+                    ? "active bg-gradient-primary"
+                    : ""
+                }`}
+                href="/admin/loan/loanTable"
+              >
+                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i class="bi bi-piggy-bank-fill fs-5"></i>
+                </span>
+                <span className="nav-link-text ms-1">Loan Table</span>
               </Link>
             </li>
             <li className="nav-item mt-3">

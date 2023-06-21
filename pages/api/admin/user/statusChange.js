@@ -19,29 +19,42 @@ export default async (req, res) => {
     let accNum = {};
     if (status == 1) {
       accNum.accountNumber = uuidv4().split("-").join("");
+
+      await dbConnect().update("bank-management", {
+        _id: userId,
+        _rev: revId,
+        ...data,
+        balance: 0,
+        accountStatus: status,
+        password: enc(
+          generate({
+            length: 12,
+            uppercase: true,
+            lowercase: true,
+            numbers: true,
+            symbols: true,
+            strict: true,
+          }) + "@",
+          keyStore("userPsw")
+        ),
+        ...accNum,
+      });
+
+      res
+        .status(200)
+        .json({ status: true, message: "User registration accepted" });
+    } else {
+      await dbConnect().update("bank-management", {
+        _id: userId,
+        _rev: revId,
+        ...data,
+        accountStatus: status,
+      });
+
+      res
+        .status(200)
+        .json({ status: true, message: "User registration Denied" });
     }
-
-    await dbConnect().update("bank-management", {
-      _id: userId,
-      _rev: revId,
-      ...data,
-      balance: 0,
-      accountStatus: status,
-      password: enc(
-        generate({
-          length: 12,
-          uppercase: true,
-          lowercase: true,
-          numbers: true,
-          symbols: true,
-          strict: true,
-        }) + "@",
-        keyStore("userPsw")
-      ),
-      ...accNum,
-    });
-
-    res.status(200).json({ status: true, message: "success" });
   } catch (err) {
     console.log(err);
     res.status(404).json({ status: false, message: "Something went wrong" });

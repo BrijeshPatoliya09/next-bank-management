@@ -29,7 +29,7 @@ const EmployeeTable = ({
   empCount,
   empType,
   departmentSelect,
-  bankEmpLoader
+  bankEmpLoader,
 }) => {
   const [page, setPage] = useState(0);
   const [sort, setSort] = useState({ name: "asc" });
@@ -419,32 +419,36 @@ const EmployeeTable = ({
                 </table>
               </div>
               <div className="d-flex justify-content-between px-3 pb-2">
-                <div>
-                  <button
-                    type="button"
-                    className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
-                    style={{ fontSize: "14px" }}
-                    onClick={() => {
-                      onSetEmpEdit("");
-                      onSetEmpModel(1);
-                    }}
-                  >
-                    Add Employee
-                  </button>
-                </div>
-                {!bankEmpLoader && <div className="d-flex justify-content-center align-items-center">
-                  <ReactPaginate
-                    breakLabel="..."
-                    nextLabel="next >"
-                    className="pageinate my-4 mb-2"
-                    onPageChange={(e) => setPage(e.selected)}
-                    pageRangeDisplayed={3}
-                    // forcePage={page}
-                    pageCount={Math.ceil(empCount / 8)}
-                    previousLabel="< previous"
-                    renderOnZeroPageCount={null}
-                  />
-                </div>}
+                {empType && (
+                  <div>
+                    <button
+                      type="button"
+                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
+                      style={{ fontSize: "14px" }}
+                      onClick={() => {
+                        onSetEmpEdit("");
+                        onSetEmpModel(1);
+                      }}
+                    >
+                      Add Employee
+                    </button>
+                  </div>
+                )}
+                {!bankEmpLoader && (
+                  <div className="d-flex justify-content-center align-items-center">
+                    <ReactPaginate
+                      breakLabel="..."
+                      nextLabel="next >"
+                      className="pageinate my-4 mb-2"
+                      onPageChange={(e) => setPage(e.selected)}
+                      pageRangeDisplayed={3}
+                      // forcePage={page}
+                      pageCount={Math.ceil(empCount / 8)}
+                      previousLabel="< previous"
+                      renderOnZeroPageCount={null}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>

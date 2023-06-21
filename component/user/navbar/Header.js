@@ -74,17 +74,17 @@ const Header = () => {
                               <ul className="submenu">
                                 <li>
                                   <Link href="/user/transaction/bank">
-                                    Bank and Bank
+                                    Bank To Bank
                                   </Link>
                                 </li>
                                 <li>
                                   <Link href="/user/transaction/bankCustomer">
-                                    Bank and Customer
+                                    Withdraw && Deposit
                                   </Link>
                                 </li>
                                 <li>
                                   <Link href="/user/transaction/customer">
-                                    Customer and Customer
+                                    Customer To Customer
                                   </Link>
                                 </li>
                               </ul>
