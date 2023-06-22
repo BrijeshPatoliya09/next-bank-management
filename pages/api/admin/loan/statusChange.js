@@ -14,6 +14,7 @@ export default async (req, res) => {
       })
     ).data.docs[0];
 
+    let field = {};
     if (status == 1) {
       const bankData = (
         await dbConnect().mango("bank-management", {
@@ -43,6 +44,24 @@ export default async (req, res) => {
         ...bankData,
         funds: Number(bankData.funds) - Number(data.amount),
       });
+
+      await dbConnect().insert("bank-management", {
+        userId: bankData._id,
+        fromId: userdata._id,
+        type: "Loan",
+        amount: data.amount,
+        createdAt: Math.floor(new Date().getTime() / 1000),
+        status: 1,
+        description: `                                
+        ${data.type == 0 && "Personal Loan"}
+        ${data.type == 1 && "Student Loan"}
+        ${data.type == 2 && "Business Loan"}
+        ${data.type == 3 && "House Loan"}
+        ${data.type == 4 && "Mortgage Loan"}`,
+        docType: "Transaction",
+      });
+
+      field.startDate = Math.floor(Date.now() / 1000);
     }
 
     await dbConnect().update("bank-management", {
@@ -50,6 +69,7 @@ export default async (req, res) => {
       _rev: revId,
       ...data,
       status,
+      ...field,
     });
 
     res.status(200).json({ status: true, message: "success" });

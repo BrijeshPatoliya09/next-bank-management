@@ -336,6 +336,11 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                 {item.type == "b2c" && "Bank to Customer"}
                                 {item.type == "b2b" && "Bank to Bank"}
                                 {item.type == "c2c" && "Customer to Customer"}
+                                {item.type !== "c2c" &&
+                                  item.type !== "b2b" &&
+                                  item.type !== "b2c" &&
+                                  item.type !== "c2b" &&
+                                  item.type}
                               </p>
                             </td>
                             <td className="px-4">

@@ -88,12 +88,6 @@ export default async (req, res) => {
         })
       ).data.docs[0];
 
-      console.log(
-        getfrom.balance + Number(transactionData.amount),
-        getfrom.balance,
-        Number(transactionData.amount)
-      );
-
       await dbConnect().update("bank-management", {
         ...getUser,
         balance: getUser.balance + Number(transactionData.amount),

@@ -40,10 +40,14 @@ export default async (req, res) => {
       const userData = getUsersData.filter(
         (data) => item.userAccountNo == data.accountNumber
       );
-      return {
-        ...item,
-        userName: userData[0].firstName + " " + userData[0].lastName,
-      };
+      if (userData.length == 0) {
+        return;
+      } else {
+        return {
+          ...item,
+          userName: userData[0].firstName + " " + userData[0].lastName,
+        };
+      }
     });
 
     async function dataSorting(obj) {
