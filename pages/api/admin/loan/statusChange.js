@@ -62,12 +62,14 @@ export default async (req, res) => {
       });
 
       field.startDate = Math.floor(Date.now() / 1000);
+      field.interestData = [];
     }
 
     await dbConnect().update("bank-management", {
       _id: loanId,
       _rev: revId,
       ...data,
+      totalAmount: (data.amount * data.interest) / data.duration,
       status,
       ...field,
     });

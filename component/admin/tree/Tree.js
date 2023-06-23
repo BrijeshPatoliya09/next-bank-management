@@ -167,6 +167,17 @@ export default function Tree({
     active = false;
   }
 
+  let addName = "";
+  if (treeData.level == 1 || treeData.level == 2) {
+    addName = treeData.address.country;
+  } else if (treeData.level == 3) {
+    addName = treeData.address.state;
+  } else if (treeData.level == 4) {
+    addName = treeData.address.city;
+  } else {
+    addName = treeData.address.zone;
+  }
+
   return (
     <>
       <TreeView
@@ -187,7 +198,7 @@ export default function Tree({
         <StyledTreeItem
           nodeId={treeData._id}
           label={{
-            title: `${treeData.name} (${treeData.address.country})`,
+            title: `${treeData.name} (${addName})`,
             color: colorHandler(treeData),
             _id: treeData._id,
             ifscCode: treeData.ifscCode,

@@ -280,7 +280,7 @@ const EmployeeTable = ({
                         </button>
                       </th> */}
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                        Action
+                        <button>Action</button>
                       </th>
                       {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
                           Completion
