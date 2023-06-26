@@ -83,10 +83,10 @@ export default withSessionRoute(async (req, res) => {
         userAccountNo: userData.accountNumber,
         interest:
           loan.type == 0 || loan.type == 2 ? 12 : loan.type == 1 ? 9 : 15,
-        collateral: {
-          ...collteral,
-          owner: "user",
-        },
+        collateralName: collteral.name,
+        collateralValue: collteral.value,
+        collateralDoc: collteral.doccument,
+        collateralOwner: 0,
         docType: "Loan",
       });
 

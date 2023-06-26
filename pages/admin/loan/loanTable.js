@@ -42,15 +42,15 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
   const [userData, setUserData] = useState([]);
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState("");
-  const [sort, setSort] = useState({ createdAt: 0 });
+  const [sort, setSort] = useState({ createdAt: "asc" });
 
   const [loader, setLoader] = useState(false);
 
   const sortDataHandler = (info) => {
-    if (sort[info] == 0) {
-      setSort({ [info]: 1 });
+    if (sort[info] == "asc") {
+      setSort({ [info]: "desc" });
     } else {
-      setSort({ [info]: 0 });
+      setSort({ [info]: "asc" });
     }
   };
 
@@ -229,7 +229,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                         <button
                           className="btn p-0"
-                          onClick={() => sortDataHandler("userName")}
+                          onClick={() => sortDataHandler("firstName")}
                         >
                           User
                           <FilterListIcon
@@ -277,7 +277,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
                           className="btn p-0"
-                          onClick={() => sortDataHandler("collateral.name")}
+                          onClick={() => sortDataHandler("collateralName")}
                         >
                           Collateral
                           <FilterListIcon
@@ -289,7 +289,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
                           className="btn p-0"
-                          onClick={() => sortDataHandler("collateral.value")}
+                          onClick={() => sortDataHandler("collateralValue")}
                         >
                           Collateral Value
                           <FilterListIcon
@@ -368,12 +368,12 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                             </td>
                             <td className="px-4 text-center">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.collateral.name}
+                                {item.collateralName}
                               </p>
                             </td>
                             <td className="px-4 text-center">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.collateral.value}
+                                {item.collateralValue}
                               </p>
                             </td>
                             <td className="px-4">
@@ -407,11 +407,11 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                               >
                                 Loan
                               </a>
-                              {item.collateral.doccument.includes("jpg") ||
-                              item.collateral.doccument.includes("jpeg") ? (
-                                <a href={item.collateral.doccument}>
+                              {item.collateralDoc.includes("jpg") ||
+                              item.collateralDoc.includes("jpeg") ? (
+                                <a href={item.collateralDoc}>
                                   <img
-                                    src={item.collateral.doccument}
+                                    src={item.collateralDoc}
                                     alt
                                     className="img-fluid"
                                     style={{
@@ -422,7 +422,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                               ) : (
                                 <a
                                   className="btn btn-primary mb-0"
-                                  href={item.collateral.doccument}
+                                  href={item.collateralDoc}
                                 >
                                   collateral
                                 </a>
