@@ -76,7 +76,7 @@ const EmployeeTable = ({
                   <button
                     type="button"
                     onClick={() => setToggleFilter(!toggleFilter)}
-                    className="btn btn-outline-primary btn-sm mb-0 bg-white"
+                    className="btn text-danger btn-sm mb-0 bg-white"
                   >
                     Filter
                   </button>
@@ -287,8 +287,12 @@ const EmployeeTable = ({
                         </th> */}
                     </tr>
                   </thead>
-                  <tbody>
-                    {employeeData.length == 0 && <p>No data Found</p>}
+                  <tbody className={employeeData.length == 0 && "text-center"}>
+                    {employeeData.length == 0 && (
+                      <td colSpan="12" className="fs-4 py-4">
+                        No data Found
+                      </td>
+                    )}
                     {employeeData.length > 0 &&
                       employeeData.map((item) => {
                         const join = item.joinningDate

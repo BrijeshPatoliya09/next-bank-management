@@ -43,8 +43,8 @@ const UserLayout = ({ children }) => {
         <link rel="stylesheet" href="/assets/css/user/themify-icons.css" />
         <link rel="stylesheet" href="/assets/css/user/slick.css" />
         <link rel="stylesheet" href="/assets/css/user/nice-select.css" />
-        <link rel="stylesheet" href="/assets/css/user/style.css" />
         <link rel="stylesheet" href="/assets/css/user/login.css" />
+        <link rel="stylesheet" href="/assets/css/user/style.css" />
       </Head>
       <body>
         {loader ? (

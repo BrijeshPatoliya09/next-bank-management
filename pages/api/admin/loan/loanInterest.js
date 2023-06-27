@@ -1,12 +1,13 @@
 import dbConnect from "../../../../helper/connection";
 
 export default async (req, res) => {
+  const { body } = req;
   try {
     const loanData = (
       await dbConnect().mango("bank-management", {
         selector: {
           docType: "Loan",
-          ifscCode: "UB389427766",
+          ifscCode: body,
           status: 1,
         },
       })

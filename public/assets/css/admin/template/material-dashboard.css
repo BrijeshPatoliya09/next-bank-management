@@ -24637,3 +24637,12 @@ pre[class*="language-"] {
   color: white !important;
   padding: 18px !important;
 }
+
+.table .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input{
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.btn.bg-gradient-primary:not(:disabled):not(.disabled):active{
+  color: white !important;
+}

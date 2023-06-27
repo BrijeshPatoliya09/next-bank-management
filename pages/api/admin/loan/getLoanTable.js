@@ -1,25 +1,41 @@
 import dbConnect from "../../../../helper/connection";
 
 export default async (req, res) => {
-  const { page, sort, activeEmployee } = req.body;
+  const { page, sort, activeEmployee, filter } = req.body;
   try {
-    let querry1 = {};
-    let querry2 = {};
+    let userQuerry = {};
     if (sort.firstName) {
-      querry2.sort = [sort];
-    } else {
-      querry1.sort = [sort];
+      userQuerry.skip = page * 10;
+      userQuerry.limit = 10;
+      userQuerry.sort = [sort];
     }
 
-    console.log(querry1, querry2);
+    let userFilter = {};
+    let loanFilter = {};
+    if (filter.name) {
+      userFilter["$or"] = [
+        { firstName: { $regex: `(?i)${filter.name}` } },
+        { lastName: { $regex: `(?i)${filter.name}` } },
+      ];
+    }
+    if (filter.type >= 0 && filter.type < 5 && filter.type !== "") {
+      loanFilter.type = filter.type;
+    }
+    if (filter.createdAt.length > 0) {
+      loanFilter.createdAt = {
+        $gte: filter.createdAt[0],
+        $lte: filter.createdAt[1],
+      };
+    }
+
     const fetchLoanData = async (bookmark = null, docs = []) => {
       const { data } = await dbConnect().mango("bank-management", {
         selector: {
           docType: "Loan",
           ifscCode: activeEmployee,
+          ...loanFilter,
         },
         bookmark,
-        ...querry1,
         fields: ["userAccountNo"],
       });
 
@@ -33,7 +49,6 @@ export default async (req, res) => {
     };
 
     const getLoansData = await fetchLoanData();
-
     const getUserAccountNo = getLoansData.map((item) => item.userAccountNo);
 
     const fetchUserData = async (bookmark = null, docs = []) => {
@@ -42,11 +57,10 @@ export default async (req, res) => {
           docType: "User",
           bank: activeEmployee,
           accountNumber: { $in: getUserAccountNo },
+          ...userFilter,
         },
         bookmark,
-        ...querry2,
-        skip: page * 10,
-        limit: 10,
+        ...userQuerry,
         fields: ["firstName", "lastName", "accountNumber"],
       });
 
@@ -61,36 +75,40 @@ export default async (req, res) => {
 
     const getUsersData = await fetchUserData();
 
-    // const getLoanAsUser = (
-    //   await dbConnect().mango("bank-management", {
-    //     selector: {
-    //       docType: "Loan",
-    //       ifscCode: activeEmployee,
-    //       userAccountNo: {
-    //         $in: getUsersData.map((item) => item.accountNumber),
-    //       },
-    //     },
-    //     skip: page * 10,
-    //     limit: 10,
-    //   })
-    // ).data.docs;
-
     const getLoanAsUser = [];
-    for (let i = 0; i < getUsersData.length; i++) {
-      const loanData = (
+
+    if (sort.firstName) {
+      for (let i = 0; i < getUsersData.length; i++) {
+        const loanData = (
+          await dbConnect().mango("bank-management", {
+            selector: {
+              docType: "Loan",
+              ifscCode: activeEmployee,
+              userAccountNo: getUsersData[i].accountNumber,
+              ...loanFilter,
+            },
+          })
+        ).data.docs;
+
+        getLoanAsUser.push(...loanData);
+      }
+    } else {
+      const data = (
         await dbConnect().mango("bank-management", {
           selector: {
             docType: "Loan",
             ifscCode: activeEmployee,
-            userAccountNo: getUsersData[i].accountNumber,
+            userAccountNo: {
+              $in: getUsersData.map((item) => item.accountNumber),
+            },
+            ...loanFilter,
           },
-          // skip: page * 10,
-          // sort: [sort],
-          // limit: 10,
+          skip: page * 10,
+          limit: 10,
+          sort: [sort],
         })
       ).data.docs;
-
-      getLoanAsUser.push(...loanData);
+      getLoanAsUser.push(...data);
     }
 
     const aggregatedData = getLoanAsUser.map((item) => {
@@ -106,22 +124,6 @@ export default async (req, res) => {
         };
       }
     });
-    // async function dataSorting(obj) {
-    //   const fld = Object.keys(obj)[0];
-    //   let finaldata = [];
-    //   if (aggregatedData.length > 0) {
-    //     if (obj[fld] == 0) {
-    //       finaldata = aggregatedData
-    //         .sort((a, b) => (a[fld] > b[fld] ? -1 : b[fld] > a[fld] ? 1 : 0))
-    //         .slice(page * 10, page * 10 + 10);
-    //     } else {
-    //       finaldata = aggregatedData
-    //         .sort((a, b) => (a[fld] > b[fld] ? 1 : b[fld] > a[fld] ? -1 : 0))
-    //         .slice(page * 10, page * 10 + 10);
-    //     }
-    //   }
-    //   return finaldata;
-    // }
 
     res.status(200).json({
       status: true,

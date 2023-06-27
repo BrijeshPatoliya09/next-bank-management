@@ -114,7 +114,7 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                   <button
                     type="button"
                     onClick={() => setToggleFilter(!toggleFilter)}
-                    className="btn btn-outline-primary btn-sm mb-0 bg-white"
+                    className="btn text-danger btn-sm mb-0 bg-white"
                   >
                     Filter
                   </button>
@@ -305,8 +305,12 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                         </th> */}
                     </tr>
                   </thead>
-                  <tbody>
-                    {userData.length == 0 && <p>No data Found</p>}
+                  <tbody className={userData.length == 0 && "text-center"}>
+                    {userData.length == 0 && (
+                      <td colSpan="12" className="fs-4 py-4">
+                        No data Found
+                      </td>
+                    )}
                     {userData.length > 0 &&
                       [...userData].reverse().map((item) => {
                         const DOB = new Date(item.dob * 1000);
@@ -399,13 +403,9 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                             <td className="text-center">
                               {item.accountStatus == 0 ? (
                                 <FormControl className="mb-0">
-                                  <InputLabel id="demo-simple-select-label">
-                                    Select Department
-                                  </InputLabel>
                                   <Select
                                     labelId="demo-simple-select-label"
                                     name="action"
-                                    label="Select Status"
                                     value={0}
                                     onChange={async (e) => {
                                       if (e.target.value !== 0) {

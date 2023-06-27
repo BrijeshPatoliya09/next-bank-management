@@ -63,6 +63,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
           page,
           sort,
           activeEmployee: activeEmployee.ifsc,
+          filter,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +81,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
 
   useEffect(() => {
     getTransData();
-  }, [page, sort, activeEmployee]);
+  }, [page, sort, activeEmployee, applyFilter]);
 
   const statusChangeHandler = async (statusData) => {
     const res = await fetch(`${process.env.apiUrl}/admin/loan/statusChange`, {
@@ -100,6 +101,18 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
     }
   };
 
+  const interestDeduct = async () => {
+    const res = await fetch(`${process.env.apiUrl}/admin/loan/loanInterest`, {
+      method: "POST",
+      body: JSON.stringify(activeEmployee.ifsc),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+  };
+
   return (
     <>
       <BankTree
@@ -108,7 +121,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
         activeEmployee={activeEmployee.bankId}
         select={treeSelectBox}
       />
-      <div className="row">
+      <div className="row loan">
         <div className="col-12">
           <div className="card my-4">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -119,8 +132,15 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                 <div className="ms-auto me-3">
                   <button
                     type="button"
+                    onClick={interestDeduct}
+                    className="btn text-danger btn-sm mb-0 bg-white me-2"
+                  >
+                    Check Interest
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => setToggleFilter(!toggleFilter)}
-                    className="btn btn-outline-primary btn-sm mb-0 bg-white"
+                    className="btn text-danger btn-sm mb-0 bg-white"
                   >
                     Filter
                   </button>
@@ -128,7 +148,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
               </div>
             </div>
             <div className="card-body px-0 pb-2 ">
-              {/* {toggleFilter && (
+              {toggleFilter && (
                 <div className="filter px-4">
                   <div className="d-flex justify-content-center">
                     <TextField
@@ -136,26 +156,31 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       type="text"
                       name="name"
                       label="Name"
-                      // onChange={changeHandler}
+                      value={filter.name}
+                      onChange={(e) =>
+                        setFilter({ ...filter, name: e.target.value })
+                      }
                       // value={filter.name}
                       variant="outlined"
                     />
                     <FormControl className="col-lg-3 col-sm-6 col-12 p-1 mt-2">
                       <InputLabel id="demo-simple-select-label">
-                        Select Department
+                        Select Type of Loan
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         name="department"
-                        label="Select Department"
+                        label="Select Type of Loan"
                         onChange={(e) =>
                           setFilter({ ...filter, type: e.target.value })
                         }
+                        value={filter.type}
                       >
-                        <MenuItem value="b2b">Bank to Bank</MenuItem>
-                        <MenuItem value="b2c">Bank to Customer</MenuItem>
-                        <MenuItem value="c2b">Customer to Bank</MenuItem>
-                        <MenuItem value="c2c">Customer to Customer</MenuItem>
+                        <MenuItem value={0}>Personal Loan (12%)</MenuItem>
+                        <MenuItem value={1}>Student Loan (9%)</MenuItem>
+                        <MenuItem value={2}>Business Loan (12%)</MenuItem>
+                        <MenuItem value={3}>House Loan (15%) </MenuItem>
+                        <MenuItem value={4}>Mortgage Loan (15%)</MenuItem>
                       </Select>
                     </FormControl>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -195,22 +220,24 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       type="button"
                       className="btn d-flex justify-content-center align-items-center bg-gradient-primary ms-3 my-4 mb-2"
                       style={{ fontSize: "14px" }}
-                      // onClick={() => {
-                      //   onGetEmpData();
-                      //   setFilter({
-                      //     name: "",
-                      //     department: "",
-                      //     joinningDate: [],
-                      //   });
-                      // }}
-                      // disabled={bankEmpLoader}
+                      onClick={() => {
+                        setFilter({
+                          name: "",
+                          type: "",
+                          createdAt: [
+                            Math.floor(date["_d"].getTime() / 1000),
+                            Math.floor(date["_i"].getTime() / 1000),
+                          ],
+                        });
+                        setApplyFilter(!applyFilter);
+                      }}
                     >
                       Reset
                     </button>
                   </div>
                 </div>
-              )} */}
-              <div className="table-responsive p-0">
+              )}
+              <div className="table-responsive p-0 loan-table">
                 <table className="table align-items-center justify-content-center mb-0">
                   <thead>
                     <tr>
@@ -274,7 +301,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                           />
                         </button>
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                      {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
                           className="btn p-0"
                           onClick={() => sortDataHandler("collateralName")}
@@ -285,7 +312,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                             style={{ fontSize: "16px" }}
                           />
                         </button>
-                      </th>
+                      </th> */}
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
                           className="btn p-0"
@@ -322,16 +349,20 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                           />
                         </button>
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                      {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button className="btn p-0">Doccument</button>
-                      </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                      </th> */}
+                      <th className="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                         <button className="btn p-0">Action</button>
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {userData.length == 0 && <p>No data Found</p>}
+                  <tbody className={userData.length == 0 && "text-center"}>
+                    {userData.length == 0 && (
+                      <td colSpan="12" className="fs-4 py-4">
+                        No data Found
+                      </td>
+                    )}
                     {userData.length > 0 &&
                       [...userData].reverse().map((item) => {
                         const created = new Date(item.createdAt * 1000);
@@ -366,11 +397,11 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                 {item.type == 4 && "Mortgage Loan"}
                               </p>
                             </td>
-                            <td className="px-4 text-center">
+                            {/* <td className="px-4 text-center">
                               <p className="text-md font-weight-bold mb-0">
                                 {item.collateralName}
                               </p>
-                            </td>
+                            </td> */}
                             <td className="px-4 text-center">
                               <p className="text-md font-weight-bold mb-0">
                                 {item.collateralValue}
@@ -400,7 +431,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                 {moment(created).format("L")}
                               </p>
                             </td>
-                            <td className="px-4">
+                            {/* <td className="px-4">
                               <a
                                 className="btn btn-primary mb-0 me-1"
                                 href={item.doccument}
@@ -427,60 +458,56 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                   collateral
                                 </a>
                               )}
-                            </td>
+                            </td> */}
                             <td className="px-4">
-                              {item.status == 0 || item.status == 1 ? (
-                                <FormControl className="mb-0">
-                                  <InputLabel id="demo-simple-select-label">
-                                    Select Department
-                                  </InputLabel>
-                                  <Select
-                                    labelId="demo-simple-select-label"
-                                    name="action"
-                                    label="Select Status"
-                                    value={item.status}
-                                    onChange={async (e) => {
-                                      if (e.target.value !== 0) {
-                                        const alert = await Swal.fire({
-                                          title: `Do you want to ${
-                                            e.target.value == 1
-                                              ? "Accept"
-                                              : "Reject"
-                                          } this Loan Request ?`,
-                                          icon: "warning",
-                                          showCancelButton: true,
-                                          cancelButtonText: "Cancel",
-                                          confirmButtonColor: "#5773FF",
-                                          cancelButtonColor: "#9e9e9e",
-                                          confirmButtonText: "Yes",
-                                          allowEscapeKey: true,
-                                        });
-                                        if (alert.isConfirmed) {
-                                          await statusChangeHandler({
-                                            status: e.target.value,
-                                            loanId: item._id,
-                                            revId: item._rev,
+                              <div className=" d-flex justify-content-center align-items-center">
+                                <div className="me-3">
+                                  <button className="btn bg-gradient-primary m-0">
+                                    <i class="bi bi-eye-fill pe-1"></i>View
+                                  </button>
+                                </div>
+                                {item.status == 0 ? (
+                                  <FormControl className="mb-0">
+                                    <Select
+                                      labelId="demo-simple-select-label"
+                                      name="action"
+                                      value={item.status}
+                                      onChange={async (e) => {
+                                        if (e.target.value !== 0) {
+                                          const alert = await Swal.fire({
+                                            title: `Do you want to ${
+                                              e.target.value == 1
+                                                ? "Accept"
+                                                : "Reject"
+                                            } this Loan Request ?`,
+                                            icon: "warning",
+                                            showCancelButton: true,
+                                            cancelButtonText: "Cancel",
+                                            confirmButtonColor: "#5773FF",
+                                            cancelButtonColor: "#9e9e9e",
+                                            confirmButtonText: "Yes",
+                                            allowEscapeKey: true,
                                           });
-                                          await getTransData();
+                                          if (alert.isConfirmed) {
+                                            await statusChangeHandler({
+                                              status: e.target.value,
+                                              loanId: item._id,
+                                              revId: item._rev,
+                                            });
+                                            await getTransData();
+                                          }
                                         }
-                                      }
-                                    }}
-                                  >
-                                    {item.status == 0 && (
+                                      }}
+                                    >
                                       <MenuItem value={0}>Pending</MenuItem>
-                                    )}
-                                    <MenuItem value={1}>Verified</MenuItem>
-                                    {item.status == 0 && (
+                                      <MenuItem value={1}>Verified</MenuItem>
                                       <MenuItem value={2}>Rejected</MenuItem>
-                                    )}
-                                    {item.status == 1 && (
-                                      <MenuItem value={3}>Closed</MenuItem>
-                                    )}
-                                  </Select>
-                                </FormControl>
-                              ) : (
-                                <>-</>
-                              )}
+                                    </Select>
+                                  </FormControl>
+                                ) : (
+                                  <></>
+                                )}
+                              </div>
                             </td>
                           </tr>
                         );

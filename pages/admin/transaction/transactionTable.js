@@ -42,15 +42,15 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
   const [userData, setUserData] = useState([]);
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState("");
-  const [sort, setSort] = useState({ createdAt: "asc" });
+  const [sort, setSort] = useState({ createdAt: 0 });
 
   const [loader, setLoader] = useState(false);
 
   const sortDataHandler = (info) => {
-    if (sort[info] == "asc") {
-      setSort({ [info]: "desc" });
+    if (sort[info] == 0) {
+      setSort({ [info]: 1 });
     } else {
-      setSort({ [info]: "asc" });
+      setSort({ [info]: 0 });
     }
   };
 
@@ -64,7 +64,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
           body: JSON.stringify({
             page,
             sort,
-            activeEmployee: activeEmployee.bankId,
+            activeEmployee,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -125,7 +125,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                   <button
                     type="button"
                     onClick={() => setToggleFilter(!toggleFilter)}
-                    className="btn btn-outline-primary btn-sm mb-0 bg-white"
+                    className="btn text-danger btn-sm mb-0 bg-white"
                   >
                     Filter
                   </button>
@@ -222,25 +222,25 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                         <button
                           className="btn p-0"
-                          //   onClick={() => sortDataHandler("")}
+                          onClick={() => sortDataHandler("user")}
                         >
                           From
-                          {/* <FilterListIcon
+                          <FilterListIcon
                             className="ms-1"
                             style={{ fontSize: "16px" }}
-                          /> */}
+                          />
                         </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                         <button
                           className="btn p-0"
-                          //   onClick={() => sortDataHandler("")}
+                          onClick={() => sortDataHandler("from")}
                         >
                           To
-                          {/* <FilterListIcon
+                          <FilterListIcon
                             className="ms-1"
                             style={{ fontSize: "16px" }}
-                          /> */}
+                          />
                         </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -299,8 +299,12 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                         </th> */}
                     </tr>
                   </thead>
-                  <tbody>
-                    {userData.length == 0 && <p>No data Found</p>}
+                  <tbody className={userData.length == 0 && "text-center"}>
+                    {userData.length == 0 && (
+                      <td colSpan="7" className="fs-4 py-4">
+                        No data Found
+                      </td>
+                    )}
                     {userData.length > 0 &&
                       [...userData].reverse().map((item) => {
                         const created = new Date(item.createdAt * 1000);
@@ -308,26 +312,18 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                           <tr>
                             <td className="px-4">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.user == "Bank"
-                                  ? item.user
-                                  : `${item.user.firstName} ${item.user.lastName}`}
+                                {item.user}
                               </p>
                               <p className="text-md text-secondary mb-0">
-                                {item.user != "Bank"
-                                  ? item.user.accountNumber
-                                  : "(Bank Itself)"}
+                                {item.userAc}
                               </p>
                             </td>
                             <td className="px-4">
                               <p className="text-md font-weight-bold mb-0">
-                                {item.from == "Bank"
-                                  ? item.from
-                                  : `${item.from.firstName} ${item.from.lastName}`}
+                                {item.from}
                               </p>
                               <p className="text-md text-secondary mb-0">
-                                {item.from != "Bank"
-                                  ? item.from.accountNumber
-                                  : "(Bank Itself)"}
+                                {item.fromAc}
                               </p>
                             </td>
                             <td className="px-4">
@@ -349,14 +345,14 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                 ${item.type == "b2c" && "text-danger"}
                                 ${item.type == "c2b" && "text-success"}
                                 ${
-                                  item.user.bank == activeEmployee.ifsc &&
-                                  item.from.bank == activeEmployee.ifsc
+                                  item.userIfsc == activeEmployee.ifsc &&
+                                  item.fromIfsc == activeEmployee.ifsc
                                     ? ""
-                                    : item.user.bank == activeEmployee.ifsc &&
+                                    : item.userIfsc == activeEmployee.ifsc &&
                                       item.type !== "b2c" &&
                                       item.type !== "c2b"
                                     ? "text-danger"
-                                    : item.from.bank == activeEmployee.ifsc &&
+                                    : item.fromIfsc == activeEmployee.ifsc &&
                                       item.type !== "b2c" &&
                                       item.type !== "c2b"
                                     ? "text-success"
@@ -364,7 +360,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                 }
                                 `}
                               >
-                                {item.amount}
+                                {Number(item.amount).toFixed(0)}
                               </p>
                             </td>
                             <td className="px-4">
@@ -390,13 +386,9 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                             <td className="px-4">
                               {item.status == 0 ? (
                                 <FormControl className="mb-0">
-                                  <InputLabel id="demo-simple-select-label">
-                                    Select Department
-                                  </InputLabel>
                                   <Select
                                     labelId="demo-simple-select-label"
                                     name="action"
-                                    label="Select Status"
                                     value={0}
                                     onChange={async (e) => {
                                       if (e.target.value !== 0) {
