@@ -1,7 +1,8 @@
+import { filterFunction } from "../../../../../helper/common";
 import dbConnect from "../../../../../helper/connection";
 
 export default async (req, res) => {
-  const { page, sort, activeEmployee } = req.body;
+  const { page, sort, activeEmployee, filter } = req.body;
   try {
     const fetchAllUserData = async (bookmark = null, docs = []) => {
       const { data } = await dbConnect().mango("bank-management", {
@@ -88,16 +89,22 @@ export default async (req, res) => {
       };
     });
 
+    let filteredData = await filterFunction(filter, aggregatedData);
+
+    if (filter.user && filter.user.trim() !== "") {
+      filteredData.filter((item) => item.user == filter.user);
+    }
+
     async function dataSorting(obj) {
       const fld = Object.keys(obj)[0];
       let finaldata = [];
-      if (aggregatedData.length > 0) {
+      if (filteredData.length > 0) {
         if (obj[fld] == 0) {
-          finaldata = aggregatedData
+          finaldata = filteredData
             .sort((a, b) => (a[fld] > b[fld] ? -1 : b[fld] > a[fld] ? 1 : 0))
             .slice(page * 10, page * 10 + 10);
         } else {
-          finaldata = aggregatedData
+          finaldata = filteredData
             .sort((a, b) => (a[fld] > b[fld] ? 1 : b[fld] > a[fld] ? -1 : 0))
             .slice(page * 10, page * 10 + 10);
         }
@@ -110,7 +117,7 @@ export default async (req, res) => {
       message: "success",
       data: {
         userData: await dataSorting(sort),
-        count: transactionData.length,
+        count: filteredData.length,
       },
     });
   } catch (err) {

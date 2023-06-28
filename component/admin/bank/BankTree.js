@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Tree from "../tree/Tree";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 
 const BankTree = ({ data, setActiveEmployeeData, activeEmployee, select }) => {
   const [bankSelect, setBankSelect] = useState("");
@@ -13,35 +13,38 @@ const BankTree = ({ data, setActiveEmployeeData, activeEmployee, select }) => {
               <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
                 <h6 className="text-white text-capitalize ps-3">Bank Tree</h6>
                 <div className="p-3 col-lg-3 rounded-3 bg-white me-3">
-                  <FormControl className="w-100">
-                    <InputLabel id="demo-simple-select-label">
-                      Select Department
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      name="department"
-                      label="Select Department"
-                      onChange={(e) => setBankSelect(e.target.value)}
-                    >
-                      {select.map((item, i) => {
-                        let addName = "";
-                        if (item.level == 1 || item.level == 2) {
-                          addName = item.address.country;
-                        } else if (item.level == 3) {
-                          addName = item.address.state;
-                        } else if (item.level == 4) {
-                          addName = item.address.city;
-                        } else {
-                          addName = item.address.zone;
-                        }
-                        return (
-                          <MenuItem key={i} value={item._id}>
-                            {item.name} ({addName})
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
+                  <Autocomplete
+                    value={bankSelect}
+                    className="w-100"
+                    onChange={(event, newValue) => {
+                      if (newValue) {
+                        setBankSelect(newValue);
+                      } else {
+                        setBankSelect("");
+                      }
+                    }}
+                    options={select.map((item) => {
+                      let addName = "";
+                      if (item.level == 1 || item.level == 2) {
+                        addName = item.address.country;
+                      } else if (item.level == 3) {
+                        addName = item.address.state;
+                      } else if (item.level == 4) {
+                        addName = item.address.city;
+                      } else {
+                        addName = item.address.zone;
+                      }
+
+                      return {
+                        label: `${item.name} - ${addName}`,
+                        value: item._id,
+                      };
+                    })}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Select Bank" />
+                    )}
+                  />
                 </div>
               </div>
             </div>
@@ -52,7 +55,7 @@ const BankTree = ({ data, setActiveEmployeeData, activeEmployee, select }) => {
                   treeData={item}
                   onSetActiveEmp={setActiveEmployeeData}
                   empId={activeEmployee}
-                  select={select.filter((item) => item._id == bankSelect)}
+                  select={select.filter((item) => item._id == bankSelect.value)}
                   selectCheck={bankSelect ? true : false}
                 />
               ))}

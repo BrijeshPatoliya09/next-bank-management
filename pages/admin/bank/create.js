@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import AdminLayout from "../../../component/admin/AdminLayout";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import React, { useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -10,9 +8,11 @@ import {
 } from "@mui/material";
 import { Country, State, City } from "country-state-city";
 import { SingleInputTimeRangeField } from "@mui/x-date-pickers-pro";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { ToastContainer, toast } from "react-toastify";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { toast } from "react-toastify";
 import { withSessionSsr } from "../../../helper/session";
+import { checkEmail, checkName } from "../../../helper/common";
 
 const create = ({ empLevel }) => {
   const [address, setAddress] = useState({
@@ -21,6 +21,16 @@ const create = ({ empLevel }) => {
     city: "",
     zone: "",
     zipCode: "",
+  });
+
+  const [employee, setEmployee] = useState({
+    name: "",
+    email: "",
+    contact: "",
+    department: "",
+    education: "",
+    DOB: "",
+    joinningDate: "",
   });
 
   const [bankDetail, setBankDetail] = useState({
@@ -32,6 +42,11 @@ const create = ({ empLevel }) => {
     second: [],
   });
   const [loader, setLoader] = useState(false);
+
+  const empChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setEmployee({ ...employee, [name]: value });
+  };
 
   const handleAdressChange = (e) => {
     const { name, value } = e.target;
@@ -71,12 +86,35 @@ const create = ({ empLevel }) => {
       }
     });
 
+    //!Employee
+    let validationEmployee = [];
+    Object.keys(employee).map((eachData) => {
+      if (
+        !employee[eachData] ||
+        employee[eachData] == "" ||
+        employee[eachData] == undefined
+      ) {
+        validationEmployee.push(`Please Enter ${eachData}`);
+      }
+    });
+
+    let textCheck = [];
+    ["name", "department", "education"].map((item) => {
+      if (!checkName(employee[item])) {
+        textCheck.push(`Please enter valid ${item}`);
+      }
+    });
+
     if (validationAddress.length > 0) {
       return toast.error(validationAddress[0]);
     } else if (!bankTime.first[0] || !bankTime.first[1]) {
       return toast.error("Please enter first shift");
     } else if (!bankTime.second[0] || !bankTime.second[1]) {
       return toast.error("Please enter second shift");
+    } else if (validationBankdetail.length > 0) {
+      return toast.error(validationBankdetail[0]);
+    } else if (validationEmployee.length > 0) {
+      return toast.error(validationEmployee[0]);
     } else if (
       bankTime.first[1] == bankTime.first[0] ||
       bankTime.first[1] < bankTime.first[0]
@@ -92,8 +130,14 @@ const create = ({ empLevel }) => {
       bankTime.first[1] > bankTime.second[0]
     ) {
       return toast.error("Please enter valid time");
-    } else if (validationBankdetail.length > 0) {
-      return toast.error(validationBankdetail[0]);
+    } else if (!checkName(bankDetail.name)) {
+      return toast.error("Please enter valid bank name");
+    } else if (employee.contact.length !== 10) {
+      return toast.error("Please enter valid contact no.");
+    } else if (!checkEmail(employee.email)) {
+      return toast.error("Please enter valid email");
+    } else if (textCheck.length > 0) {
+      return toast.error(textCheck[0]);
     }
 
     if (!loader) {
@@ -105,6 +149,7 @@ const create = ({ empLevel }) => {
           address,
           time: { ...bankTime },
           timeStamp: Math.floor(Date.now() / 1000),
+          employee
         }),
         headers: {
           "Content-Type": "application/json",
@@ -321,6 +366,95 @@ const create = ({ empLevel }) => {
                     )}
                   </Select>
                 </FormControl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-12">
+          <div className="card my-4">
+            <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <h6 className="text-white text-capitalize ps-3">
+                  Employee Create
+                </h6>
+              </div>
+            </div>
+            <div className="card-body px-3 pb-2">
+              <div className="d-flex flex-wrap">
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="text"
+                  name="name"
+                  label="Name"
+                  value={employee.name}
+                  onChange={empChangeHandler}
+                  variant="outlined"
+                />
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="email"
+                  name="email"
+                  label="Email"
+                  value={employee.email}
+                  onChange={empChangeHandler}
+                  variant="outlined"
+                />
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="number"
+                  name="contact"
+                  label="Contact"
+                  value={employee.contact}
+                  onChange={empChangeHandler}
+                  variant="outlined"
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                    value={employee.DOB}
+                    onChange={(e) => {
+                      console.log(e);
+                      setEmployee({
+                        ...employee,
+                        DOB: e,
+                      });
+                    }}
+                    label="Date of Birth"
+                  />
+                </LocalizationProvider>
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="text"
+                  value={employee.department}
+                  name="department"
+                  label="Department"
+                  onChange={empChangeHandler}
+                  variant="outlined"
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                    value={employee.joinningDate}
+                    onChange={(e) =>
+                      setEmployee({
+                        ...employee,
+                        joinningDate: e,
+                      })
+                    }
+                    label="Joinning Date"
+                  />
+                </LocalizationProvider>
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="text"
+                  name="education"
+                  label="Education"
+                  value={employee.education}
+                  onChange={empChangeHandler}
+                  variant="outlined"
+                />
               </div>
             </div>
           </div>

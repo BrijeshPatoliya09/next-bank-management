@@ -31,7 +31,8 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
 
   const date = moment(new Date()).subtract(1, "months");
   const [filter, setFilter] = useState({
-    name: "",
+    user: "",
+    from: "",
     type: "",
     createdAt: [
       Math.floor(date["_d"].getTime() / 1000),
@@ -65,6 +66,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
             page,
             sort,
             activeEmployee,
+            filter,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -139,35 +141,49 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                     <TextField
                       className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
                       type="text"
-                      name="name"
-                      label="Name"
-                      // onChange={changeHandler}
-                      // value={filter.name}
+                      label="From"
+                      onChange={(e) =>
+                        setFilter({ ...filter, user: e.target.value })
+                      }
+                      value={filter.user}
+                      variant="outlined"
+                    />
+                    <TextField
+                      className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
+                      type="text"
+                      label="To"
+                      onChange={(e) =>
+                        setFilter({ ...filter, from: e.target.value })
+                      }
+                      value={filter.from}
                       variant="outlined"
                     />
                     <FormControl className="col-lg-3 col-sm-6 col-12 p-1 mt-2">
                       <InputLabel id="demo-simple-select-label">
-                        Select Department
+                        Select Type
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
-                        name="department"
-                        label="Select Department"
+                        label="Select Type"
                         onChange={(e) =>
                           setFilter({ ...filter, type: e.target.value })
                         }
+                        value={filter.type}
                       >
                         <MenuItem value="b2b">Bank to Bank</MenuItem>
                         <MenuItem value="b2c">Bank to Customer</MenuItem>
                         <MenuItem value="c2b">Customer to Bank</MenuItem>
                         <MenuItem value="c2c">Customer to Customer</MenuItem>
+                        <MenuItem value="Loan">Loan</MenuItem>
+                        <MenuItem value="Penalty">Penalty</MenuItem>
+                        <MenuItem value="Interest">Interest</MenuItem>
                       </Select>
                     </FormControl>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DateRangePicker
                         slots={{ field: SingleInputDateRangeField }}
                         className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
-                        label="Date of joinning"
+                        label="Created At"
                         value={[
                           dayjs(new Date(filter.createdAt[0] * 1000)),
                           dayjs(new Date(filter.createdAt[1] * 1000)),
@@ -200,15 +216,18 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       type="button"
                       className="btn d-flex justify-content-center align-items-center bg-gradient-primary ms-3 my-4 mb-2"
                       style={{ fontSize: "14px" }}
-                      // onClick={() => {
-                      //   onGetEmpData();
-                      //   setFilter({
-                      //     name: "",
-                      //     department: "",
-                      //     joinningDate: [],
-                      //   });
-                      // }}
-                      // disabled={bankEmpLoader}
+                      onClick={() => {
+                        setFilter({
+                          user: "",
+                          from: "",
+                          type: "",
+                          createdAt: [
+                            Math.floor(date["_d"].getTime() / 1000),
+                            Math.floor(date["_i"].getTime() / 1000),
+                          ],
+                        });
+                        setApplyFilter(!applyFilter);
+                      }}
                     >
                       Reset
                     </button>

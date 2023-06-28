@@ -52,12 +52,11 @@ export default async (req, res) => {
         amount: data.amount,
         createdAt: Math.floor(new Date().getTime() / 1000),
         status: 1,
-        description: `                                
-        ${data.type == 0 && "Personal Loan"}
-        ${data.type == 1 && "Student Loan"}
-        ${data.type == 2 && "Business Loan"}
-        ${data.type == 3 && "House Loan"}
-        ${data.type == 4 && "Mortgage Loan"}`,
+        description: `${data.type == 0 ? "Personal Loan" : ""}${
+          data.type == 1 ? "Student Loan" : ""
+        }${data.type == 2 ? "Business Loan" : ""}${
+          data.type == 3 ? "House Loan" : ""
+        }${data.type == 4 ? "Mortgage Loan" : ""}`,
         docType: "Transaction",
       });
 

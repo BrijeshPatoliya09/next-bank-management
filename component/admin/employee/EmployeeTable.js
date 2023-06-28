@@ -279,9 +279,11 @@ const EmployeeTable = ({
                           />
                         </button>
                       </th> */}
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                        <button>Action</button>
-                      </th>
+                      {empType && (
+                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                          <button className="btn p-0">Action</button>
+                        </th>
+                      )}
                       {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
                           Completion
                         </th> */}
@@ -353,19 +355,21 @@ const EmployeeTable = ({
                                 {item.department}
                               </p>
                             </td>
-                            <td>
-                              <button
-                                type="button"
-                                className="btn btn-outline-primary btn-sm mb-0"
-                                style={{ fontSize: "14px" }}
-                                onClick={() => {
-                                  onSetEmpEdit(item);
-                                  onSetEmpModel(1);
-                                }}
-                              >
-                                <EditIcon />
-                              </button>
-                            </td>
+                            {empType && (
+                              <td>
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-primary btn-sm mb-0"
+                                  style={{ fontSize: "14px" }}
+                                  onClick={() => {
+                                    onSetEmpEdit(item);
+                                    onSetEmpModel(1);
+                                  }}
+                                >
+                                  <EditIcon />
+                                </button>
+                              </td>
+                            )}
                           </tr>
                         );
                       })}
@@ -422,7 +426,11 @@ const EmployeeTable = ({
                   </tbody>
                 </table>
               </div>
-              <div className="d-flex justify-content-between px-3 pb-2">
+              <div
+                className={`d-flex ${
+                  empType ? "justify-content-between" : "justify-content-end"
+                } px-3 pb-2`}
+              >
                 {empType && (
                   <div>
                     <button
@@ -442,7 +450,7 @@ const EmployeeTable = ({
                   <div className="d-flex justify-content-center align-items-center">
                     <ReactPaginate
                       breakLabel="..."
-                      nextLabel="next >"
+                      nextLabel="next >"  
                       className="pageinate my-4 mb-2"
                       onPageChange={(e) => setPage(e.selected)}
                       pageRangeDisplayed={3}

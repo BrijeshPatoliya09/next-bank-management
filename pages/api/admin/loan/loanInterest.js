@@ -19,8 +19,6 @@ export default async (req, res) => {
       const currentDate = new Date(dataTime * 1000);
 
       currentDate.setMonth(currentDate.getMonth() + 1);
-      Ì;
-
       const updatedEpochTime = Math.floor(currentDate.getTime() / 1000);
       return {
         nowDate,
@@ -71,12 +69,13 @@ export default async (req, res) => {
             amount: interestAmount.toFixed(2),
             createdAt: Math.floor(new Date().getTime() / 1000),
             status: 1,
-            description: `Interest for                               
-          ${data.type == 0 && "Personal Loan"}
-          ${data.type == 1 && "Student Loan"}
-          ${data.type == 2 && "Business Loan"}
-          ${data.type == 3 && "House Loan"}
-          ${data.type == 4 && "Mortgage Loan"}`,
+            description: `Interest for ${
+              data.type == 0 ? "Personal Loan" : ""
+            }${data.type == 1 ? "Student Loan" : ""}${
+              data.type == 2 ? "Business Loan" : ""
+            }${data.type == 3 ? "House Loan" : ""}${
+              data.type == 4 ? "Mortgage Loan" : ""
+            }`,
             docType: "Transaction",
           });
 
@@ -136,12 +135,13 @@ export default async (req, res) => {
             amount: interestAmount.toFixed(2),
             createdAt: Math.floor(new Date().getTime() / 1000),
             status: 1,
-            description: `Interest for                               
-          ${data.type == 0 && "Personal Loan"}
-          ${data.type == 1 && "Student Loan"}
-          ${data.type == 2 && "Business Loan"}
-          ${data.type == 3 && "House Loan"}
-          ${data.type == 4 && "Mortgage Loan"}`,
+            description: `Interest for ${
+              data.type == 0 ? "Personal Loan" : ""
+            }${data.type == 1 ? "Student Loan" : ""}${
+              data.type == 2 ? "Business Loan" : ""
+            }${data.type == 3 ? "House Loan" : ""}${
+              data.type == 4 ? "Mortgage Loan" : ""
+            }`,
             docType: "Transaction",
           });
 
@@ -152,12 +152,11 @@ export default async (req, res) => {
             amount: penalty.amount,
             createdAt: Math.floor(new Date().getTime() / 1000),
             status: 1,
-            description: `penalty for                               
-          ${data.type == 0 && "Personal Loan"}
-          ${data.type == 1 && "Student Loan"}
-          ${data.type == 2 && "Business Loan"}
-          ${data.type == 3 && "House Loan"}
-          ${data.type == 4 && "Mortgage Loan"}`,
+            description: `penalty for ${data.type == 0 ? "Personal Loan" : ""}${
+              data.type == 1 ? "Student Loan" : ""
+            }${data.type == 2 ? "Business Loan" : ""}${
+              data.type == 3 ? "House Loan" : ""
+            }${data.type == 4 ? "Mortgage Loan" : ""}`,
             docType: "Transaction",
           });
 

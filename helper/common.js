@@ -190,3 +190,57 @@ export const removeImgHandler = async (imgData) => {
 
   const data = await res.json();
 };
+
+export const filterFunction = (filter, data) => {
+  let temp = {};
+  Object.keys(filter).forEach((item) => {
+    if (filter[item] || filter[item] != "" || filter[item].length > 0) {
+      temp[item] = filter[item];
+    }
+  });
+
+  let tempData;
+  if (temp) {
+    tempData = data.filter((item) => {
+      let dummy = "";
+      for (const key in temp) {
+        if (key == "createdAt") {
+          if (dummy) {
+            dummy =
+              dummy +
+              " && " +
+              `${item[key]} >= ${temp[key][0]} &&
+              ${item[key]} <= ${temp[key][1]}`;
+          } else {
+            dummy =
+              dummy +
+              " " +
+              `${item[key]} >= ${temp[key][0]} &&
+              ${item[key]} <= ${temp[key][1]}`;
+          }
+        } else {
+          if (dummy) {
+            dummy =
+              dummy +
+              " && " +
+              `item.${key}.toLowerCase().includes("${temp[
+                key
+              ].toLowerCase()}")`;
+          } else {
+            dummy =
+              dummy +
+              " " +
+              `item.${key}.toLowerCase().includes("${temp[
+                key
+              ].toLowerCase()}")`;
+          }
+        }
+      }
+      return eval(dummy);
+    });
+  } else {
+    tempData = [...data];
+  }
+
+  return tempData;
+};

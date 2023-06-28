@@ -187,7 +187,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       <DateRangePicker
                         slots={{ field: SingleInputDateRangeField }}
                         className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
-                        label="Date of joinning"
+                        label="Created At"
                         value={[
                           dayjs(new Date(filter.createdAt[0] * 1000)),
                           dayjs(new Date(filter.createdAt[1] * 1000)),

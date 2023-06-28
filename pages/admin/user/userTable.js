@@ -31,6 +31,7 @@ const userTable = ({ data, empData, treeSelectBox }) => {
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState("");
   const [sort, setSort] = useState({ createdAt: "asc" });
+  const [applyFilter, setApplyFilter] = useState(false);
   const [filter, setFilter] = useState({
     name: "",
     accountType: "",
@@ -94,7 +95,7 @@ const userTable = ({ data, empData, treeSelectBox }) => {
     ) {
       getUserData();
     }
-  }, [page, sort, filter, activeEmployee]);
+  }, [page, sort, applyFilter, activeEmployee]);
 
   return (
     <>
@@ -146,7 +147,7 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                       <Select
                         labelId="demo-simple-select-label"
                         name="department"
-                        label="Select Account"
+                        label="Select Account Type"
                         onChange={(e) =>
                           setFilter({ ...filter, accountType: e.target.value })
                         }
@@ -176,6 +177,37 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                         }
                       />
                     </LocalizationProvider>
+                  </div>
+                  <div className="d-flex justify-content-center">
+                    <button
+                      type="button"
+                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
+                      style={{ fontSize: "14px" }}
+                      onClick={() => {
+                        setApplyFilter(!applyFilter);
+                      }}
+                      disabled={loader}
+                    >
+                      Filter
+                    </button>
+                    <button
+                      type="button"
+                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary ms-3 my-4 mb-2"
+                      style={{ fontSize: "14px" }}
+                      onClick={() => {
+                        setFilter({
+                          name: "",
+                          accountType: "",
+                          createdAt: [
+                            Math.floor(date["_d"].getTime() / 1000),
+                            Math.floor(date["_i"].getTime() / 1000),
+                          ],
+                        });
+                        setApplyFilter(!applyFilter);
+                      }}
+                    >
+                      Reset
+                    </button>
                   </div>
                 </div>
               )}
