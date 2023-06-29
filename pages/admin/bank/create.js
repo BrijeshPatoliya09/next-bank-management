@@ -149,7 +149,7 @@ const create = ({ empLevel }) => {
           address,
           time: { ...bankTime },
           timeStamp: Math.floor(Date.now() / 1000),
-          employee
+          employee,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -184,17 +184,23 @@ const create = ({ empLevel }) => {
 
   return (
     <>
-      <div className="row">
+      <div className="row bank-reg">
         <div className="col-12">
           <div className="card my-4">
-            <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 className="text-white text-capitalize ps-3">
-                  Bank Address
+            <div className="mt-n4 mx-3 p-0 position-relative z-index-2 d-flex justify-content-center">
+              <div
+                className="bg-white border-radius-lg py-2"
+                style={{ width: "15%" }}
+              >
+                <h6 className="fs-4 ps-3 text-capitalize">
+                  Bank Registeration
                 </h6>
               </div>
             </div>
-            <div className="card-body px-3 pb-2">
+            <div className="px-3 pb-2 mb-3">
+              <div className="sub-head">
+                <h3>Bank Address</h3>
+              </div>
               <div className="d-flex flex-wrap">
                 <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
                   <InputLabel id="demo-simple-select-label">
@@ -274,10 +280,182 @@ const create = ({ empLevel }) => {
                 />
               </div>
             </div>
+            <div className="px-3 pb-2 mb-3">
+              <div className="sub-head">
+                <h3>Bank Timing</h3>
+              </div>
+              <div className="d-flex flex-wrap">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <SingleInputTimeRangeField
+                    className="col-sm-6 col-12 p-1 mt-2"
+                    label="First Shift"
+                    onChange={(e) => {
+                      const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
+                      const secondDate = Math.floor(e[1]?.$d.getTime() / 1000);
+                      setBankTime({
+                        ...bankTime,
+                        first: [firstDate, secondDate],
+                      });
+                    }}
+                  />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <SingleInputTimeRangeField
+                    className="col-sm-6 col-12 p-1 mt-2"
+                    label="Second Shift"
+                    onChange={(e) => {
+                      const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
+                      const secondDate = Math.floor(e[1]?.$d.getTime() / 1000);
+                      setBankTime({
+                        ...bankTime,
+                        second: [firstDate, secondDate],
+                      });
+                    }}
+                  />
+                </LocalizationProvider>
+              </div>
+            </div>
+            <div className="px-3 pb-2 mb-3">
+              <div className="sub-head">
+                <h3>Bank Details</h3>
+              </div>
+
+              <div className="d-flex flex-wrap">
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  name="name"
+                  value={bankDetail.name}
+                  label="Bank Name"
+                  variant="outlined"
+                  onChange={handleBankdetailChange}
+                />
+                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
+                  <InputLabel id="demo-simple-select-label">
+                    Select Level
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    name="level"
+                    value={bankDetail.level}
+                    label="Select Level"
+                    onChange={handleBankdetailChange}
+                  >
+                    {empLevel == 1 && <MenuItem value={1}>World Bank</MenuItem>}
+                    {empLevel < 2 && (
+                      <MenuItem value={2}>National Bank</MenuItem>
+                    )}
+                    {empLevel < 3 && address.country && (
+                      <MenuItem value={3}>State Bank</MenuItem>
+                    )}
+                    {empLevel < 4 && address.state && (
+                      <MenuItem value={4}>City Bank</MenuItem>
+                    )}
+                    {empLevel < 5 && address.city && (
+                      <MenuItem value={5}>Zone Bank</MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
+              </div>
+            </div>
+            <div className="px-3 pb-2 mb-3">
+              <div className="sub-head">
+                <h3>Employee Create</h3>
+              </div>
+
+              <div className="d-flex flex-wrap">
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="text"
+                  name="name"
+                  label="Name"
+                  value={employee.name}
+                  onChange={empChangeHandler} 
+                  variant="outlined"
+                />
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="email"
+                  name="email"
+                  label="Email"
+                  value={employee.email}
+                  onChange={empChangeHandler}
+                  variant="outlined"
+                />
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="number"
+                  name="contact"
+                  label="Contact"
+                  value={employee.contact}
+                  onChange={empChangeHandler}
+                  variant="outlined"
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                    value={employee.DOB}
+                    onChange={(e) => {
+                      console.log(e);
+                      setEmployee({
+                        ...employee,
+                        DOB: e,
+                      });
+                    }}
+                    label="Date of Birth"
+                  />
+                </LocalizationProvider>
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="text"
+                  value={employee.department}
+                  name="department"
+                  label="Department"
+                  onChange={empChangeHandler}
+                  variant="outlined"
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                    value={employee.joinningDate}
+                    onChange={(e) =>
+                      setEmployee({
+                        ...employee,
+                        joinningDate: e,
+                      })
+                    }
+                    label="Joinning Date"
+                  />
+                </LocalizationProvider>
+                <TextField
+                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                  type="text"
+                  name="education"
+                  label="Education"
+                  value={employee.education}
+                  onChange={empChangeHandler}
+                  variant="outlined"
+                />
+              </div>
+            </div>
+            <div className="d-flex justify-content-center">
+              <button
+                type="button"
+                className="align-items-center bg-gradient-primary btn d-flex fs-5 justify-content-center px-4 py-2"
+                onClick={createHandler}
+                disabled={loader}
+              >
+                {loader && (
+                  <div class="spinner-border me-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                )}
+                Create
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <div className="row">
+      {/* <div className="row">
         <div className="col-12">
           <div className="card my-4">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -459,8 +637,8 @@ const create = ({ empLevel }) => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="card-body d-flex justify-content-center px-3 pb-2">
+      </div> */}
+      {/* <div className="card-body d-flex justify-content-center px-3 pb-2">
         <div className="col-4">
           <button
             type="button"
@@ -476,7 +654,7 @@ const create = ({ empLevel }) => {
             Create
           </button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

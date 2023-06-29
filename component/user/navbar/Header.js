@@ -69,7 +69,13 @@ const Header = () => {
                             </ul>
                           </li>
                           {loggedIn && (
-                            <li>
+                            <li
+                              className={
+                                router.pathname.includes("/user/transaction")
+                                  ? "active"
+                                  : ""
+                              }
+                            >
                               <a>Transaction</a>
                               <ul className="submenu">
                                 <li>
@@ -88,6 +94,17 @@ const Header = () => {
                                   </Link>
                                 </li>
                               </ul>
+                            </li>
+                          )}
+                          {loggedIn && (
+                            <li
+                              className={
+                                router.pathname == "/user/loan/loanForm"
+                                  ? "active"
+                                  : ""
+                              }
+                            >
+                              <Link href="/user/loan/loanForm">Loan</Link>
                             </li>
                           )}
                           <li

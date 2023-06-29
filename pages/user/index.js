@@ -165,7 +165,7 @@ const index = () => {
             <div className="col-lg-3 col-md-6 col-sm-6">
               <div className="single-cat text-center mb-50">
                 <div className="cat-icon">
-                  <span className="flaticon-loan"></span>
+                  <span className="bi bi-shop"></span>
                 </div>
                 <div className="cat-cap">
                   <h5>
@@ -181,7 +181,7 @@ const index = () => {
             <div className="col-lg-3 col-md-6 col-sm-6">
               <div className="single-cat text-center mb-50">
                 <div className="cat-icon">
-                  <span className="flaticon-loan-1"></span>
+                  <span className="bi bi-cone-striped"></span>
                 </div>
                 <div className="cat-cap">
                   <h5>
@@ -197,7 +197,7 @@ const index = () => {
             <div className="col-lg-3 col-md-6 col-sm-6">
               <div className="single-cat text-center mb-50">
                 <div className="cat-icon">
-                  <span className="flaticon-like"></span>
+                  <span className="bi bi-briefcase"></span>
                 </div>
                 <div className="cat-cap">
                   <h5>

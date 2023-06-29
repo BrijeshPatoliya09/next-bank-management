@@ -7,7 +7,7 @@ import {
   checkName,
   enc,
   keyStore,
-} from "../../../../helper/connection";
+} from "../../../../helper/common";
 
 export default async (req, res) => {
   const {
@@ -63,7 +63,7 @@ export default async (req, res) => {
 
     await dbConnect().insert("bank-management", {
       ...employee,
-      bankId  ,
+      bankId,
       secretKey: tem_secret.base32,
       password: enc(password, keyStore("empPsw")),
       employeeType: 0,
