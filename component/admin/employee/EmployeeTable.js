@@ -64,123 +64,127 @@ const EmployeeTable = ({
 
   return (
     <>
-      <div className="row">
-        <div className="col-12">
-          <div className="card my-4">
-            <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex">
-                <h6 className="text-white text-capitalize ps-3">
-                  Employee table
-                </h6>
+      <div className="row bank-reg">
+        <div className="align-items-center col-12 d-flex">
+          <div className="col-12">
+            <div className="card my-4">
+              <div className="pt-3 px-3 sub-head d-flex">
+                <h3>Employee table</h3>
                 <div className="ms-auto me-3">
                   <button
                     type="button"
                     onClick={() => setToggleFilter(!toggleFilter)}
-                    className="btn text-danger btn-sm mb-0 bg-white"
+                    className="btn btn-bank text-danger btn btn-bank-sm mb-0 bg-white"
                   >
                     Filter
                   </button>
                 </div>
               </div>
-            </div>
-            <div className="card-body px-0 pb-2 ">
+              <hr className="my-2" />
               {toggleFilter && (
-                <div className="filter px-4">
-                  <div className="d-flex justify-content-center">
-                    <TextField
-                      className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
-                      type="text"
-                      name="name"
-                      label="Name"
-                      onChange={changeHandler}
-                      value={filter.name}
-                      variant="outlined"
-                    />
-                    <FormControl className="col-lg-3 col-sm-6 col-12 p-1 mt-2">
-                      <InputLabel id="demo-simple-select-label">
-                        Select Department
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        name="department"
-                        label="Select Department"
-                        onChange={changeHandler}
-                        value={filter.department}
-                      >
-                        {departmentSelect
-                          .filter(
-                            (item, i) => departmentSelect.indexOf(item) == i
-                          )
-                          .map((item, i) => (
-                            <MenuItem key={i} value={item}>
-                              {item}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DateRangePicker
-                        slots={{ field: SingleInputDateRangeField }}
+                <>
+                  <div className="filter px-4">
+                    <div className="d-flex justify-content-center">
+                      <TextField
                         className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
-                        label="Date of joinning"
-                        value={
-                          filter.joinningDate.length == 0
-                            ? [dayjs([]), dayjs([])]
-                            : [
-                                dayjs(new Date(filter.joinningDate[0] * 1000)),
-                                dayjs(new Date(filter.joinningDate[1] * 1000)),
-                              ]
-                        }
-                        onChange={(e) =>
-                          setFilter({
-                            ...filter,
-                            joinningDate: [
-                              Math.floor(e[0]?.$d.getTime() / 1000),
-                              Math.floor(e[1]?.$d.getTime() / 1000),
-                            ],
-                          })
-                        }
+                        type="text"
+                        name="name"
+                        label="Name"
+                        onChange={changeHandler}
+                        value={filter.name}
+                        variant="outlined"
                       />
-                    </LocalizationProvider>
+                      <FormControl className="col-lg-3 col-sm-6 col-12 p-1 mt-2">
+                        <InputLabel id="demo-simple-select-label">
+                          Select Department
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          name="department"
+                          label="Select Department"
+                          onChange={changeHandler}
+                          value={filter.department}
+                        >
+                          {departmentSelect
+                            .filter(
+                              (item, i) => departmentSelect.indexOf(item) == i
+                            )
+                            .map((item, i) => (
+                              <MenuItem key={i} value={item}>
+                                {item}
+                              </MenuItem>
+                            ))}
+                        </Select>
+                      </FormControl>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateRangePicker
+                          slots={{ field: SingleInputDateRangeField }}
+                          className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
+                          label="Date of joinning"
+                          value={
+                            filter.joinningDate.length == 0
+                              ? [dayjs([]), dayjs([])]
+                              : [
+                                  dayjs(
+                                    new Date(filter.joinningDate[0] * 1000)
+                                  ),
+                                  dayjs(
+                                    new Date(filter.joinningDate[1] * 1000)
+                                  ),
+                                ]
+                          }
+                          onChange={(e) =>
+                            setFilter({
+                              ...filter,
+                              joinningDate: [
+                                Math.floor(e[0]?.$d.getTime() / 1000),
+                                Math.floor(e[1]?.$d.getTime() / 1000),
+                              ],
+                            })
+                          }
+                        />
+                      </LocalizationProvider>
+                    </div>
+                    <div className="d-flex justify-content-center">
+                      <button
+                        type="button"
+                        className="btn btn-bank d-flex justify-content-center align-items-center my-4 mb-2"
+                        style={{ fontSize: "14px" }}
+                        onClick={() => {
+                          setApplyFilter(!applyFilter);
+                        }}
+                        disabled={bankEmpLoader}
+                      >
+                        Filter
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-bank d-flex justify-content-center align-items-center ms-3 my-4 mb-2"
+                        style={{ fontSize: "14px" }}
+                        onClick={() => {
+                          onGetEmpData();
+                          setFilter({
+                            name: "",
+                            department: "",
+                            joinningDate: [],
+                          });
+                        }}
+                        disabled={bankEmpLoader}
+                      >
+                        Reset
+                      </button>
+                    </div>
                   </div>
-                  <div className="d-flex justify-content-center">
-                    <button
-                      type="button"
-                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
-                      style={{ fontSize: "14px" }}
-                      onClick={() => {
-                        setApplyFilter(!applyFilter);
-                      }}
-                      disabled={bankEmpLoader}
-                    >
-                      Filter
-                    </button>
-                    <button
-                      type="button"
-                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary ms-3 my-4 mb-2"
-                      style={{ fontSize: "14px" }}
-                      onClick={() => {
-                        onGetEmpData();
-                        setFilter({
-                          name: "",
-                          department: "",
-                          joinningDate: [],
-                        });
-                      }}
-                      disabled={bankEmpLoader}
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </div>
+                  <hr className="my-1" />
+                </>
               )}
-              <div className="table-responsive p-0">
+              <div className="table-responsive p-0 w-100">
                 <table className="table align-items-center justify-content-center mb-0">
                   <thead>
                     <tr>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("name")}
                         >
                           Name
@@ -192,7 +196,7 @@ const EmployeeTable = ({
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("email")}
                         >
                           Email
@@ -204,12 +208,12 @@ const EmployeeTable = ({
                       </th>
                       {empType && (
                         <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 mb- ">
-                          <button className="btn p-0">Password</button>
+                          <button className="btn p-0 m-0">Password</button>
                         </th>
                       )}
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("contact")}
                         >
                           Contact
@@ -221,7 +225,7 @@ const EmployeeTable = ({
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("DOB")}
                         >
                           Date of Birth
@@ -233,7 +237,7 @@ const EmployeeTable = ({
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("education")}
                         >
                           Education
@@ -245,7 +249,7 @@ const EmployeeTable = ({
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("joinningDate")}
                         >
                           Joinning Date
@@ -257,7 +261,7 @@ const EmployeeTable = ({
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("department")}
                         >
                           Department
@@ -269,7 +273,7 @@ const EmployeeTable = ({
                       </th>
                       {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("status")}
                         >
                           Status
@@ -281,7 +285,7 @@ const EmployeeTable = ({
                       </th> */}
                       {empType && (
                         <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                          <button className="btn p-0">Action</button>
+                          <button className="btn p-0 m-0">Action</button>
                         </th>
                       )}
                       {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
@@ -359,7 +363,7 @@ const EmployeeTable = ({
                               <td>
                                 <button
                                   type="button"
-                                  className="btn btn-outline-primary btn-sm mb-0"
+                                  className="btn btn-bank btn btn-bank-outline-primary btn btn-bank-sm mb-0"
                                   style={{ fontSize: "14px" }}
                                   onClick={() => {
                                     onSetEmpEdit(item);
@@ -418,7 +422,7 @@ const EmployeeTable = ({
                           </div>
                         </td>
                         <td className="align-middle">
-                          <button className="btn btn-link text-secondary mb-0">
+                          <button className="btn btn-bank btn btn-bank-link text-secondary mb-0">
                             <i className="fa fa-ellipsis-v text-xs"></i>
                           </button>
                         </td>
@@ -429,13 +433,13 @@ const EmployeeTable = ({
               <div
                 className={`d-flex ${
                   empType ? "justify-content-between" : "justify-content-end"
-                } px-3 pb-2`}
+                } px-3 pb-2 w-100`}
               >
                 {empType && (
                   <div>
                     <button
                       type="button"
-                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
+                      className="btn btn-bank d-flex justify-content-center align-items-center my-4 mb-2"
                       style={{ fontSize: "14px" }}
                       onClick={() => {
                         onSetEmpEdit("");
@@ -450,13 +454,22 @@ const EmployeeTable = ({
                   <div className="d-flex justify-content-center align-items-center">
                     <ReactPaginate
                       breakLabel="..."
-                      nextLabel="next >"  
-                      className="pageinate my-4 mb-2"
+                      nextLabel="Next"
                       onPageChange={(e) => setPage(e.selected)}
                       pageRangeDisplayed={3}
                       // forcePage={page}
+                      pageLinkClassName="page-link"
+                      breakLinkClassName="page-link"
+                      nextLinkClassName="page-link"
+                      previousLinkClassName="page-link"
+                      pageClassName="page-item"
+                      breakClassName="page-item"
+                      nextClassName="page-item"
+                      previousClassName="page-item"
+                      className="pageinate my-4 mb-2"
+                      activeClassName="active"
                       pageCount={Math.ceil(empCount / 8)}
-                      previousLabel="< previous"
+                      previousLabel="Pev"
                       renderOnZeroPageCount={null}
                     />
                   </div>

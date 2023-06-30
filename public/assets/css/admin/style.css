@@ -1,0 +1,109 @@
+.tree_hover {
+  background-color: white;
+  transition: all 0.3s;
+}
+
+.tree_hover:hover {
+  background-color: #edf2f5;
+}
+
+.tree_active {
+  background-color: rgb(33, 98, 115) !important;
+  color: white !important;
+}
+
+.tree_highlight {
+  background-color: #c4d4db !important;
+  /* color: white; */
+}
+
+.pageinate {
+  list-style: none !important;
+  display: flex !important;
+  justify-content: space-around !important;
+}
+
+.pageinate li a {
+  user-select: none !important;
+  cursor: pointer !important;
+  padding: 15px !important;
+  border-radius: 8px !important;
+  background-color: white !important;
+}
+
+.pageinate .selected a {
+  font-size: 15px !important;
+  background-color: #ec407a !important;
+  color: white !important;
+  padding: 18px !important;
+}
+
+.table
+  .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.btn.bg-gradient-primary:not(:disabled):not(.disabled):active {
+  color: white !important;
+}
+
+.btn-outline-primary:hover:not(.active) {
+  border-color: #e91e63 !important;
+}
+
+.bank-reg .card .sub-head h3 {
+  font-size: 20px !important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  /* letter-spacing: 4px; */
+}
+.bank-reg .card {
+  background-color: #f4f8f8 !important;
+}
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+  background-color: white !important;
+}
+.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+  background-color: white !important;
+}
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  background-color: white !important;
+}
+
+.bank-reg .btn-bank {
+  background-color: rgb(33, 98, 115) !important;
+  color: white !important;
+}
+
+.bank-reg .btn-bank:hover {
+  box-shadow: 0 14px 26px -12px rgba(139, 206, 222, 0.4),
+    0 4px 23px 0 rgba(139, 206, 222, 0.15),
+    0 8px 10px -5px rgba(139, 206, 222, 0.2);
+}
+
+.paginate .page-item a,
+.paginate .page-item a {
+  background-color: rgb(33, 98, 115) !important;
+  color: white;
+}
+
+.pageinate .page-item .page-link {
+  padding: 17px !important;
+  color: rgb(33, 98, 115) !important;
+  border: 2px solid rgb(33, 98, 115);
+  border-radius: 0 !important;
+  margin: 0;
+}
+.pageinate .page-item .page-link:hover {
+  background-color: rgb(222, 235, 238) !important;
+}
+
+.pageinate .active .page-link {
+  background-color: rgb(33, 98, 115) !important;
+  color: white !important;
+}
+
+/* .pageinate .active {
+  padding: 30px;
+} */

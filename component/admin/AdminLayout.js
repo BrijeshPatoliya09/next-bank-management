@@ -62,6 +62,8 @@ const AdminLayout = ({ children }) => {
           href="/assets/css/admin/template/material-dashboard.css?v=3.0.0"
           rel="stylesheet"
         />
+        <link href="/assets/css/admin/style.css" rel="stylesheet" />
+        
       </Head>
       <body>
         {loader ? (

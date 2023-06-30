@@ -76,13 +76,26 @@ const table = ({ data, empData, treeSelectBox }) => {
 
   return (
     <>
-      <BankTree
-        data={data}
-        setActiveEmployeeData={setActiveEmployeeData}
-        activeEmployee={activeEmployee.bankId}
-        select={treeSelectBox}
-      />
-      <BankShowEdit bankData={bankData[0]} onGetEmpData={getEmployeeData} empType={empType} />
+      <div className="row bank-reg">
+        <div className="col-12 d-flex">
+          <div className="col-6 px-2 me-2">
+            <BankTree
+              data={data}
+              setActiveEmployeeData={setActiveEmployeeData}
+              activeEmployee={activeEmployee.bankId}
+              select={treeSelectBox}
+            />
+          </div>
+          <div className="col-6 px-2">
+            <BankShowEdit
+              bankData={bankData[0]}
+              onGetEmpData={getEmployeeData}
+              empType={empType}
+            />
+          </div>
+        </div>
+      </div>
+
       {empModel == 0 && (
         <EmployeeTable
           employeeData={employeeData}

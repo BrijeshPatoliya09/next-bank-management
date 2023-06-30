@@ -81,10 +81,13 @@ const CustomContent = React.forwardRef(function CustomContent(props, ref) {
       <Typography
         onClick={handleSelectionClick}
         component="div"
-        className={`${classes.label} card d-flex px-3 py-2 w-100 ${
+        className={`${classes.label} d-flex px-3 py-2 w-100 ${
           label.active ? "tree_active border border-0" : "tree_hover"
         } ${label.highLight ? (!label.active ? "tree_highlight" : "") : ""}`}
-        style={{ borderLeft: `3px solid ${label.color ? label.color : "red"}` }}
+        style={{
+          borderLeft: `3px solid ${label.color ? label.color : "red"}`,
+          borderRadius: "8px",
+        }}
       >
         {label.color ? label.title : label}
       </Typography>
