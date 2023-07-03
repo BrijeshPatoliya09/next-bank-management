@@ -5,6 +5,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Autocomplete,
 } from "@mui/material";
 import { Country, State, City } from "country-state-city";
 import { SingleInputTimeRangeField } from "@mui/x-date-pickers-pro";
@@ -185,7 +186,7 @@ const create = ({ empLevel }) => {
   return (
     <>
       <div className="row bank-reg">
-        <div className="align-items-center col-12 d-flex">
+        <div className="col-12 d-flex">
           <div className="col-6 px-2 me-2">
             <div className="col-12">
               <div className="card my-4">
@@ -243,67 +244,79 @@ const create = ({ empLevel }) => {
                   </div>
                   <hr />
                   <div className="d-flex flex-wrap px-3">
-                    <FormControl className="col-sm-6 col-12 p-1 mt-2">
-                      <InputLabel id="demo-simple-select-label">
-                        Select Country
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        name="country"
-                        value={address.country}
-                        label="Select Country"
-                        onChange={handleAdressChange}
-                      >
-                        {Country.getAllCountries().map((country, i) => (
-                          <MenuItem value={country.name} key={i}>
-                            {country.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormControl className="col-sm-6 col-12 p-1 mt-2">
-                      <InputLabel id="demo-simple-select-label">
-                        Select State
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        name="state"
-                        value={address.state}
-                        label="Select State"
-                        onChange={handleAdressChange}
-                        disabled={!address.country}
-                      >
-                        {State.getStatesOfCountry(
-                          getIsoCode(address.country, "country") || ""
-                        ).map((state, i) => (
-                          <MenuItem value={state.name} key={i}>
-                            {state.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormControl className="col-sm-6 col-12 p-1 mt-2">
-                      <InputLabel id="demo-simple-select-label">
-                        Select City
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        name="city"
-                        value={address.city}
-                        label="Select City"
-                        onChange={handleAdressChange}
-                        disabled={!address.country || !address.state}
-                      >
-                        {City.getCitiesOfState(
-                          getIsoCode(address.country, "country") || "",
-                          getIsoCode(address.state, "state", address.country)
-                        ).map((city, i) => (
-                          <MenuItem value={city.name} key={i}>
-                            {city.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <Autocomplete
+                      className="col-sm-6 col-12 p-1 mt-2"
+                      onChange={(event, newValue) => {
+                        if (newValue) {
+                          setAddress({ ...address, country: newValue.value });
+                        } else {
+                          setAddress({ ...address, country: "" });
+                        }
+                      }}
+                      value={
+                        address.country
+                          ? { value: address.country, label: address.country }
+                          : null
+                      }
+                      options={Country.getAllCountries().map((country, i) => ({
+                        label: country.name,
+                        value: country.name,
+                      }))}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Select Country" />
+                      )}
+                    />
+                    <Autocomplete
+                      className="col-sm-6 col-12 p-1 mt-2"
+                      onChange={(event, newValue) => {
+                        if (newValue) {
+                          setAddress({ ...address, state: newValue.value });
+                        } else {
+                          setAddress({ ...address, state: "" });
+                        }
+                      }}
+                      value={
+                        address.state
+                          ? { value: address.state, label: address.state }
+                          : null
+                      }
+                      options={State.getStatesOfCountry(
+                        getIsoCode(address.country, "country") || ""
+                      ).map((state, i) => ({
+                        label: state.name,
+                        value: state.name,
+                      }))}
+                      disabled={!address.country}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Select State" />
+                      )}
+                    />
+                    <Autocomplete
+                      className="col-sm-6 col-12 p-1 mt-2"
+                      onChange={(event, newValue) => {
+                        if (newValue) {
+                          setAddress({ ...address, city: newValue.value });
+                        } else {
+                          setAddress({ ...address, city: "" });
+                        }
+                      }}
+                      value={
+                        address.city
+                          ? { value: address.city, label: address.city }
+                          : null
+                      }
+                      options={City.getCitiesOfState(
+                        getIsoCode(address.country, "country") || "",
+                        getIsoCode(address.state, "state", address.country)
+                      ).map((city, i) => ({
+                        label: city.name,
+                        value: city.name,
+                      }))}
+                      disabled={!address.country || !address.state}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Select City" />
+                      )}
+                    />
                     <TextField
                       className="col-sm-6 col-12 p-1 mt-2"
                       name="zone"

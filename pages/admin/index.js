@@ -8,10 +8,10 @@ export default function Home() {
           <div className="card">
             <div className="card-header p-3 pt-2">
               <div className="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                <i className="material-icons opacity-10">weekend</i>
+                <i className="material-icons opacity-10">assignment_ind</i>
               </div>
               <div className="text-end pt-1">
-                <p className="text-sm mb-0 text-capitalize">Today's Money</p>
+                <p className="text-sm mb-0 text-capitalize">Total Employee</p>
                 <h4 className="mb-0">$53k</h4>
               </div>
             </div>
@@ -52,7 +52,7 @@ export default function Home() {
           <div className="card">
             <div className="card-header p-3 pt-2">
               <div className="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                <i className="material-icons opacity-10">person</i>
+                <i className="material-icons opacity-10">monetization_on</i>
               </div>
               <div className="text-end pt-1">
                 <p className="text-sm mb-0 text-capitalize">New Clients</p>
@@ -74,7 +74,7 @@ export default function Home() {
           <div className="card">
             <div className="card-header p-3 pt-2">
               <div className="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                <i className="material-icons opacity-10">weekend</i>
+                <i className="material-icons opacity-10">group</i>
               </div>
               <div className="text-end pt-1">
                 <p className="text-sm mb-0 text-capitalize">Sales</p>
@@ -706,6 +706,18 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
   const user = req.session.admin;
 
   if (user) {
+    // const homeRes = await fetch(
+    //   `${process.env.apiUrl}/admin/employee/getData`,
+    //   {
+    //     method: "PUT",
+    //     body: JSON.stringify({ userId: user.userId }),
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
+    // const homeData = await homeRes.json();
+
     return {
       props: {},
     };

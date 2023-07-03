@@ -70,7 +70,20 @@ const EmployeeTable = ({
             <div className="card my-4">
               <div className="pt-3 px-3 sub-head d-flex">
                 <h3>Employee table</h3>
-                <div className="ms-auto me-3">
+                <div className="ms-auto me-3 d-flex">
+                  {empType && (
+                    <button
+                      type="button"
+                      className="d-flex justify-content-center align-items-center btn btn-bank text-danger btn btn-bank-sm mb-0 me-3 bg-white"
+                      style={{ fontSize: "14px" }}
+                      onClick={() => {
+                        onSetEmpEdit("");
+                        onSetEmpModel(1);
+                      }}
+                    >
+                      Add Employee
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={() => setToggleFilter(!toggleFilter)}
@@ -430,49 +443,28 @@ const EmployeeTable = ({
                   </tbody>
                 </table>
               </div>
-              <div
-                className={`d-flex ${
-                  empType ? "justify-content-between" : "justify-content-end"
-                } px-3 pb-2 w-100`}
-              >
-                {empType && (
-                  <div>
-                    <button
-                      type="button"
-                      className="btn btn-bank d-flex justify-content-center align-items-center my-4 mb-2"
-                      style={{ fontSize: "14px" }}
-                      onClick={() => {
-                        onSetEmpEdit("");
-                        onSetEmpModel(1);
-                      }}
-                    >
-                      Add Employee
-                    </button>
-                  </div>
-                )}
+              <div className="d-flex justify-content-end px-3 pb-2 w-100">
                 {!bankEmpLoader && (
-                  <div className="d-flex justify-content-center align-items-center">
-                    <ReactPaginate
-                      breakLabel="..."
-                      nextLabel="Next"
-                      onPageChange={(e) => setPage(e.selected)}
-                      pageRangeDisplayed={3}
-                      // forcePage={page}
-                      pageLinkClassName="page-link"
-                      breakLinkClassName="page-link"
-                      nextLinkClassName="page-link"
-                      previousLinkClassName="page-link"
-                      pageClassName="page-item"
-                      breakClassName="page-item"
-                      nextClassName="page-item"
-                      previousClassName="page-item"
-                      className="pageinate my-4 mb-2"
-                      activeClassName="active"
-                      pageCount={Math.ceil(empCount / 8)}
-                      previousLabel="Pev"
-                      renderOnZeroPageCount={null}
-                    />
-                  </div>
+                  <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="Next"
+                    onPageChange={(e) => setPage(e.selected)}
+                    pageRangeDisplayed={3}
+                    // forcePage={page}
+                    pageLinkClassName="page-link"
+                    breakLinkClassName="page-link"
+                    nextLinkClassName="page-link"
+                    previousLinkClassName="page-link"
+                    pageClassName="page-item"
+                    breakClassName="page-item"
+                    nextClassName="page-item"
+                    previousClassName="page-item"
+                    className="pageinate my-4 mb-2"
+                    activeClassName="active"
+                    pageCount={Math.ceil(empCount / 8)}
+                    previousLabel="Pev"
+                    renderOnZeroPageCount={null}
+                  />
                 )}
               </div>
             </div>

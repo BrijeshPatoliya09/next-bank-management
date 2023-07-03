@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
+import {} from "@mui/material";
 import { Country, State, City } from "country-state-city";
 import { SingleInputTimeRangeField } from "@mui/x-date-pickers-pro";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -188,55 +183,89 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
 
   return (
     <>
-      <div className="col-12">
-        <div className="card my-4">
+      <div className="col-12" style={{ height: "95%" }}>
+        <div className="card my-4" style={{ height: "95%" }}>
           <div className="pb-2 mb-3">
             <div className="pt-3 px-3 sub-head">
               <h3>Bank Details</h3>
             </div>
             <hr />
             <div className="d-flex flex-wrap px-3">
-              <FormControl className="col-sm-6 col-12 p-1 mt-2">
-                <InputLabel id="demo-simple-select-label">
-                  Select Country
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  name="country"
-                  value={address.country}
-                  label="Select Country"
-                  onChange={handleAdressChange}
-                  disabled={!editMode}
-                >
-                  {Country.getAllCountries().map((country, i) => (
-                    <MenuItem value={country.name} key={i}>
-                      {country.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl className="col-sm-6 col-12 p-1 mt-2">
-                <InputLabel id="demo-simple-select-label">
-                  Select State
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  name="state"
-                  value={address.state}
-                  label="Select State"
-                  onChange={handleAdressChange}
-                  disabled={!address.country || !editMode}
-                >
-                  {State.getStatesOfCountry(
-                    getIsoCode(address.country, "country") || ""
-                  ).map((state, i) => (
-                    <MenuItem value={state.name} key={i}>
-                      {state.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl className="col-sm-6 col-12 p-1 mt-2">
+              <Autocomplete
+                className="col-sm-6 col-12 p-1 mt-2"
+                onChange={(event, newValue) => {
+                  if (newValue) {
+                    setAddress({ ...address, country: newValue.value });
+                  } else {
+                    setAddress({ ...address, country: "" });
+                  }
+                }}
+                value={
+                  address.country
+                    ? { value: address.country, label: address.country }
+                    : null
+                }
+                options={Country.getAllCountries().map((country, i) => ({
+                  label: country.name,
+                  value: country.name,
+                }))}
+                disabled={!editMode}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select Country" />
+                )}
+              />
+              <Autocomplete
+                className="col-sm-6 col-12 p-1 mt-2"
+                onChange={(event, newValue) => {
+                  if (newValue) {
+                    setAddress({ ...address, state: newValue.value });
+                  } else {
+                    setAddress({ ...address, state: "" });
+                  }
+                }}
+                value={
+                  address.state
+                    ? { value: address.state, label: address.state }
+                    : null
+                }
+                options={State.getStatesOfCountry(
+                  getIsoCode(address.country, "country") || ""
+                ).map((state, i) => ({
+                  label: state.name,
+                  value: state.name,
+                }))}
+                disabled={!address.country || !editMode}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select State" />
+                )}
+              />
+              <Autocomplete
+                className="col-sm-6 col-12 p-1 mt-2"
+                onChange={(event, newValue) => {
+                  if (newValue) {
+                    setAddress({ ...address, city: newValue.value });
+                  } else {
+                    setAddress({ ...address, city: "" });
+                  }
+                }}
+                value={
+                  address.city
+                    ? { value: address.city, label: address.city }
+                    : null
+                }
+                options={City.getCitiesOfState(
+                  getIsoCode(address.country, "country") || "",
+                  getIsoCode(address.state, "state", address.country)
+                ).map((city, i) => ({
+                  label: city.name,
+                  value: city.name,
+                }))}
+                disabled={!address.country || !address.state || !editMode}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select City" />
+                )}
+              />
+              {/* <FormControl className="col-sm-6 col-12 p-1 mt-2">
                 <InputLabel id="demo-simple-select-label">
                   Select City
                 </InputLabel>
@@ -257,7 +286,7 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>
+              </FormControl> */}
               <TextField
                 className="col-sm-6 col-12 p-1 mt-2"
                 name="zone"

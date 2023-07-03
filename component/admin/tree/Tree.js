@@ -185,12 +185,12 @@ export default function Tree({
     <>
       <TreeView
         aria-label="customized"
+        className="w-100"
         expanded={
-          expand.length > 0
-            ? expand
-            : selectCheck &&
-              selectCheck !== highLight &&
-              select[0].level !== treeData.level
+          (selectCheck &&
+            selectCheck !== highLight &&
+            select[0].level !== treeData.level) ||
+          treeData.level == 1
             ? [treeData._id]
             : expand
         }

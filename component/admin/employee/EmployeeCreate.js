@@ -120,117 +120,116 @@ const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
   };
   return (
     <>
-      <div className="row">
-        <div className="col-12">
-          <div className="card my-4">
-            <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 className="text-white text-capitalize ps-3">
-                  Employee {!empEdit ? "Create" : "Edit"}
-                </h6>
-              </div>
-            </div>
-            <div className="card-body px-3 pb-2">
-              <div className="d-flex flex-wrap">
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="text"
-                  name="name"
-                  label="Name"
-                  value={employee.name}
-                  onChange={changeHandler}
-                  variant="outlined"
-                />
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="email"
-                  name="email"
-                  label="Email"
-                  value={employee.email}
-                  onChange={changeHandler}
-                  variant="outlined"
-                />
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="number"
-                  name="contact"
-                  label="Contact"
-                  value={employee.contact}
-                  onChange={changeHandler}
-                  variant="outlined"
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                    value={employee.DOB}
-                    onChange={(e) => {
-                      console.log(e);
-                      setEmployee({
-                        ...employee,
-                        DOB: e,
-                      });
-                    }}
-                    label="Date of Birth"
-                  />
-                </LocalizationProvider>
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="text"
-                  value={employee.department}
-                  name="department"
-                  label="Department"
-                  onChange={changeHandler}
-                  variant="outlined"
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                    value={employee.joinningDate}
-                    onChange={(e) =>
-                      setEmployee({
-                        ...employee,
-                        joinningDate: e,
-                      })
-                    }
-                    label="Joinning Date"
-                  />
-                </LocalizationProvider>
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="text"
-                  name="education"
-                  label="Education"
-                  value={employee.education}
-                  onChange={changeHandler}
-                  variant="outlined"
-                />
-              </div>
-              <div className=" d-flex justify-content-center px-3 pb-2">
-                <div>
-                  <button
-                    type="button"
-                    className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
-                    style={{ fontSize: "14px" }}
-                    onClick={createHandler}
-                    disabled={loader}
-                  >
-                    {loader && (
-                      <div class="spinner-border me-2" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                    )}
-                    {!empEdit ? "Create" : "Edit"}
-                  </button>
+      <div className="row bank-reg">
+        <div className="align-items-center col-12 d-flex">
+          <div className="col-12">
+            <div className="card my-4">
+              <div className="pb-2 mb-3">
+                <div className="pt-3 px-3 sub-head">
+                  <h3>Employee {!empEdit ? "Create" : "Edit"}</h3>
                 </div>
-                <div className="ms-4">
-                  <button
-                    type="button"
-                    className="btn bg-gradient-primary bg-gradient-primary my-4 mb-2"
-                    style={{ fontSize: "14px" }}
-                    onClick={() => onSetEmpModel(0)}
-                  >
-                    Cancel
-                  </button>
+                <hr />
+                <div className="d-flex flex-wrap px-3">
+                  <TextField
+                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                    type="text"
+                    name="name"
+                    label="Name"
+                    value={employee.name}
+                    onChange={changeHandler}
+                    variant="outlined"
+                  />
+                  <TextField
+                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                    type="email"
+                    name="email"
+                    label="Email"
+                    value={employee.email}
+                    onChange={changeHandler}
+                    variant="outlined"
+                  />
+                  <TextField
+                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                    type="number"
+                    name="contact"
+                    label="Contact"
+                    value={employee.contact}
+                    onChange={changeHandler}
+                    variant="outlined"
+                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                      value={employee.DOB ? employee.DOB : null}
+                      onChange={(e) => {
+                        console.log(e);
+                        setEmployee({
+                          ...employee,
+                          DOB: e,
+                        });
+                      }}
+                      label="Date of Birth"
+                    />
+                  </LocalizationProvider>
+                  <TextField
+                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                    type="text"
+                    value={employee.department}
+                    name="department"
+                    label="Department"
+                    onChange={changeHandler}
+                    variant="outlined"
+                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                      value={employee.joinningDate ? employee.joinningDate : null}
+                      onChange={(e) =>
+                        setEmployee({
+                          ...employee,
+                          joinningDate: e,
+                        })
+                      }
+                      label="Joinning Date"
+                    />
+                  </LocalizationProvider>
+                  <TextField
+                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
+                    type="text"
+                    name="education"
+                    label="Education"
+                    value={employee.education}
+                    onChange={changeHandler}
+                    variant="outlined"
+                  />
+                </div>
+                <div className=" d-flex justify-content-center px-3 pb-2">
+                  <div>
+                    <button
+                      type="button"
+                      className="btn btn-bank d-flex justify-content-center align-items-center my-4 mb-2"
+                      style={{ fontSize: "14px" }}
+                      onClick={createHandler}
+                      disabled={loader}
+                    >
+                      {loader && (
+                        <div class="spinner-border me-2" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      )}
+                      {!empEdit ? "Create" : "Edit"}
+                    </button>
+                  </div>
+                  <div className="ms-4">
+                    <button
+                      type="button"
+                      className="btn btn-bank my-4 mb-2"
+                      style={{ fontSize: "14px" }}
+                      onClick={() => onSetEmpModel(0)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

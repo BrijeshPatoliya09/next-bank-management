@@ -17,7 +17,7 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark"
+        className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
         id="sidenav-main"
       >
         <div className="sidenav-header">
@@ -32,7 +32,7 @@ const Sidebar = () => {
               className="navbar-brand-img h-100"
               alt="main_logo"
             />
-            <span className="ms-1 font-weight-bold text-white">Dashboard</span>
+            <span className="ms-1 font-weight-bold">Dashboard</span>
           </Link>
         </div>
         <hr className="horizontal light mt-0 mb-2" />
@@ -43,12 +43,10 @@ const Sidebar = () => {
           <ul className="navbar-nav">
             <li className="nav-item">
               <Link
-                className={`nav-link text-white ${
-                  path == "/admin" ? "active bg-gradient-primary" : ""
-                }`}
+                className={`nav-link  ${path == "/admin" ? "active" : ""}`}
                 href="/admin"
               >
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">dashboard</i>
                 </span>
                 <span className="nav-link-text ms-1">Dashboard</span>
@@ -56,12 +54,12 @@ const Sidebar = () => {
             </li>
             <li className="nav-item">
               <Link
-                className={`nav-link text-white ${
-                  path == "/admin/table" ? "active bg-gradient-primary" : ""
+                className={`nav-link  ${
+                  path == "/admin/table" ? "active" : ""
                 }`}
                 href="/admin/table"
               >
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">table_view</i>
                 </span>
                 <span className="nav-link-text ms-1">Employee</span>
@@ -69,14 +67,12 @@ const Sidebar = () => {
             </li>
             <li className="nav-item">
               <Link
-                className={`nav-link text-white ${
-                  path == "/admin/bank/create"
-                    ? "active bg-gradient-primary"
-                    : ""
+                className={`nav-link  ${
+                  path == "/admin/bank/create" ? "active" : ""
                 }`}
                 href="/admin/bank/create"
               >
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">local_pharmacy</i>
                 </span>
                 <span className="nav-link-text ms-1">Bank Registration</span>
@@ -84,14 +80,12 @@ const Sidebar = () => {
             </li>
             <li className="nav-item">
               <Link
-                className={`nav-link text-white ${
-                  path == "/admin/user/userTable"
-                    ? "active bg-gradient-primary"
-                    : ""
+                className={`nav-link  ${
+                  path == "/admin/user/userTable" ? "active" : ""
                 }`}
                 href="/admin/user/userTable"
               >
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="bi bi-person-lines-fill fs-5"></i>
                 </span>
                 <span className="nav-link-text ms-1">User Table</span>
@@ -99,14 +93,12 @@ const Sidebar = () => {
             </li>
             <li className="nav-item">
               <Link
-                className={`nav-link text-white ${
-                  path == "/admin/transaction/transactionTable"
-                    ? "active bg-gradient-primary"
-                    : ""
+                className={`nav-link  ${
+                  path == "/admin/transaction/transactionTable" ? "active" : ""
                 }`}
                 href="/admin/transaction/transactionTable"
               >
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="bi bi-cash-coin fs-5"></i>
                 </span>
                 <span className="nav-link-text ms-1">Transaction Table</span>
@@ -114,31 +106,25 @@ const Sidebar = () => {
             </li>
             <li className="nav-item">
               <Link
-                className={`nav-link text-white ${
-                  path == "/admin/loan/loanTable"
-                    ? "active bg-gradient-primary"
-                    : ""
+                className={`nav-link  ${
+                  path == "/admin/loan/loanTable" ? "active" : ""
                 }`}
                 href="/admin/loan/loanTable"
               >
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="bi bi-piggy-bank-fill fs-5"></i>
                 </span>
                 <span className="nav-link-text ms-1">Loan Table</span>
               </Link>
             </li>
             <li className="nav-item mt-3">
-              <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+              <h6 className="ps-4 ms-2 text-uppercase text-xs  font-weight-bolder opacity-8">
                 Account pages
               </h6>
             </li>
             <li className="nav-item">
-              <a
-                type="button"
-                className="nav-link text-white "
-                onClick={logoutHandler}
-              >
-                <span className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <a type="button" className="nav-link  " onClick={logoutHandler}>
+                <span className="text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">logout</i>
                 </span>
                 <span className="nav-link-text ms-1">Logout</span>
@@ -153,17 +139,6 @@ const Sidebar = () => {
               </Link>
             </li> */}
           </ul>
-        </div>
-        <div className="sidenav-footer position-absolute w-100 bottom-0 ">
-          <div className="mx-3">
-            <a
-              className="btn bg-gradient-primary mt-4 w-100"
-              href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree"
-              type="button"
-            >
-              Upgrade to pro
-            </a>
-          </div>
         </div>
       </div>
     </>

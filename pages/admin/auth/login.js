@@ -21,7 +21,7 @@ const login = () => {
   };
 
   console.log(dec("c/LRvYkTLK4RT/Y3", keyStore("empPsw")));
-  
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -127,7 +127,7 @@ const login = () => {
                         <>
                           <div className="input-group input-group-outline my-3">
                             <input
-                              type="number"
+                              type="text"
                               name="pin"
                               className="form-control"
                               placeholder="OTP"

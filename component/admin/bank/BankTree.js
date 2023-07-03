@@ -48,7 +48,7 @@ const BankTree = ({ data, setActiveEmployeeData, activeEmployee, select }) => {
             </div>
             <hr />
             <div
-              className="d-flex flex-wrap px-3"
+              className="d-flex flex-wrap px-3 w-100"
               style={{ height: "330px", overflowY: "scroll" }}
             >
               {data.map((item) => (

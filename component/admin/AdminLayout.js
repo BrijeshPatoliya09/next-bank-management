@@ -6,6 +6,7 @@ import FixedPlugin from "./Navbar/FixedPlugin";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ToastContainer } from "react-toastify";
+import NextNProgress from "nextjs-progressbar";
 
 const AdminLayout = ({ children }) => {
   const router = useRouter();
@@ -63,7 +64,6 @@ const AdminLayout = ({ children }) => {
           rel="stylesheet"
         />
         <link href="/assets/css/admin/style.css" rel="stylesheet" />
-        
       </Head>
       <body>
         {loader ? (
@@ -79,6 +79,7 @@ const AdminLayout = ({ children }) => {
                 {sideBar && <Sidebar />}
                 <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
                   <Topbar />
+                  <NextNProgress color="#216273" />
                   <div className="container-fluid py-4">
                     {children}
                     <Footer />

@@ -70,6 +70,9 @@
 .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
   background-color: white !important;
 }
+.css-wb57ya-MuiFormControl-root-MuiTextField-root {
+  background-color: white !important;
+}
 
 .bank-reg .btn-bank {
   background-color: rgb(33, 98, 115) !important;
@@ -104,6 +107,25 @@
   color: white !important;
 }
 
-/* .pageinate .active {
-  padding: 30px;
-} */
+.sidenav {
+  background-color: #f4f8f8 !important;
+}
+
+.sidenav .navbar-nav .nav-link,
+.sidenav .sidenav-header .navbar-brand {
+  color: rgb(33, 98, 115) !important;
+}
+
+.sidenav .navbar-nav .active {
+  background-color: #216273 !important;
+  color: white !important;
+}
+
+#nprogress .spinner {
+  display: none !important;
+}
+
+.search-toggle img {
+  width: 65px;
+  height: 65px;
+}

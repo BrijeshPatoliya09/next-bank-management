@@ -109,130 +109,134 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
 
   return (
     <>
-      <BankTree
-        data={data}
-        setActiveEmployeeData={setActiveEmployeeData}
-        activeEmployee={activeEmployee.bankId}
-        select={treeSelectBox}
-      />
-      <div className="row">
-        <div className="col-12">
-          <div className="card my-4">
-            <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex">
-                <h6 className="text-white text-capitalize ps-3">
-                  Transaction Table
-                </h6>
+      <div className="row bank-reg">
+        <div className="col-12 d-flex">
+          <BankTree
+            data={data}
+            setActiveEmployeeData={setActiveEmployeeData}
+            activeEmployee={activeEmployee.bankId}
+            select={treeSelectBox}
+          />
+        </div>
+      </div>
+      <div className="row bank-reg">
+        <div className="align-items-center col-12 d-flex">
+          <div className="col-12">
+            <div className="card my-4">
+              <div className="pt-3 px-3 sub-head d-flex">
+                <h3>Transaction Table</h3>
                 <div className="ms-auto me-3">
                   <button
                     type="button"
                     onClick={() => setToggleFilter(!toggleFilter)}
-                    className="btn text-danger btn-sm mb-0 bg-white"
+                    className="btn btn-bank text-danger btn btn-bank-sm mb-0 bg-white"
                   >
                     Filter
                   </button>
                 </div>
               </div>
-            </div>
-            <div className="card-body px-0 pb-2 ">
+              <hr className="my-2" />
               {toggleFilter && (
-                <div className="filter px-4">
-                  <div className="d-flex justify-content-center">
-                    <TextField
-                      className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
-                      type="text"
-                      label="From"
-                      onChange={(e) =>
-                        setFilter({ ...filter, user: e.target.value })
-                      }
-                      value={filter.user}
-                      variant="outlined"
-                    />
-                    <TextField
-                      className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
-                      type="text"
-                      label="To"
-                      onChange={(e) =>
-                        setFilter({ ...filter, from: e.target.value })
-                      }
-                      value={filter.from}
-                      variant="outlined"
-                    />
-                    <FormControl className="col-lg-3 col-sm-6 col-12 p-1 mt-2">
-                      <InputLabel id="demo-simple-select-label">
-                        Select Type
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        label="Select Type"
-                        onChange={(e) =>
-                          setFilter({ ...filter, type: e.target.value })
-                        }
-                        value={filter.type}
-                      >
-                        <MenuItem value="b2b">Bank to Bank</MenuItem>
-                        <MenuItem value="b2c">Bank to Customer</MenuItem>
-                        <MenuItem value="c2b">Customer to Bank</MenuItem>
-                        <MenuItem value="c2c">Customer to Customer</MenuItem>
-                        <MenuItem value="Loan">Loan</MenuItem>
-                        <MenuItem value="Penalty">Penalty</MenuItem>
-                        <MenuItem value="Interest">Interest</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DateRangePicker
-                        slots={{ field: SingleInputDateRangeField }}
+                <>
+                  <div className="filter px-4">
+                    <div className="d-flex justify-content-center">
+                      <TextField
                         className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
-                        label="Created At"
-                        value={[
-                          dayjs(new Date(filter.createdAt[0] * 1000)),
-                          dayjs(new Date(filter.createdAt[1] * 1000)),
-                        ]}
+                        type="text"
+                        label="From"
                         onChange={(e) =>
-                          setFilter({
-                            ...filter,
-                            createdAt: [
-                              Math.floor(e[0]?.$d.getTime() / 1000),
-                              Math.floor(e[1]?.$d.getTime() / 1000),
-                            ],
-                          })
+                          setFilter({ ...filter, user: e.target.value })
                         }
+                        value={filter.user}
+                        variant="outlined"
                       />
-                    </LocalizationProvider>
+                      <TextField
+                        className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
+                        type="text"
+                        label="To"
+                        onChange={(e) =>
+                          setFilter({ ...filter, from: e.target.value })
+                        }
+                        value={filter.from}
+                        variant="outlined"
+                      />
+                      <FormControl className="col-lg-3 col-sm-6 col-12 p-1 mt-2">
+                        <InputLabel id="demo-simple-select-label">
+                          Select Type
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          label="Select Type"
+                          onChange={(e) =>
+                            setFilter({ ...filter, type: e.target.value })
+                          }
+                          value={filter.type}
+                        >
+                          <MenuItem value="b2b">Bank to Bank</MenuItem>
+                          <MenuItem value="b2c">Bank to Customer</MenuItem>
+                          <MenuItem value="c2b">Customer to Bank</MenuItem>
+                          <MenuItem value="c2c">Customer to Customer</MenuItem>
+                          <MenuItem value="Loan">Loan</MenuItem>
+                          <MenuItem value="Penalty">Penalty</MenuItem>
+                          <MenuItem value="Interest">Interest</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateRangePicker
+                          slots={{ field: SingleInputDateRangeField }}
+                          className="col-lg-3 col-sm-6 col-12 p-1 mt-2"
+                          label="Created At"
+                          value={[
+                            dayjs(new Date(filter.createdAt[0] * 1000)),
+                            dayjs(new Date(filter.createdAt[1] * 1000)),
+                          ]}
+                          onChange={(e) =>
+                            setFilter({
+                              ...filter,
+                              createdAt: [
+                                Math.floor(e[0]?.$d.getTime() / 1000),
+                                Math.floor(e[1]?.$d.getTime() / 1000),
+                              ],
+                            })
+                          }
+                        />
+                      </LocalizationProvider>
+                    </div>
+                    <div className="d-flex justify-content-center">
+                      <button
+                        type="button"
+                        className="btn btn-bank d-flex justify-content-center align-items-center my-4 mb-2"
+                        style={{ fontSize: "14px" }}
+                        onClick={() => {
+                          setApplyFilter(!applyFilter);
+                        }}
+                        disabled={loader}
+                      >
+                        Filter
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-bank d-flex justify-content-center align-items-center ms-3 my-4 mb-2"
+                        style={{ fontSize: "14px" }}
+                        onClick={() => {
+                          setFilter({
+                            user: "",
+                            from: "",
+                            type: "",
+                            createdAt: [
+                              Math.floor(date["_d"].getTime() / 1000),
+                              Math.floor(date["_i"].getTime() / 1000),
+                            ],
+                          });
+                          setApplyFilter(!applyFilter);
+                        }}
+                      >
+                        Reset
+                      </button>
+                    </div>
                   </div>
-                  <div className="d-flex justify-content-center">
-                    <button
-                      type="button"
-                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary my-4 mb-2"
-                      style={{ fontSize: "14px" }}
-                      onClick={() => {
-                        setApplyFilter(!applyFilter);
-                      }}
-                      disabled={loader}
-                    >
-                      Filter
-                    </button>
-                    <button
-                      type="button"
-                      className="btn d-flex justify-content-center align-items-center bg-gradient-primary ms-3 my-4 mb-2"
-                      style={{ fontSize: "14px" }}
-                      onClick={() => {
-                        setFilter({
-                          user: "",
-                          from: "",
-                          type: "",
-                          createdAt: [
-                            Math.floor(date["_d"].getTime() / 1000),
-                            Math.floor(date["_i"].getTime() / 1000),
-                          ],
-                        });
-                        setApplyFilter(!applyFilter);
-                      }}
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </div>
+                  <hr className="my-1" />
+                </>
               )}
               <div className="table-responsive p-0">
                 <table className="table align-items-center justify-content-center mb-0">
@@ -240,7 +244,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                     <tr>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("user")}
                         >
                           From
@@ -252,7 +256,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("from")}
                         >
                           To
@@ -264,7 +268,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("type")}
                         >
                           Type
@@ -276,7 +280,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("amount")}
                         >
                           Amount
@@ -288,7 +292,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("status")}
                         >
                           Status
@@ -300,7 +304,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("createdAt")}
                         >
                           Created At
@@ -311,7 +315,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                         </button>
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        <button className="btn p-0">Action</button>
+                        <button className="btn p-0 m-0">Action</button>
                       </th>
                       {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
                           Completion
@@ -456,13 +460,23 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                   <div className="d-flex justify-content-center align-items-center">
                     <ReactPaginate
                       breakLabel="..."
-                      nextLabel="next >"
+                      nextLabel="Next"
                       className="pageinate my-4 mb-2"
+                      pageLinkClassName="page-link"
+                      breakLinkClassName="page-link"
+                      nextLinkClassName="page-link"
+                      previousLinkClassName="page-link"
+                      pageClassName="page-item"
+                      breakClassName="page-item"
+                      nextClassName="page-item"
+                      previousClassName="page-item"
+                      // className="pageinate my-4 mb-2"
+                      activeClassName="active"
                       onPageChange={(e) => setPage(e.selected)}
                       pageRangeDisplayed={3}
                       forcePage={page}
                       pageCount={Math.ceil(pageCount / 10)}
-                      previousLabel="< previous"
+                      previousLabel="Pev"
                       renderOnZeroPageCount={null}
                     />
                   </div>
