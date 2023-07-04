@@ -21,9 +21,22 @@ const UserLayout = ({ children }) => {
       <Head>
         <meta charset="utf-8" />
         <meta http-equiv="x-ua-compatible" content="ie=edge" />
-        <title>Finance HTML-5 Template </title>
-        <meta name="description" content="" />
+        <title>Bank Management</title>
+        <meta
+          name="description"
+          content="Bank Management Web to connect all banks of the world"
+        />
+        <meta property="og:title" content="Bank Management" />
+        <meta
+          property="og:description"
+          content="Bank Management Web to connect all banks of the world"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          rel="icon"
+          href="https://www.clipartmax.com/png/middle/217-2174551_bank-management-business-treasury-money-bank-icon-blue-png.png"
+          sizes="any"
+        />
         <link rel="manifest" href="site.webmanifest" />
         <link
           rel="shortcut icon"

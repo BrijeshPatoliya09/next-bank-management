@@ -24,7 +24,7 @@ export default async (req, res) => {
     };
     const getAllUsers = await fetchAllUserData();
 
-    const allUserId = getAllUsers.map((item) => item._id);
+      const allUserId = getAllUsers.map((item) => item._id);
 
     const fetchTransData = async (bookmark = null, docs = []) => {
       const { data } = await dbConnect().mango("bank-management", {

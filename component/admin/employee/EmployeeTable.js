@@ -314,11 +314,9 @@ const EmployeeTable = ({
                     )}
                     {employeeData.length > 0 &&
                       employeeData.map((item) => {
-                        const join = item.joinningDate
-                          ? new Date(item.joinningDate * 1000)
-                          : "";
+                        const join = new Date(item.joinningDate * 1000);
 
-                        const DOB = new Date(item.DOB);
+                        const DOB = new Date(item.DOB * 1000);
                         return (
                           <tr>
                             <td>
@@ -364,7 +362,7 @@ const EmployeeTable = ({
                             </td>
                             <td>
                               <p className="text-sm font-weight-bold mb-0">
-                                {join ? moment(join).format("L") : "17/11/2020"}
+                                {moment(join).format("L")}
                               </p>
                             </td>
                             <td>

@@ -67,6 +67,7 @@ export default async (req, res) => {
       secretKey: tem_secret.base32,
       password: enc(password, keyStore("empPsw")),
       employeeType: 0,
+      status: 0,
       docType: "Employee",
     });
 

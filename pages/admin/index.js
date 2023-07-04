@@ -1,6 +1,6 @@
 import { withSessionSsr } from "../../helper/session";
 
-export default function Home() {
+export default function Home({ dashboardData }) {
   return (
     <>
       <div className="row">
@@ -33,7 +33,7 @@ export default function Home() {
                 <i className="material-icons opacity-10">person</i>
               </div>
               <div className="text-end pt-1">
-                <p className="text-sm mb-0 text-capitalize">Today's Users</p>
+                <p className="text-sm mb-0 text-capitalize">Total Users</p>
                 <h4 className="mb-0">2,300</h4>
               </div>
             </div>
@@ -55,7 +55,9 @@ export default function Home() {
                 <i className="material-icons opacity-10">monetization_on</i>
               </div>
               <div className="text-end pt-1">
-                <p className="text-sm mb-0 text-capitalize">New Clients</p>
+                <p className="text-sm mb-0 text-capitalize">
+                  Total Loan Provided
+                </p>
                 <h4 className="mb-0">3,462</h4>
               </div>
             </div>
@@ -77,7 +79,9 @@ export default function Home() {
                 <i className="material-icons opacity-10">group</i>
               </div>
               <div className="text-end pt-1">
-                <p className="text-sm mb-0 text-capitalize">Sales</p>
+                <p className="text-sm mb-0 text-capitalize">
+                  Total Transaction Done
+                </p>
                 <h4 className="mb-0">$103,430</h4>
               </div>
             </div>
@@ -90,6 +94,16 @@ export default function Home() {
                 than yesterday
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="row my-4">
+        <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="cookieCard">
+            <p class="cookieHeading">
+              <i className="material-icons fs-3 me-2">group</i>Cookies.
+            </p>
+            <h2 className="text-white fs-1 text-center">$20000</h2>
           </div>
         </div>
       </div>
@@ -706,20 +720,22 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
   const user = req.session.admin;
 
   if (user) {
-    // const homeRes = await fetch(
-    //   `${process.env.apiUrl}/admin/employee/getData`,
-    //   {
-    //     method: "PUT",
-    //     body: JSON.stringify({ userId: user.userId }),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-    // const homeData = await homeRes.json();
+    const homeRes = await fetch(
+      `${process.env.apiUrl}/admin/dashboard/getData`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ userId: user.userId }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const homeData = await homeRes.json();
 
     return {
-      props: {},
+      props: {
+        dashboardData: homeData.data,
+      },
     };
   } else {
     return {

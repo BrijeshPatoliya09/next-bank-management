@@ -13,8 +13,8 @@ const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
     contact: empEdit ? empEdit.contact : "",
     department: empEdit ? empEdit.department : "",
     education: empEdit ? empEdit.education : "",
-    DOB: empEdit ? dayjs(empEdit.DOB) : "",
-    joinningDate: empEdit ? dayjs(empEdit.joinningDate) : "",
+    DOB: empEdit ? dayjs(new Date(empEdit.DOB * 1000)) : "",
+    joinningDate: empEdit ? dayjs(new Date(empEdit.joinningDate * 1000)) : "",
   });
 
   const [loader, setLoader] = useState(false);
@@ -183,7 +183,9 @@ const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                      value={employee.joinningDate ? employee.joinningDate : null}
+                      value={
+                        employee.joinningDate ? employee.joinningDate : null
+                      }
                       onChange={(e) =>
                         setEmployee({
                           ...employee,
