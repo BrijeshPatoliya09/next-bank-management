@@ -155,7 +155,6 @@ export default async (req, res) => {
       timeStamp: Math.floor(Date.now() / 1000),
       funds: 0,
       docType: "Bank",
-      status: 0,
       parentalId: parentData[0]._id,
     });
 

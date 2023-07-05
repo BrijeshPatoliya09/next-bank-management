@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
-const Sidebar = () => {
+const Sidebar = ({ level }) => {
   const router = useRouter();
 
   const logoutHandler = async () => {
@@ -65,19 +65,21 @@ const Sidebar = () => {
                 <span className="nav-link-text ms-1">Employee</span>
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                className={`nav-link  ${
-                  path == "/admin/bank/create" ? "active" : ""
-                }`}
-                href="/admin/bank/create"
-              >
-                <span className=" text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">local_pharmacy</i>
-                </span>
-                <span className="nav-link-text ms-1">Bank Registration</span>
-              </Link>
-            </li>
+            {level != 5 && (
+              <li className="nav-item">
+                <Link
+                  className={`nav-link  ${
+                    path == "/admin/bank/create" ? "active" : ""
+                  }`}
+                  href="/admin/bank/create"
+                >
+                  <span className=" text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">local_pharmacy</i>
+                  </span>
+                  <span className="nav-link-text ms-1">Bank Registration</span>
+                </Link>
+              </li>
+            )}
             <li className="nav-item">
               <Link
                 className={`nav-link  ${

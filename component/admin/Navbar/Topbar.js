@@ -2,19 +2,8 @@ import { Link } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-const Topbar = () => {
+const Topbar = ({ loggedIn }) => {
   const router = useRouter();
-  const [loggedIn, setLoggedIn] = useState("");
-
-  const getLoginUser = async () => {
-    const res = await fetch(`${process.env.apiUrl}/admin/auth/getLoginUser`);
-    const data = await res.json();
-    setLoggedIn(data.data);
-  };
-
-  useEffect(() => {
-    getLoginUser();
-  }, []);
 
   return (
     <>

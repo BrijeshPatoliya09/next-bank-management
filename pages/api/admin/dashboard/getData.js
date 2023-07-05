@@ -20,7 +20,7 @@ export default async (req, res) => {
             docType: "Bank",
             _id: empData.bankId,
           },
-          fields: ["ifscCode", "_id", "level", "address"],
+          fields: ["ifscCode", "_id", "level", "address", "funds"],
         })
       ).data.docs[0];
 
@@ -89,13 +89,18 @@ export default async (req, res) => {
       let totalBanks = {};
       if (bankInfo.level == 5) {
         totalBanks.type = 1;
-        totalBanks.data = {};
-        totalBanks.data.totalUsers = usersData.length;
-        totalBanks.data.activeUsersCount = usersData.filter(
+        totalBanks.totalUsers = usersData.length;
+        totalBanks.pendingUsers = usersData.filter(
+          (item) => item.accountStatus == 0
+        ).length;
+        totalBanks.confirmedUsers = usersData.filter(
           (item) => item.accountStatus == 1
         ).length;
-        totalBanks.data.inactiveUsersCount = usersData.filter(
-          (item) => item.accountStatus == 0
+        totalBanks.rejectedUsers = usersData.filter(
+          (item) => item.accountStatus == 2
+        ).length;
+        totalBanks.closedUsers = usersData.filter(
+          (item) => item.accountStatus == 3
         ).length;
       } else {
         let query = {};
@@ -121,14 +126,7 @@ export default async (req, res) => {
         ).data.docs;
 
         totalBanks.type = 0;
-        totalBanks.data = {};
-        totalBanks.data.totalSubBanks = subBanks.length;
-        totalBanks.data.activeSubBanksCount = subBanks.filter(
-          (item) => item.status == 0
-        ).length;
-        totalBanks.data.inactiveSubBanksCount = subBanks.filter(
-          (item) => item.status == 1
-        ).length;
+        totalBanks.totalSubBanks = subBanks.length;
       }
 
       res.status(200).json({
@@ -136,30 +134,31 @@ export default async (req, res) => {
         message: "success",
         data: {
           loan: {
-            activeLoanCount: loanData.filter((item) => item.status == 1).length,
-            inactiveLoanCount: loanData.filter((item) => item.status == 0)
-              .length,
+            pendingLoans: loanData.filter((item) => item.status == 0).length,
+            confirmLoans: loanData.filter((item) => item.status == 1).length,
+            rejectedLoans: loanData.filter((item) => item.status == 2).length,
+            closedLoans: loanData.filter((item) => item.status == 3).length,
             totalLoan: loanData.length,
             totalLoanAmount,
           },
           transaction: {
-            activeTransCount: transactionData.filter((item) => item.status == 1)
+            pendingTrans: transactionData.filter((item) => item.status == 0)
               .length,
-            inactiveTransCount: transactionData.filter(
-              (item) => item.status == 0
-            ).length,
-            totalTrans: loanData.length,
+            confirmedTrans: transactionData.filter((item) => item.status == 1)
+              .length,
+            rjectedTrans: transactionData.filter((item) => item.status == 2)
+              .length,
+            totalTrans: transactionData.length,
             totalTransactionAmount,
           },
-          totalEmployees: {
-            activeEmpCount: totalEmployees.filter((item) => item.status == 0)
-              .length,
-            inactiveEmpCount: totalEmployees.filter((item) => item.status == 1)
+          employees: {
+            activeEmp: totalEmployees.filter((item) => item.status == 0).length,
+            inactiveEmp: totalEmployees.filter((item) => item.status == 1)
               .length,
             totalEmp: totalEmployees.length,
           },
           totalBanks,
-          totalFunds: bankInfo.funds,
+          totalFunds: Number(bankInfo.funds),
         },
       });
     } else {

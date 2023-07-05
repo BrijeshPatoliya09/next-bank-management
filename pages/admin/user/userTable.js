@@ -431,11 +431,15 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                                 </span>
                               ) : item.accountStatus == 1 ? (
                                 <span className="badge badge-sm bg-gradient-success p-2">
-                                  Verified
+                                  Confirmed
                                 </span>
-                              ) : (
+                              ) : item.accountStatus == 2 ? (
                                 <span className="badge badge-sm bg-gradient-danger p-2">
                                   Rejected
+                                </span>
+                              ) : (
+                                <span className="badge badge-sm bg-gradient-primary p-2">
+                                  Deactive
                                 </span>
                               )}
                             </td>
@@ -445,20 +449,26 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                               </p>
                             </td>
                             <td className="text-center">
-                              {item.accountStatus == 0 ? (
+                              {item.accountStatus == 0 ||
+                              item.accountStatus == 1 ? (
                                 <FormControl className="mb-0">
                                   <Select
                                     labelId="demo-simple-select-label"
                                     name="action"
-                                    value={0}
+                                    value={item.accountStatus}
                                     onChange={async (e) => {
-                                      if (e.target.value !== 0) {
+                                      if (
+                                        e.target.value !== item.accountStatus
+                                      ) {
+                                        console.log("fibeqwiqw");
                                         const alert = await Swal.fire({
                                           title: `Do you want to ${
                                             e.target.value == 1
-                                              ? "Accept"
-                                              : "Reject"
-                                          } this user ?`,
+                                              ? "Accept this user"
+                                              : e.target.value == 2
+                                              ? "Reject this user"
+                                              : "Close this users account"
+                                          } ?`,
                                           icon: "warning",
                                           showCancelButton: true,
                                           cancelButtonText: "Cancel",
@@ -478,9 +488,18 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                                       }
                                     }}
                                   >
-                                    <MenuItem value={0}>Pending</MenuItem>
-                                    <MenuItem value={1}>Verified</MenuItem>
-                                    <MenuItem value={2}>Rejected</MenuItem>
+                                    {item.accountStatus == 0 && (
+                                      <MenuItem value={0}>Pending</MenuItem>
+                                    )}
+                                    <MenuItem value={1}>Confirmed</MenuItem>
+                                    {item.accountStatus == 0 && (
+                                      <MenuItem value={2}>Rejected</MenuItem>
+                                    )}
+                                    {item.accountStatus == 1 && (
+                                      <MenuItem value={3}>
+                                        Close Account
+                                      </MenuItem>
+                                    )}
                                   </Select>
                                 </FormControl>
                               ) : (

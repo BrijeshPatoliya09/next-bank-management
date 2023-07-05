@@ -98,13 +98,18 @@
   border-radius: 0 !important;
   margin: 0;
 }
-.pageinate .page-item .page-link:hover {
-  background-color: rgb(222, 235, 238) !important;
-}
 
 .pageinate .active .page-link {
   background-color: rgb(33, 98, 115) !important;
   color: white !important;
+}
+
+.pageinate .page-item .page-link:hover {
+  background-color: rgb(222, 235, 238) !important;
+}
+
+.pageinate .active .page-link:hover {
+  background-color: rgb(79, 127, 138) !important;
 }
 
 .sidenav {
@@ -131,8 +136,6 @@
 }
 
 .cookieCard {
-  width: 300px;
-  height: 200px;
   background: linear-gradient(to right, rgb(137, 104, 255), rgb(175, 152, 255));
   display: flex;
   flex-direction: column;
@@ -157,8 +160,38 @@
 }
 
 .cookieHeading {
-  font-size: 1.5em;
+  font-size: 22px;
   font-weight: 600;
   color: rgb(241, 241, 241);
   z-index: 2;
+}
+
+.dashboard .row h2 {
+  font-size: 28px;
+  color: #216273;
+  margin-left: 10px;
+}
+
+.bank-trans .cookieCard {
+  background: linear-gradient(to right, rgb(255, 127, 104), rgb(255, 163, 151));
+}
+
+.bank-trans .cookieCard::before {
+  background: linear-gradient(to right, rgb(255, 127, 104), rgb(255, 163, 151));
+}
+
+.bank-loans .cookieCard {
+  background: linear-gradient(to right, rgb(104, 152, 255), rgb(151, 179, 255));
+}
+
+.bank-loans .cookieCard::before {
+  background: linear-gradient(to right, rgb(104, 152, 255), rgb(151, 179, 255));
+}
+
+.bank-detail .cookieCard {
+  background: linear-gradient(to right, rgb(255, 104, 159), rgb(255, 151, 203));
+}
+
+.bank-detail .cookieCard::before {
+  background: linear-gradient(to right, rgb(255, 104, 159), rgb(255, 151, 203));
 }

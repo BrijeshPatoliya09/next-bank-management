@@ -13,7 +13,16 @@ const AdminLayout = ({ children }) => {
   const [sideBar, setSideBar] = useState(true);
   const [loader, setLoader] = useState(true);
 
+  const [loggedIn, setLoggedIn] = useState("");
+
+  const getLoginUser = async () => {
+    const res = await fetch(`${process.env.apiUrl}/admin/auth/getLoginUser`);
+    const data = await res.json();
+    setLoggedIn(data.data);
+  };
+
   useEffect(() => {
+    getLoginUser();
     setTimeout(() => {
       setLoader(false);
     }, 1000);
@@ -59,7 +68,6 @@ const AdminLayout = ({ children }) => {
           rel="stylesheet"
         />
         <link
-          id="pagestyle"
           href="/assets/css/admin/template/material-dashboard.css?v=3.0.0"
           rel="stylesheet"
         />
@@ -76,9 +84,9 @@ const AdminLayout = ({ children }) => {
               <>{children}</>
             ) : (
               <>
-                {sideBar && <Sidebar />}
+                {sideBar && <Sidebar level={loggedIn.level} />}
                 <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-                  <Topbar />
+                  <Topbar loggedIn={loggedIn.userData} />
                   <NextNProgress color="#216273" />
                   <div className="container-fluid py-4">
                     {children}

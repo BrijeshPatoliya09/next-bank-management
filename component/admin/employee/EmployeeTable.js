@@ -18,6 +18,9 @@ import {
   SingleInputDateRangeField,
 } from "@mui/x-date-pickers-pro";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 
 let initial = false;
 
@@ -263,6 +266,18 @@ const EmployeeTable = ({
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
+                          onClick={() => sortDataHandler("status")}
+                        >
+                          Status
+                          <FilterListIcon
+                            className="ms-1"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </button>
+                      </th>
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                        <button
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("joinningDate")}
                         >
                           Joinning Date
@@ -362,6 +377,11 @@ const EmployeeTable = ({
                             </td>
                             <td>
                               <p className="text-sm font-weight-bold mb-0">
+                                {item.status == 0 ? "Active" : "Deactive"}
+                              </p>
+                            </td>
+                            <td>
+                              <p className="text-sm font-weight-bold mb-0">
                                 {moment(join).format("L")}
                               </p>
                             </td>
@@ -370,11 +390,28 @@ const EmployeeTable = ({
                                 {item.department}
                               </p>
                             </td>
-                            {empType && (
-                              <td>
+                            <td>
+                              <button
+                                type="button"
+                                className="btn btn-bank btn btn-bank-outline-primary btn btn-bank-sm mb-0"
+                                style={{ fontSize: "14px" }}
+                                onClick={() => {
+                                  if (item.status == 0) {
+                                  } else {
+                                  }
+                                }}
+                              >
+                                {item.status == 0 ? (
+                                  <CloseIcon />
+                                ) : (
+                                  <CheckIcon />
+                                )}
+                                {item.status == 0 ? "Deactive" : "Active"}
+                              </button>
+                              {empType && (
                                 <button
                                   type="button"
-                                  className="btn btn-bank btn btn-bank-outline-primary btn btn-bank-sm mb-0"
+                                  className="btn btn-bank btn btn-bank-outline-primary btn btn-bank-sm mb-0 ms-2"
                                   style={{ fontSize: "14px" }}
                                   onClick={() => {
                                     onSetEmpEdit(item);
@@ -383,8 +420,8 @@ const EmployeeTable = ({
                                 >
                                   <EditIcon />
                                 </button>
-                              </td>
-                            )}
+                              )}
+                            </td>
                           </tr>
                         );
                       })}
