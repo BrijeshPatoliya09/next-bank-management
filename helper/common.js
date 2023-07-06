@@ -5,6 +5,12 @@ export const checkName = (string) => /^[a-z ,.'-]+$/i.test(string);
 export const checkEmail = (string) =>
   /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(string);
 
+const characterLength = /^[a-zA-Z0-9@\#$%&*()_+\]\[';:?.,!^-]{8,32}$/;
+const lowercaseLetter = /(?=.*[a-z])/;
+const uppercaseLetter = /(?=.*[A-Z])/;
+const number = /(?=.*\d)/;
+const special = /(?=.*\W)/;
+
 export const checkPassword = (string) =>
   /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(string);
 
@@ -29,7 +35,7 @@ export function dec(encryptedMessage, secret) {
 export function keyStore(a) {
   const q = {
     empPsw: "Y#hD5xd1p*ZV^OM0(N/3v0*}ze~VAK:E",
-    idEnc: "W#hDV8xd5p*ZV^OM0(N/3v0*}ze~KSY:E",
+    idEnc: "Y#hH9xd1l*ZV^ON0(N/6v0*}ze~BAT:E",
     userPsw: "X#lA5xE8p*ZV^KD5(N/6c0*}ze~LWU:E",
   };
   return q[a];
@@ -243,4 +249,66 @@ export const filterFunction = (filter, data) => {
   }
 
   return tempData;
+};
+
+export const addPswHandler = (text, valid) => {
+  if (characterLength.test(text)) {
+    valid((item) => ({
+      ...item,
+      length: true,
+    }));
+  } else {
+    valid((item) => ({
+      ...item,
+      length: false,
+    }));
+  }
+
+  if (lowercaseLetter.test(text)) {
+    valid((item) => ({
+      ...item,
+      lower: true,
+    }));
+  } else {
+    valid((item) => ({
+      ...item,
+      lower: false,
+    }));
+  }
+
+  if (number.test(text)) {
+    valid((item) => ({
+      ...item,
+      digit: true,
+    }));
+  } else {
+    valid((item) => ({
+      ...item,
+      digit: false,
+    }));
+  }
+
+  if (uppercaseLetter.test(text)) {
+    valid((item) => ({
+      ...item,
+      upper: true,
+    }));
+  } else {
+    valid((item) => ({
+      ...item,
+      upper: false,
+    }));
+  }
+
+  if (special.test(text)) {
+    valid((item) => ({
+      ...item,
+      spacial: true,
+    }));
+  } else {
+    valid((item) => ({
+      ...item,
+      spacial: false,
+    }));
+  }
 };

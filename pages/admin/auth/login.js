@@ -20,8 +20,6 @@ const login = () => {
     setUser({ ...user, [name]: value });
   };
 
-  console.log(dec("c/LRvYkTLK4RT/Y3", keyStore("empPsw")));
-
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -129,6 +127,7 @@ const login = () => {
                             <input
                               type="text"
                               name="pin"
+                              value={otp}
                               className="form-control"
                               placeholder="OTP"
                               onChange={(e) => setOtp(e.target.value)}

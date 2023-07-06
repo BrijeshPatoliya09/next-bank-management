@@ -4,7 +4,7 @@ const nextConfig = {
     baseUrl: process.env.baseUrl,
     apiUrl: `${process.env.baseUrl}/api`,
   },
-  reactStrictMode: true,
+  // reactStrictMode: true,
 };
 
 module.exports = nextConfig;

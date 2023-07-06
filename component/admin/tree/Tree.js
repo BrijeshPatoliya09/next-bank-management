@@ -75,13 +75,13 @@ const CustomContent = React.forwardRef(function CustomContent(props, ref) {
       onMouseDown={handleMouseDown}
       ref={ref}
     >
-      <div onClick={handleExpansionClick} className="pe-2">
+      <div onClick={handleExpansionClick} className="pe-2 cursor-pointer">
         {icon}
       </div>
       <Typography
         onClick={handleSelectionClick}
         component="div"
-        className={`${classes.label} d-flex px-3 py-2 w-100 ${
+        className={`${classes.label} cursor-pointer d-flex px-3 py-2 w-100 ${
           label.active ? "tree_active border border-0" : "tree_hover"
         } ${label.highLight ? (!label.active ? "tree_highlight" : "") : ""}`}
         style={{

@@ -1,10 +1,25 @@
-import { TextField } from "@mui/material";
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
 import React, { useState } from "react";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
-import { checkEmail, checkName } from "../../../helper/common";
+import {
+  addPswHandler,
+  checkEmail,
+  checkName,
+  checkPassword,
+  enc,
+  keyStore,
+} from "../../../helper/common";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
   const [employee, setEmployee] = useState({
@@ -15,7 +30,17 @@ const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
     education: empEdit ? empEdit.education : "",
     DOB: empEdit ? dayjs(new Date(empEdit.DOB * 1000)) : "",
     joinningDate: empEdit ? dayjs(new Date(empEdit.joinningDate * 1000)) : "",
+    password: "",
   });
+  const [pswValid, setPswValid] = useState({
+    upper: false,
+    lower: false,
+    spacial: false,
+    digit: false,
+    length: false,
+  });
+  const [pwdTouch, setPwdTouch] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const [loader, setLoader] = useState(false);
 
@@ -25,6 +50,10 @@ const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
   };
 
   const createHandler = async () => {
+    if (empEdit) {
+      delete employee.password;
+    }
+
     //!Employee
     let validationEmployee = [];
     Object.keys(employee).map((eachData) => {
@@ -46,10 +75,12 @@ const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
 
     if (validationEmployee.length > 0) {
       return toast.error(validationEmployee[0]);
-    } else if (employee.contact.length !== 10) {
-      return toast.error("Please enter valid contact no.");
     } else if (!checkEmail(employee.email)) {
       return toast.error("Please enter valid email");
+    } else if (employee.password && !checkPassword(employee.password)) {
+      return toast.error("Please enter valid password");
+    } else if (employee.contact.length !== 10) {
+      return toast.error("Please enter valid contact no.");
     } else if (textCheck.length > 0) {
       return toast.error(textCheck[0]);
     }
@@ -63,6 +94,7 @@ const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
           body: JSON.stringify({
             employee: {
               ...employee,
+              password: enc(employee.password, keyStore("empPsw")),
               DOB: Math.floor(employee.DOB?.$d.getTime() / 1000),
               joinningDate: Math.floor(
                 employee.joinningDate?.$d.getTime() / 1000
@@ -148,13 +180,110 @@ const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
                     onChange={changeHandler}
                     variant="outlined"
                   />
+                  {!empEdit.name && (
+                    <div className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
+                      <FormControl variant="outlined" className="w-100">
+                        <InputLabel htmlFor="outlined-adornment-password">
+                          Password
+                        </InputLabel>
+                        <OutlinedInput
+                          id="outlined-adornment-password"
+                          type={showPassword ? "text" : "password"}
+                          value={employee.password}
+                          onChange={({ target: { value } }) => {
+                            if (!pwdTouch) {
+                              setPwdTouch(true);
+                            }
+                            setEmployee({ ...employee, password: value });
+                            addPswHandler(value, setPswValid);
+                          }}
+                          variant="outlined"
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={() => setShowPassword(!showPassword)}
+                                onMouseDown={(e) => e.preventDefault()}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          }
+                          label="Password"
+                        />
+                      </FormControl>
+
+                      {pwdTouch && (
+                        <div>
+                          <span>
+                            <span
+                              className={`pass-valid ${
+                                pswValid.digit ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              1 Number
+                            </span>{" "}
+                            |
+                            <span
+                              className={`pass-valid ${
+                                pswValid.upper ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              {" "}
+                              1 Uppercase
+                            </span>{" "}
+                            |
+                            <span
+                              className={`pass-valid ${
+                                pswValid.lower ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              {" "}
+                              1 Lowercase
+                            </span>{" "}
+                            |
+                            <span
+                              className={`pass-valid ${
+                                pswValid.spacial
+                                  ? "text-success"
+                                  : "text-danger"
+                              }`}
+                            >
+                              {" "}
+                              1 Special Character
+                            </span>{" "}
+                            |
+                            <span
+                              className={`pass-valid ${
+                                pswValid.length ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              {" "}
+                              Min 8 - 30 Max Character
+                            </span>{" "}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                   <TextField
                     className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                    type="number"
+                    type="text"
                     name="contact"
                     label="Contact"
                     value={employee.contact}
-                    onChange={changeHandler}
+                    onInput={(e) => {
+                      e.target.value = e.target.value
+                        .replace(/[^0-9]/g, "")
+                        .replace(/(\..*)\./g, "$1");
+
+                        setEmployee({...employee, contact: e.target.value})
+                    }}
                     variant="outlined"
                   />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import ReactPaginate from "react-paginate";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { dec, keyStore } from "../../../helper/common";
+import { dec, enc, keyStore } from "../../../helper/common";
 import {
   FormControl,
   InputLabel,
@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
+import { toast } from "react-toastify";
 
 let initial = false;
 
@@ -65,6 +66,27 @@ const EmployeeTable = ({
     initial = true;
   }, [page, sort, applyFilter]);
 
+  const statusChange = async (status) => {
+    const res = await fetch(
+      `${process.env.apiUrl}/admin/employee/statusChange`,
+      {
+        method: "PUT",
+        body: JSON.stringify(status),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.status) {
+      toast.success(data.message);
+    } else {
+      toast.error(data.message);
+    }
+  };
+
   return (
     <>
       <div className="row bank-reg">
@@ -72,7 +94,7 @@ const EmployeeTable = ({
           <div className="col-12">
             <div className="card my-4">
               <div className="pt-3 px-3 sub-head d-flex">
-                <h3>Employee table</h3>
+                <h3>Employee table awdaswdqwadq</h3>
                 <div className="ms-auto me-3 d-flex">
                   {empType && (
                     <button
@@ -198,7 +220,7 @@ const EmployeeTable = ({
                 <table className="table align-items-center justify-content-center mb-0">
                   <thead>
                     <tr>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                      <th className="text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
                           className="btn p-0 m-0"
                           onClick={() => sortDataHandler("name")}
@@ -210,7 +232,7 @@ const EmployeeTable = ({
                           />
                         </button>
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
                           onClick={() => sortDataHandler("email")}
@@ -223,11 +245,11 @@ const EmployeeTable = ({
                         </button>
                       </th>
                       {empType && (
-                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 mb- ">
+                        <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2 mb- ">
                           <button className="btn p-0 m-0">Password</button>
                         </th>
                       )}
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
                           onClick={() => sortDataHandler("contact")}
@@ -239,7 +261,7 @@ const EmployeeTable = ({
                           />
                         </button>
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
                           onClick={() => sortDataHandler("DOB")}
@@ -251,7 +273,7 @@ const EmployeeTable = ({
                           />
                         </button>
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
                           onClick={() => sortDataHandler("education")}
@@ -263,7 +285,7 @@ const EmployeeTable = ({
                           />
                         </button>
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
                           onClick={() => sortDataHandler("status")}
@@ -275,7 +297,7 @@ const EmployeeTable = ({
                           />
                         </button>
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
                           onClick={() => sortDataHandler("joinningDate")}
@@ -287,7 +309,7 @@ const EmployeeTable = ({
                           />
                         </button>
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
                           onClick={() => sortDataHandler("department")}
@@ -299,7 +321,7 @@ const EmployeeTable = ({
                           />
                         </button>
                       </th>
-                      {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      {/* <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
                           onClick={() => sortDataHandler("status")}
@@ -312,7 +334,7 @@ const EmployeeTable = ({
                         </button>
                       </th> */}
                       {empType && (
-                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                        <th className="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                           <button className="btn p-0 m-0">Action</button>
                         </th>
                       )}
@@ -377,7 +399,15 @@ const EmployeeTable = ({
                             </td>
                             <td>
                               <p className="text-sm font-weight-bold mb-0">
-                                {item.status == 0 ? "Active" : "Deactive"}
+                                {item.status == 0 ? (
+                                  <span className="badge badge-sm bg-gradient-success p-2">
+                                    Active
+                                  </span>
+                                ) : (
+                                  <span className="badge badge-sm bg-gradient-danger p-2">
+                                    Deactive
+                                  </span>
+                                )}
                               </p>
                             </td>
                             <td>
@@ -390,25 +420,65 @@ const EmployeeTable = ({
                                 {item.department}
                               </p>
                             </td>
-                            <td>
-                              <button
-                                type="button"
-                                className="btn btn-bank btn btn-bank-outline-primary btn btn-bank-sm mb-0"
-                                style={{ fontSize: "14px" }}
-                                onClick={() => {
-                                  if (item.status == 0) {
-                                  } else {
-                                  }
-                                }}
-                              >
-                                {item.status == 0 ? (
-                                  <CloseIcon />
-                                ) : (
-                                  <CheckIcon />
-                                )}
-                                {item.status == 0 ? "Deactive" : "Active"}
-                              </button>
-                              {empType && (
+
+                            {empType && (
+                              <td>
+                                <button
+                                  type="button"
+                                  className="btn btn-bank btn btn-bank-outline-primary btn btn-bank-sm mb-0"
+                                  style={{ fontSize: "14px" }}
+                                  onClick={async () => {
+                                    const alert = await Swal.fire({
+                                      title: `Do you want to ${
+                                        item.status == 0
+                                          ? "Deactivate"
+                                          : "Activate"
+                                      }  this Employee ?`,
+                                      icon: "warning",
+                                      showCancelButton: true,
+                                      cancelButtonText: "Cancel",
+                                      confirmButtonColor: "#5773FF",
+                                      cancelButtonColor: "#9e9e9e",
+                                      confirmButtonText: "Yes",
+                                      allowEscapeKey: true,
+                                    });
+                                    if (alert.isConfirmed) {
+                                      if (item.status == 0) {
+                                        await statusChange({
+                                          status: 1,
+                                          empId: enc(
+                                            item._id,
+                                            keyStore("idEnc")
+                                          ),
+                                          empRev: enc(
+                                            item._rev,
+                                            keyStore("idEnc")
+                                          ),
+                                        });
+                                      } else {
+                                        await statusChange({
+                                          status: 0,
+                                          empId: enc(
+                                            item._id,
+                                            keyStore("idEnc")
+                                          ),
+                                          empRev: enc(
+                                            item._rev,
+                                            keyStore("idEnc")
+                                          ),
+                                        });
+                                      }
+                                      await onGetEmpData();
+                                    }
+                                  }}
+                                >
+                                  {item.status == 0 ? (
+                                    <CloseIcon />
+                                  ) : (
+                                    <CheckIcon />
+                                  )}
+                                  {item.status == 0 ? "Deactive" : "Active"}
+                                </button>
                                 <button
                                   type="button"
                                   className="btn btn-bank btn btn-bank-outline-primary btn btn-bank-sm mb-0 ms-2"
@@ -420,8 +490,8 @@ const EmployeeTable = ({
                                 >
                                   <EditIcon />
                                 </button>
-                              )}
-                            </td>
+                              </td>
+                            )}
                           </tr>
                         );
                       })}

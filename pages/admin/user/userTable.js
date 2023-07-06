@@ -137,12 +137,12 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                         label="Name"
                         value={filter.name}
                         onChange={(e) => {
-                          const timer = setTimeout(
-                            () =>
-                              setFilter({ ...filter, name: e.target.value }),
-                            1000
-                          );
-                          return () => clearTimeout(timer);
+                          // const timer = setTimeout(
+                          //   () =>
+                          setFilter({ ...filter, name: e.target.value });
+                          //   1000
+                          // );
+                          // return () => clearTimeout(timer);
                         }}
                         variant="outlined"
                       />
@@ -460,7 +460,6 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                                       if (
                                         e.target.value !== item.accountStatus
                                       ) {
-                                        console.log("fibeqwiqw");
                                         const alert = await Swal.fire({
                                           title: `Do you want to ${
                                             e.target.value == 1

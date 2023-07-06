@@ -6,6 +6,9 @@ import {
   Select,
   TextField,
   Autocomplete,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { Country, State, City } from "country-state-city";
 import { SingleInputTimeRangeField } from "@mui/x-date-pickers-pro";
@@ -13,7 +16,15 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { toast } from "react-toastify";
 import { withSessionSsr } from "../../../helper/session";
-import { checkEmail, checkName } from "../../../helper/common";
+import {
+  addPswHandler,
+  checkEmail,
+  checkName,
+  checkPassword,
+  enc,
+  keyStore,
+} from "../../../helper/common";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const create = ({ empLevel }) => {
   const [address, setAddress] = useState({
@@ -27,12 +38,22 @@ const create = ({ empLevel }) => {
   const [employee, setEmployee] = useState({
     name: "",
     email: "",
+    password: "",
     contact: "",
     department: "",
     education: "",
     DOB: "",
     joinningDate: "",
   });
+  const [pswValid, setPswValid] = useState({
+    upper: false,
+    lower: false,
+    spacial: false,
+    digit: false,
+    length: false,
+  });
+  const [pwdTouch, setPwdTouch] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const [bankDetail, setBankDetail] = useState({
     name: "",
@@ -133,10 +154,12 @@ const create = ({ empLevel }) => {
       return toast.error("Please enter valid time");
     } else if (!checkName(bankDetail.name)) {
       return toast.error("Please enter valid bank name");
-    } else if (employee.contact.length !== 10) {
-      return toast.error("Please enter valid contact no.");
     } else if (!checkEmail(employee.email)) {
       return toast.error("Please enter valid email");
+    } else if (!checkPassword(employee.password)) {
+      return toast.error("Please enter valid password");
+    } else if (employee.contact.length !== 10) {
+      return toast.error("Please enter valid contact no.");
     } else if (textCheck.length > 0) {
       return toast.error(textCheck[0]);
     }
@@ -150,7 +173,10 @@ const create = ({ empLevel }) => {
           address,
           time: { ...bankTime },
           timeStamp: Math.floor(Date.now() / 1000),
-          employee,
+          employee: {
+            ...employee,
+            password: enc(employee.password, keyStore("empPsw")),
+          },
         }),
         headers: {
           "Content-Type": "application/json",
@@ -188,54 +214,6 @@ const create = ({ empLevel }) => {
       <div className="row bank-reg">
         <div className="col-12 d-flex">
           <div className="col-6 px-2 me-2">
-            <div className="col-12">
-              <div className="card my-4">
-                <div className="pb-2 mb-3">
-                  <div className="pt-3 px-3 sub-head">
-                    <h3>Bank Timing</h3>
-                  </div>
-                  <hr />
-                  <div className="d-flex flex-wrap px-3">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <SingleInputTimeRangeField
-                        className="col-sm-6 col-12 p-1 mt-2"
-                        label="First Shift"
-                        onChange={(e) => {
-                          const firstDate = Math.floor(
-                            e[0]?.$d.getTime() / 1000
-                          );
-                          const secondDate = Math.floor(
-                            e[1]?.$d.getTime() / 1000
-                          );
-                          setBankTime({
-                            ...bankTime,
-                            first: [firstDate, secondDate],
-                          });
-                        }}
-                      />
-                    </LocalizationProvider>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <SingleInputTimeRangeField
-                        className="col-sm-6 col-12 p-1 mt-2"
-                        label="Second Shift"
-                        onChange={(e) => {
-                          const firstDate = Math.floor(
-                            e[0]?.$d.getTime() / 1000
-                          );
-                          const secondDate = Math.floor(
-                            e[1]?.$d.getTime() / 1000
-                          );
-                          setBankTime({
-                            ...bankTime,
-                            second: [firstDate, secondDate],
-                          });
-                        }}
-                      />
-                    </LocalizationProvider>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className="col-12">
               <div className="card my-4">
                 <div className="pb-2 mb-3">
@@ -336,6 +314,54 @@ const create = ({ empLevel }) => {
                 </div>
               </div>
             </div>
+            <div className="col-12">
+              <div className="card my-4">
+                <div className="pb-2 mb-3">
+                  <div className="pt-3 px-3 sub-head">
+                    <h3>Bank Timing</h3>
+                  </div>
+                  <hr />
+                  <div className="d-flex flex-wrap px-3">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <SingleInputTimeRangeField
+                        className="col-sm-6 col-12 p-1 mt-2"
+                        label="First Shift"
+                        onChange={(e) => {
+                          const firstDate = Math.floor(
+                            e[0]?.$d.getTime() / 1000
+                          );
+                          const secondDate = Math.floor(
+                            e[1]?.$d.getTime() / 1000
+                          );
+                          setBankTime({
+                            ...bankTime,
+                            first: [firstDate, secondDate],
+                          });
+                        }}
+                      />
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <SingleInputTimeRangeField
+                        className="col-sm-6 col-12 p-1 mt-2"
+                        label="Second Shift"
+                        onChange={(e) => {
+                          const firstDate = Math.floor(
+                            e[0]?.$d.getTime() / 1000
+                          );
+                          const secondDate = Math.floor(
+                            e[1]?.$d.getTime() / 1000
+                          );
+                          setBankTime({
+                            ...bankTime,
+                            second: [firstDate, secondDate],
+                          });
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="col-6 px-2">
             <div className="col-12">
@@ -412,13 +438,108 @@ const create = ({ empLevel }) => {
                       onChange={empChangeHandler}
                       variant="outlined"
                     />
+                    <div className="col-sm-6 col-12 p-1 mt-2">
+                      <FormControl variant="outlined" className="w-100">
+                        <InputLabel htmlFor="outlined-adornment-password">
+                          Password
+                        </InputLabel>
+                        <OutlinedInput
+                          id="outlined-adornment-password"
+                          type={showPassword ? "text" : "password"}
+                          value={employee.password}
+                          onChange={({ target: { value } }) => {
+                            if (!pwdTouch) {
+                              setPwdTouch(true);
+                            }
+                            setEmployee({ ...employee, password: value });
+                            addPswHandler(value, setPswValid);
+                          }}
+                          variant="outlined"
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={() => setShowPassword(!showPassword)}
+                                onMouseDown={(e) => e.preventDefault()}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          }
+                          label="Password"
+                        />
+                      </FormControl>
+
+                      {pwdTouch && (
+                        <div>
+                          <span>
+                            <span
+                              className={`pass-valid ${
+                                pswValid.digit ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              1 Number
+                            </span>{" "}
+                            |
+                            <span
+                              className={`pass-valid ${
+                                pswValid.upper ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              {" "}
+                              1 Uppercase
+                            </span>{" "}
+                            |
+                            <span
+                              className={`pass-valid ${
+                                pswValid.lower ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              {" "}
+                              1 Lowercase
+                            </span>{" "}
+                            |
+                            <span
+                              className={`pass-valid ${
+                                pswValid.spacial
+                                  ? "text-success"
+                                  : "text-danger"
+                              }`}
+                            >
+                              {" "}
+                              1 Special Character
+                            </span>{" "}
+                            |
+                            <span
+                              className={`pass-valid ${
+                                pswValid.length ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              {" "}
+                              Min 8 - 30 Max Character
+                            </span>{" "}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                     <TextField
                       className="col-sm-6 col-12 p-1 mt-2"
-                      type="number"
+                      type="text"
                       name="contact"
                       label="Contact"
                       value={employee.contact}
-                      onChange={empChangeHandler}
+                      onInput={(e) => {
+                        e.target.value = e.target.value
+                          .replace(/[^0-9]/g, "")
+                          .replace(/(\..*)\./g, "$1");
+
+                        setEmployee({ ...employee, contact: e.target.value });
+                      }}
                       variant="outlined"
                     />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -490,477 +611,6 @@ const create = ({ empLevel }) => {
           </button>
         </div>
       </div>
-      {/* <div className="row bank-reg">
-        <div className="col-12">
-          <div className="card my-4">
-            <div className="mt-n4 mx-3 p-0 position-relative z-index-2 d-flex justify-content-center">
-              <div
-                className="bg-white border-radius-lg py-2"
-                style={{ width: "15%" }}
-              >
-                <h6 className="fs-4 ps-3 text-capitalize">
-                  Bank Registeration
-                </h6>
-              </div>
-            </div>
-            <div className="px-3 pb-2 mb-3">
-              <div className="sub-head">
-                <h3>Bank Address</h3>
-              </div>
-              <div className="d-flex flex-wrap">
-                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
-                  <InputLabel id="demo-simple-select-label">
-                    Select Country
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    name="country"
-                    value={address.country}
-                    label="Select Country"
-                    onChange={handleAdressChange}
-                  >
-                    {Country.getAllCountries().map((country, i) => (
-                      <MenuItem value={country.name} key={i}>
-                        {country.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
-                  <InputLabel id="demo-simple-select-label">
-                    Select State
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    name="state"
-                    value={address.state}
-                    label="Select State"
-                    onChange={handleAdressChange}
-                    disabled={!address.country}
-                  >
-                    {State.getStatesOfCountry(
-                      getIsoCode(address.country, "country") || ""
-                    ).map((state, i) => (
-                      <MenuItem value={state.name} key={i}>
-                        {state.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
-                  <InputLabel id="demo-simple-select-label">
-                    Select City
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    name="city"
-                    value={address.city}
-                    label="Select City"
-                    onChange={handleAdressChange}
-                    disabled={!address.country || !address.state}
-                  >
-                    {City.getCitiesOfState(
-                      getIsoCode(address.country, "country") || "",
-                      getIsoCode(address.state, "state", address.country)
-                    ).map((city, i) => (
-                      <MenuItem value={city.name} key={i}>
-                        {city.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  name="zone"
-                  label="Zone"
-                  variant="outlined"
-                  onChange={handleAdressChange}
-                />
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="number"
-                  name="zipCode"
-                  label="Zip Code"
-                  variant="outlined"
-                  onChange={handleAdressChange}
-                />
-              </div>
-            </div>
-            <div className="px-3 pb-2 mb-3">
-              <div className="sub-head">
-                <h3>Bank Timing</h3>
-              </div>
-              <div className="d-flex flex-wrap">
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <SingleInputTimeRangeField
-                    className="col-sm-6 col-12 p-1 mt-2"
-                    label="First Shift"
-                    onChange={(e) => {
-                      const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
-                      const secondDate = Math.floor(e[1]?.$d.getTime() / 1000);
-                      setBankTime({
-                        ...bankTime,
-                        first: [firstDate, secondDate],
-                      });
-                    }}
-                  />
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <SingleInputTimeRangeField
-                    className="col-sm-6 col-12 p-1 mt-2"
-                    label="Second Shift"
-                    onChange={(e) => {
-                      const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
-                      const secondDate = Math.floor(e[1]?.$d.getTime() / 1000);
-                      setBankTime({
-                        ...bankTime,
-                        second: [firstDate, secondDate],
-                      });
-                    }}
-                  />
-                </LocalizationProvider>
-              </div>
-            </div>
-            <div className="px-3 pb-2 mb-3">
-              <div className="sub-head">
-                <h3>Bank Details</h3>
-              </div>
-
-              <div className="d-flex flex-wrap">
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  name="name"
-                  value={bankDetail.name}
-                  label="Bank Name"
-                  variant="outlined"
-                  onChange={handleBankdetailChange}
-                />
-                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
-                  <InputLabel id="demo-simple-select-label">
-                    Select Level
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    name="level"
-                    value={bankDetail.level}
-                    label="Select Level"
-                    onChange={handleBankdetailChange}
-                  >
-                    {empLevel == 1 && <MenuItem value={1}>World Bank</MenuItem>}
-                    {empLevel < 2 && (
-                      <MenuItem value={2}>National Bank</MenuItem>
-                    )}
-                    {empLevel < 3 && address.country && (
-                      <MenuItem value={3}>State Bank</MenuItem>
-                    )}
-                    {empLevel < 4 && address.state && (
-                      <MenuItem value={4}>City Bank</MenuItem>
-                    )}
-                    {empLevel < 5 && address.city && (
-                      <MenuItem value={5}>Zone Bank</MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-              </div>
-            </div>
-            <div className="px-3 pb-2 mb-3">
-              <div className="sub-head">
-                <h3>Employee Create</h3>
-              </div>
-
-              <div className="d-flex flex-wrap">
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="text"
-                  name="name"
-                  label="Name"
-                  value={employee.name}
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="email"
-                  name="email"
-                  label="Email"
-                  value={employee.email}
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="number"
-                  name="contact"
-                  label="Contact"
-                  value={employee.contact}
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                    value={employee.DOB}
-                    onChange={(e) => {
-                      console.log(e);
-                      setEmployee({
-                        ...employee,
-                        DOB: e,
-                      });
-                    }}
-                    label="Date of Birth"
-                  />
-                </LocalizationProvider>
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="text"
-                  value={employee.department}
-                  name="department"
-                  label="Department"
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                    value={employee.joinningDate}
-                    onChange={(e) =>
-                      setEmployee({
-                        ...employee,
-                        joinningDate: e,
-                      })
-                    }
-                    label="Joinning Date"
-                  />
-                </LocalizationProvider>
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="text"
-                  name="education"
-                  label="Education"
-                  value={employee.education}
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-              </div>
-            </div>
-            <div className="d-flex justify-content-center">
-              <button
-                type="button"
-                className="align-items-center bg-gradient-primary btn btn-bank d-flex fs-5 justify-content-center px-4 py-2"
-                onClick={createHandler}
-                disabled={loader}
-              >
-                {loader && (
-                  <div class="spinner-border me-2" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                )}
-                Create
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      {/* <div className="row">
-        <div className="col-12">
-          <div className="card my-4">
-            <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 className="text-white text-capitalize ps-3">Bank Timing</h6>
-              </div>
-            </div>
-            <div className="card-body px-3 pb-2">
-              <div className="d-flex flex-wrap">
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <SingleInputTimeRangeField
-                    className="col-sm-6 col-12 p-1"
-                    label="First Shift"
-                    onChange={(e) => {
-                      const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
-                      const secondDate = Math.floor(e[1]?.$d.getTime() / 1000);
-                      setBankTime({
-                        ...bankTime,
-                        first: [firstDate, secondDate],
-                      });
-                    }}
-                  />
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <SingleInputTimeRangeField
-                    className="col-sm-6 col-12 p-1"
-                    label="Second Shift"
-                    onChange={(e) => {
-                      const firstDate = Math.floor(e[0]?.$d.getTime() / 1000);
-                      const secondDate = Math.floor(e[1]?.$d.getTime() / 1000);
-                      setBankTime({
-                        ...bankTime,
-                        second: [firstDate, secondDate],
-                      });
-                    }}
-                  />
-                </LocalizationProvider>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-12">
-          <div className="card my-4">
-            <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 className="text-white text-capitalize ps-3">
-                  Bank Details
-                </h6>
-              </div>
-            </div>
-            <div className="card-body px-3 pb-2">
-              <div className="d-flex flex-wrap">
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  name="name"
-                  value={bankDetail.name}
-                  label="Bank Name"
-                  variant="outlined"
-                  onChange={handleBankdetailChange}
-                />
-                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
-                  <InputLabel id="demo-simple-select-label">
-                    Select Level
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    name="level"
-                    value={bankDetail.level}
-                    label="Select Level"
-                    onChange={handleBankdetailChange}
-                  >
-                    {empLevel == 1 && <MenuItem value={1}>World Bank</MenuItem>}
-                    {empLevel < 2 && (
-                      <MenuItem value={2}>National Bank</MenuItem>
-                    )}
-                    {empLevel < 3 && address.country && (
-                      <MenuItem value={3}>State Bank</MenuItem>
-                    )}
-                    {empLevel < 4 && address.state && (
-                      <MenuItem value={4}>City Bank</MenuItem>
-                    )}
-                    {empLevel < 5 && address.city && (
-                      <MenuItem value={5}>Zone Bank</MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-12">
-          <div className="card my-4">
-            <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 className="text-white text-capitalize ps-3">
-                  Employee Create
-                </h6>
-              </div>
-            </div>
-            <div className="card-body px-3 pb-2">
-              <div className="d-flex flex-wrap">
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="text"
-                  name="name"
-                  label="Name"
-                  value={employee.name}
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="email"
-                  name="email"
-                  label="Email"
-                  value={employee.email}
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="number"
-                  name="contact"
-                  label="Contact"
-                  value={employee.contact}
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                    value={employee.DOB}
-                    onChange={(e) => {
-                      console.log(e);
-                      setEmployee({
-                        ...employee,
-                        DOB: e,
-                      });
-                    }}
-                    label="Date of Birth"
-                  />
-                </LocalizationProvider>
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="text"
-                  value={employee.department}
-                  name="department"
-                  label="Department"
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                    value={employee.joinningDate}
-                    onChange={(e) =>
-                      setEmployee({
-                        ...employee,
-                        joinningDate: e,
-                      })
-                    }
-                    label="Joinning Date"
-                  />
-                </LocalizationProvider>
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="text"
-                  name="education"
-                  label="Education"
-                  value={employee.education}
-                  onChange={empChangeHandler}
-                  variant="outlined"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      {/* <div className="card-body d-flex justify-content-center px-3 pb-2">
-        <div className="col-4">
-          <button
-            type="button"
-            className="btn btn-bank d-flex justify-content-center align-items-center bg-gradient-primary w-100 my-4 mb-2 fs-5"
-            onClick={createHandler}
-            disabled={loader}
-          >
-            {loader && (
-              <div class="spinner-border me-2" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            )}
-            Create
-          </button>
-        </div>
-      </div> */}
     </>
   );
 };

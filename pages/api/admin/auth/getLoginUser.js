@@ -24,7 +24,7 @@ export default withSessionRoute(async (req, res) => {
         fields: ["level"],
       })
     ).data.docs[0];
-    res.status(404).json({
+    res.status(200).json({
       status: true,
       message: "Success",
       data: { userData, level: bank.level },

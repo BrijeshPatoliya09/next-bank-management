@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
 
   useEffect(() => {
-    setTimeout(() => setWeb(true), 0);
+    setTimeout(() => setWeb(true), 100);
   }, []);
   return (
     <>

@@ -1,13 +1,13 @@
 import {
   checkEmail,
   checkName,
-  enc,
+  checkPassword,
+  dec,
   generateIFSC,
   getLevelData,
   keyStore,
 } from "../../../../helper/common";
 import dbConnect from "../../../../helper/connection";
-import { generate } from "generate-password";
 import speakeasy from "speakeasy";
 
 export default async (req, res) => {
@@ -120,6 +120,11 @@ export default async (req, res) => {
         status: false,
         message: "Please enter valid email",
       });
+    } else if (!checkPassword(dec(employee.password, keyStore("empPsw")))) {
+      return res.status(422).json({
+        status: false,
+        message: "Please enter valid password",
+      });
     } else if (textCheck.length > 0) {
       return res.status(422).json({
         status: false,
@@ -158,14 +163,6 @@ export default async (req, res) => {
       parentalId: parentData[0]._id,
     });
 
-    const password = generate({
-      length: 12,
-      uppercase: true,
-      lowercase: true,
-      numbers: true,
-      symbols: true,
-    });
-
     const tem_secret = speakeasy.generateSecret({
       name: "2faName",
     });
@@ -174,7 +171,6 @@ export default async (req, res) => {
       ...employee,
       bankId: bankCreat.data.id,
       secretKey: tem_secret.base32,
-      password: enc(password, keyStore("empPsw")),
       employeeType: 1,
       docType: "Employee",
     });

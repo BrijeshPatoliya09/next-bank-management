@@ -1,11 +1,11 @@
 // import { getLevelData } from "../../../helper/common";
-import { generate } from "generate-password";
 import dbConnect from "../../../../helper/connection";
 import speakeasy from "speakeasy";
 import {
   checkEmail,
   checkName,
-  enc,
+  checkPassword,
+  dec,
   keyStore,
 } from "../../../../helper/common";
 
@@ -45,6 +45,11 @@ export default async (req, res) => {
       return res
         .status(422)
         .json({ status: false, message: "Please enter valid email" });
+    } else if (!checkPassword(dec(employee.password, keyStore("empPsw")))) {
+      return res.status(422).json({
+        status: false,
+        message: "Please enter valid password",
+      });
     } else if (textCheck.length > 0) {
       return res.status(422).json({ status: false, message: textCheck[0] });
     }
@@ -53,19 +58,10 @@ export default async (req, res) => {
       name: "2faName",
     });
 
-    const password = generate({
-      length: 12,
-      uppercase: true,
-      lowercase: true,
-      numbers: true,
-      symbols: true,
-    });
-
     await dbConnect().insert("bank-management", {
       ...employee,
       bankId,
       secretKey: tem_secret.base32,
-      password: enc(password, keyStore("empPsw")),
       employeeType: 0,
       status: 0,
       docType: "Employee",

@@ -84,9 +84,9 @@ const AdminLayout = ({ children }) => {
               <>{children}</>
             ) : (
               <>
-                {sideBar && <Sidebar level={loggedIn.level} />}
+                {sideBar && <Sidebar level={loggedIn?.level} />}
                 <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-                  <Topbar loggedIn={loggedIn.userData} />
+                  <Topbar loggedIn={loggedIn?.userData} />
                   <NextNProgress color="#216273" />
                   <div className="container-fluid py-4">
                     {children}
