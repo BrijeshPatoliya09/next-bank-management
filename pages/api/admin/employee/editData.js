@@ -1,9 +1,24 @@
-import { checkEmail, checkName, getLevelData } from "../../../../helper/common";
+import {
+  checkEmail,
+  checkName,
+  checkPassword,
+  dec,
+  getLevelData,
+  keyStore,
+} from "../../../../helper/common";
 import dbConnect from "../../../../helper/connection";
 
 export default async (req, res) => {
   const {
-    body: { employee, employeeRev, employeeId },
+    body: {
+      employee,
+      employeeRev,
+      employeeId,
+      oldPsw,
+      newPsw,
+      confPsw,
+      change,
+    },
   } = req;
   try {
     //!Employee
@@ -41,6 +56,31 @@ export default async (req, res) => {
       return res.status(422).json({ status: false, message: textCheck[0] });
     }
 
+    if (change == 1) {
+      if (!oldPsw || oldPsw.trim() == "") {
+        return res
+          .status(422)
+          .json({ status: false, message: "Please enter old password" });
+      } else if (!newPsw || newPsw.trim() == "") {
+        return res
+          .status(422)
+          .json({ status: false, message: "Please enter new password" });
+      } else if (!confPsw || confPsw.trim() == "") {
+        return res
+          .status(422)
+          .json({ status: false, message: "Please enter confirm password" });
+      } else if (!checkPassword(dec(newPsw, keyStore("empPsw")))) {
+        return res
+          .status(422)
+          .json({ status: false, message: "Please enter valid new password" });
+      } else if (newPsw != confPsw) {
+        return res.status(422).json({
+          status: false,
+          message: "New password and Confirm password must be same",
+        });
+      }
+    }
+
     const data = (
       await dbConnect().mango("bank-management", {
         selector: {
@@ -49,10 +89,22 @@ export default async (req, res) => {
       })
     ).data.docs[0];
 
+    let query = {};
+    if (change == 1) {
+      if (data.password != oldPsw) {
+        return res.status(422).json({
+          status: false,
+          message: "Please enter correct old password",
+        });
+      }
+      query.password = newPsw;
+    }
+
     await dbConnect().update("bank-management", {
       _id: employeeId,
       _rev: employeeRev,
       ...data,
+      ...query,
       ...employee,
     });
 

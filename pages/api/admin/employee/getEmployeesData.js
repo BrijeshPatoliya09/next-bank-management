@@ -52,14 +52,19 @@ export default async (req, res) => {
           bankId: activeEmployee,
           docType: "Employee",
         },
-        fields: ["department"]
+        fields: ["department"],
       })
     ).data.docs;
 
     res.status(200).json({
       status: true,
       message: "success",
-      data: { empData, bankData, count: countData.length, departmentSelect: countData },
+      data: {
+        empData,
+        bankData,
+        count: countData.length,
+        departmentSelect: countData,
+      },
     });
   } catch (err) {
     console.log(err);

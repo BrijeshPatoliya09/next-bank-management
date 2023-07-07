@@ -41,23 +41,23 @@ const UserLayout = ({ children }) => {
         <link
           rel="shortcut icon"
           type="image/x-icon"
-          href="assets/img/favicon.ico"
+          href="/assets/img/favicon.ico"
         />
 
-        <link rel="stylesheet" href="/assets/css/user/bootstrap.min.css" />
-        <link rel="stylesheet" href="/assets/css/user/slicknav.css" />
-        <link rel="stylesheet" href="/assets/css/user/flaticon.css" />
-        <link rel="stylesheet" href="/assets/css/user/animate.min.css" />
-        <link rel="stylesheet" href="/assets/css/user/magnific-popup.css" />
+        <link rel="stylesheet" href="assets/css/user/bootstrap.min.css" />
+        <link rel="stylesheet" href="assets/css/user/slicknav.css" />
+        <link rel="stylesheet" href="assets/css/user/flaticon.css" />
+        <link rel="stylesheet" href="assets/css/user/animate.min.css" />
+        <link rel="stylesheet" href="assets/css/user/magnific-popup.css" />
         <link
           rel="stylesheet"
           href="/assets/css/user/fontawesome-all.min.css"
         />
-        <link rel="stylesheet" href="/assets/css/user/themify-icons.css" />
-        <link rel="stylesheet" href="/assets/css/user/slick.css" />
-        <link rel="stylesheet" href="/assets/css/user/nice-select.css" />
-        <link rel="stylesheet" href="/assets/css/user/login.css" />
-        <link rel="stylesheet" href="/assets/css/user/style.css" />
+        <link rel="stylesheet" href="assets/css/user/themify-icons.css" />
+        <link rel="stylesheet" href="assets/css/user/slick.css" />
+        <link rel="stylesheet" href="assets/css/user/nice-select.css" />
+        <link rel="stylesheet" href="assets/css/user/login.css" />
+        <link rel="stylesheet" href="assets/css/user/style.css" />
       </Head>
       <body>
         {loader ? (
@@ -88,7 +88,7 @@ const UserLayout = ({ children }) => {
 
         <ToastContainer />
 
-        {/* <script src="/assets/js/user/vendor/modernizr-3.5.0.min.js"></script>
+        <script src="/assets/js/user/vendor/modernizr-3.5.0.min.js"></script>
         <script src="/assets/js/user/vendor/jquery-1.12.4.min.js"></script>
         <script src="/assets/js/user/jquery.slicknav.min.js"></script>
 
@@ -107,7 +107,7 @@ const UserLayout = ({ children }) => {
         <script src="/assets/js/user/jquery.ajaxchimp.min.js"></script>
 
         <script src="/assets/js/user/plugins.js"></script>
-        <script src="/assets/js/user/main.js"></script> */}
+        <script src="/assets/js/user/main.js"></script>
       </body>
     </>
   );

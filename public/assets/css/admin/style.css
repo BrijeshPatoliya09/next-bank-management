@@ -163,13 +163,16 @@
   font-size: 22px;
   font-weight: 600;
   color: rgb(241, 241, 241);
-  z-index: 2;
 }
 
 .dashboard .row h2 {
   font-size: 28px;
   color: #216273;
   margin-left: 10px;
+}
+
+.dashboard .row .col-8 {
+  z-index: 2;
 }
 
 .bank-trans .cookieCard {

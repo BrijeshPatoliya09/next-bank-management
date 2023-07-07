@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import { withSessionSsr } from "../../../helper/session";
 import BankTree from "../../../component/admin/bank/BankTree";
+import NoDataFound from "../../../component/admin/noDataFound";
 
 const userTable = ({ data, empData, treeSelectBox }) => {
   const [activeEmployee, setActiveEmployeeData] = useState({
@@ -350,11 +351,7 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                     </tr>
                   </thead>
                   <tbody className={userData.length == 0 && "text-center"}>
-                    {userData.length == 0 && (
-                      <td colSpan="12" className="fs-4 py-4">
-                        No data Found
-                      </td>
-                    )}
+                    {userData.length == 0 && <NoDataFound />}
                     {userData.length > 0 &&
                       [...userData].reverse().map((item) => {
                         const DOB = new Date(item.dob * 1000);

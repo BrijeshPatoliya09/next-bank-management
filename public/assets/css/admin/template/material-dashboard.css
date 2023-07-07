@@ -3232,12 +3232,12 @@ textarea.form-control.is-invalid {
 .btn:hover {
   color: #7b809a;
 }
-.btn-check:focus + .btn,
+/* .btn-check:focus + .btn,
 .btn:focus {
   outline: 0;
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.09),
     0 2px 3px -1px rgba(0, 0, 0, 0.07);
-}
+} */
 .btn:disabled,
 .btn.disabled,
 fieldset:disabled .btn {
@@ -17229,14 +17229,14 @@ fieldset:disabled .btn {
 .btn:not([class*="btn-outline-"]) {
   border: 0;
 }
-.btn:active,
+/* .btn:active,
 .btn:active:focus,
 .btn:active:hover {
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.09),
     0 2px 3px -1px rgba(0, 0, 0, 0.07);
   transform: none;
   opacity: 0.85;
-}
+} */
 .btn.bg-white:hover {
   color: #7b809a;
 }

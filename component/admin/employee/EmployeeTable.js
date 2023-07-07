@@ -22,6 +22,7 @@ import Swal from "sweetalert2";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import { toast } from "react-toastify";
+import NoDataFound from "../noDataFound";
 
 let initial = false;
 
@@ -94,7 +95,7 @@ const EmployeeTable = ({
           <div className="col-12">
             <div className="card my-4">
               <div className="pt-3 px-3 sub-head d-flex">
-                <h3>Employee table awdaswdqwadq</h3>
+                <h3>Employee table</h3>
                 <div className="ms-auto me-3 d-flex">
                   {empType && (
                     <button
@@ -244,11 +245,6 @@ const EmployeeTable = ({
                           />
                         </button>
                       </th>
-                      {empType && (
-                        <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2 mb- ">
-                          <button className="btn p-0 m-0">Password</button>
-                        </th>
-                      )}
                       <th className="text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         <button
                           className="btn p-0 m-0"
@@ -335,7 +331,7 @@ const EmployeeTable = ({
                       </th> */}
                       {empType && (
                         <th className="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                          <button className="btn p-0 m-0">Action</button>
+                          <button className="btn p-0 m-0">Action</button> 
                         </th>
                       )}
                       {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
@@ -344,11 +340,7 @@ const EmployeeTable = ({
                     </tr>
                   </thead>
                   <tbody className={employeeData.length == 0 && "text-center"}>
-                    {employeeData.length == 0 && (
-                      <td colSpan="12" className="fs-4 py-4">
-                        No data Found
-                      </td>
-                    )}
+                    {employeeData.length == 0 && <NoDataFound />}
                     {employeeData.length > 0 &&
                       employeeData.map((item) => {
                         const join = new Date(item.joinningDate * 1000);
@@ -375,13 +367,6 @@ const EmployeeTable = ({
                                 {item.email}
                               </p>
                             </td>
-                            {empType && (
-                              <td>
-                                <p className="text-sm font-weight-bold mb-0">
-                                  {dec(item.password, keyStore("empPsw"))}
-                                </p>
-                              </td>
-                            )}
                             <td>
                               <p className="text-sm font-weight-bold mb-0">
                                 {item.contact}

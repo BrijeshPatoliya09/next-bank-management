@@ -20,6 +20,7 @@ import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import BankTree from "../../../component/admin/bank/BankTree";
+import NoDataFound from "../../../component/admin/noDataFound";
 
 const transactionTable = ({ data, empData, treeSelectBox }) => {
   const [activeEmployee, setActiveEmployeeData] = useState({
@@ -252,7 +253,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th> */}
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("firstName")}
                         >
                           User
@@ -264,7 +265,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("duration")}
                         >
                           Duration
@@ -276,7 +277,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("amount")}
                         >
                           Amount
@@ -288,7 +289,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("type")}
                         >
                           Loan Type
@@ -300,7 +301,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("collateralName")}
                         >
                           Collateral
@@ -312,7 +313,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th> */}
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("collateralValue")}
                         >
                           Collateral Value
@@ -324,7 +325,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("status")}
                         >
                           Status
@@ -336,7 +337,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
-                          className="btn p-0"
+                          className="btn p-0 m-0"
                           onClick={() => sortDataHandler("createdAt")}
                         >
                           Created At
@@ -347,19 +348,15 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                         </button>
                       </th>
                       {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        <button className="btn p-0">Doccument</button>
+                        <button className="btn p-0 m-0">Doccument</button>
                       </th> */}
                       <th className="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
-                        <button className="btn p-0">Action</button>
+                        <button className="btn p-0 m-0">Action</button>
                       </th>
                     </tr>
                   </thead>
                   <tbody className={userData.length == 0 && "text-center"}>
-                    {userData.length == 0 && (
-                      <td colSpan="12" className="fs-4 py-4">
-                        No data Found
-                      </td>
-                    )}
+                    {userData.length == 0 && <NoDataFound />}
                     {userData.length > 0 &&
                       [...userData].reverse().map((item) => {
                         const created = new Date(item.createdAt * 1000);

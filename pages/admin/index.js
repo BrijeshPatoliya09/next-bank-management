@@ -105,44 +105,77 @@ export default function Home({ dashboardData }) {
           {dashboardData.totalBanks.type == 0 && (
             <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2 bank-detail">
               <div class="cookieCard">
-                <p class="align-items-center cookieHeading d-flex d-flex">
-                  <i class="bi bi-bank2 fs-1 me-3"></i>Total Sub Banks
-                </p>
-                <h2 className="text-white fs-1 text-center">
-                  {dashboardData.totalBanks.totalSubBanks}
-                </h2>
+                <div className="col-12 d-flex">
+                  <div className="col-4 d-flex justify-content-center">
+                    <p class="align-items-center cookieHeading d-flex display-4 m-0 text-center">
+                      <i class="bi bi-bank2 me-3"></i>
+                    </p>
+                  </div>
+                  <div className="col-8">
+                    <p class="align-items-center cookieHeading d-flex">
+                      Sub Banks
+                    </p>
+                    <h2 className="fs-1 m-0 text-white">
+                      {dashboardData.totalBanks.totalSubBanks}
+                    </h2>
+                  </div>
+                </div>
               </div>
             </div>
           )}
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
-              <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-cash-stack fs-1 me-3"></i>Total Balance
-              </p>
-              <h2 className="text-white fs-1 text-center">
-                {dashboardData.totalFunds}
-              </h2>
+              <div className="col-12 d-flex">
+                <div className="col-4 d-flex justify-content-center">
+                  <p class="align-items-center cookieHeading d-flex display-4 m-0 text-center">
+                    <i class="bi bi-cash-stack me-3"></i>
+                  </p>
+                </div>
+                <div className="col-8">
+                  <p class="align-items-center cookieHeading d-flex">Balance</p>
+                  <h2 className="fs-1 m-0 text-white">
+                    {dashboardData.totalFunds}
+                  </h2>
+                </div>
+              </div>
             </div>
           </div>
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2 bank-loans">
             <div class="cookieCard">
-              <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-piggy-bank-fill fs-1 me-3"></i>Total Loan Amount
-              </p>
-              <h2 className="text-white fs-1 text-center">
-                {dashboardData.loan.totalLoanAmount}
-              </h2>
+              <div className="col-12 d-flex">
+                <div className="col-4 d-flex justify-content-center">
+                  <p class="align-items-center cookieHeading d-flex display-4 m-0 text-center">
+                    <i class="bi bi-piggy-bank-fill me-3"></i>
+                  </p>
+                </div>
+                <div className="col-8">
+                  <p class="align-items-center cookieHeading d-flex">
+                    Loan Amount
+                  </p>
+                  <h2 className="fs-1 m-0 text-white">
+                    {dashboardData.loan.totalLoanAmount}
+                  </h2>
+                </div>
+              </div>
             </div>
           </div>
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2 bank-trans">
             <div class="cookieCard">
-              <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi bi-cash-coin fs-1 me-3"></i>Total Transaction
-                Amount
-              </p>
-              <h2 className="text-white fs-1 text-center">
-                {dashboardData.transaction.totalTransactionAmount}
-              </h2>
+              <div className="col-12 d-flex">
+                <div className="col-4 d-flex justify-content-center">
+                  <p class="align-items-center cookieHeading d-flex display-4 m-0 text-center">
+                    <i class="bi bi-cash-coin me-3"></i>
+                  </p>
+                </div>
+                <div className="col-8">
+                  <p class="align-items-center cookieHeading d-flex">
+                    Transaction Amount
+                  </p>
+                  <h2 className="fs-1 m-0 text-white">
+                    {dashboardData.transaction.totalTransactionAmount}
+                  </h2>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -153,7 +186,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-piggy-bank-fill fs-1 me-3"></i>Total Employees
+                <i class="bi bi-people-fill fs-1 me-3"></i>Total Employees
               </p>
               <h2 className="text-white fs-1 text-center">
                 {dashboardData.employees.totalEmp}
@@ -163,7 +196,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-piggy-bank-fill fs-1 me-3"></i>Total Active
+                <i class="bi bi-person-fill-check fs-1 me-3"></i>Total Active
                 Employees
               </p>
               <h2 className="text-white fs-1 text-center">
@@ -174,7 +207,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-piggy-bank-fill fs-1 me-3"></i>Total Deactive
+                <i class="bi bi-person-fill-x fs-1 me-3"></i>Total Deactive
                 Employees
               </p>
               <h2 className="text-white fs-1 text-center">
@@ -191,7 +224,7 @@ export default function Home({ dashboardData }) {
             <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
               <div class="cookieCard">
                 <p class="align-items-center cookieHeading d-flex">
-                  <i class="bi bi-person-badge fs-1 me-3"></i>Total Users
+                  <i class="bi bi-people-fill fs-1 me-3"></i>Total Users
                 </p>
                 <h2 className="text-white fs-1 text-center">
                   {dashboardData.totalBanks.totalUsers}
@@ -201,7 +234,7 @@ export default function Home({ dashboardData }) {
             <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
               <div class="cookieCard">
                 <p class="align-items-center cookieHeading d-flex">
-                  <i class="bi bi-person-badge fs-1 me-3"></i>Total Pending
+                  <i class="bi bi-person-fill-gear fs-1 me-3"></i>Total Pending
                   Users
                 </p>
                 <h2 className="text-white fs-1 text-center">
@@ -212,8 +245,8 @@ export default function Home({ dashboardData }) {
             <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
               <div class="cookieCard">
                 <p class="align-items-center cookieHeading d-flex">
-                  <i class="bi bi-person-badge fs-1 me-3"></i>Total Confirmed
-                  Users
+                  <i class="bi bi-person-fill-check fs-1 me-3"></i>Total
+                  Confirmed Users
                 </p>
                 <h2 className="text-white fs-1 text-center">
                   {dashboardData.totalBanks.confirmedUsers}
@@ -223,8 +256,8 @@ export default function Home({ dashboardData }) {
             <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
               <div class="cookieCard">
                 <p class="align-items-center cookieHeading d-flex">
-                  <i class="bi bi-person-badge fs-1 me-3"></i>Total Rejected
-                  Users
+                  <i class="bi bi-person-fill-slash fs-1 me-3"></i>Total
+                  Rejected Users
                 </p>
                 <h2 className="text-white fs-1 text-center">
                   {dashboardData.totalBanks.rejectedUsers}
@@ -234,7 +267,7 @@ export default function Home({ dashboardData }) {
             <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-4">
               <div class="cookieCard">
                 <p class="align-items-center cookieHeading d-flex">
-                  <i class="bi bi-person-badge fs-1 me-3"></i>Total Deactive
+                  <i class="bi bi-person-fill-x fs-1 me-3"></i>Total Deactive
                   Users
                 </p>
                 <h2 className="text-white fs-1 text-center">
@@ -262,8 +295,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-piggy-bank-fill fs-1 me-3"></i>Total Pending
-                Loans
+                <i class="bi bi-clock-history fs-1 me-3"></i>Total Pending Loans
               </p>
               <h2 className="text-white fs-1 text-center">
                 {dashboardData.loan.pendingLoans}
@@ -273,7 +305,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-piggy-bank-fill fs-1 me-3"></i>Total Confirmed
+                <i class="bi bi-patch-check-fill fs-1 me-3"></i>Total Confirmed
                 Loans
               </p>
               <h2 className="text-white fs-1 text-center">
@@ -284,7 +316,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-piggy-bank-fill fs-1 me-3"></i>Total Rejected
+                <i class="bi bi-x-octagon-fill fs-1 me-3"></i>Total Rejected
                 Loans
               </p>
               <h2 className="text-white fs-1 text-center">
@@ -295,8 +327,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-4">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-piggy-bank-fill fs-1 me-3"></i>Total Closed
-                Loans
+                <i class="bi bi-archive-fill fs-1 me-3"></i>Total Closed Loans
               </p>
               <h2 className="text-white fs-1 text-center">
                 {dashboardData.loan.closedLoans}
@@ -321,7 +352,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-cash-coin fs-1 me-3"></i>Total Pending
+                <i class="bi bi-clock-history fs-1 me-3"></i>Total Pending
                 Transactions
               </p>
               <h2 className="text-white fs-1 text-center">
@@ -332,7 +363,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-cash-coin fs-1 me-3"></i>Total Confirmed
+                <i class="bi bi-patch-check-fill fs-1 me-3"></i>Total Confirmed
                 Transactions
               </p>
               <h2 className="text-white fs-1 text-center">
@@ -343,7 +374,7 @@ export default function Home({ dashboardData }) {
           <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-2">
             <div class="cookieCard">
               <p class="align-items-center cookieHeading d-flex">
-                <i class="bi bi-cash-coin fs-1 me-3"></i>Total Rejected
+                <i class="bi bi-x-octagon-fill fs-1 me-3"></i>Total Rejected
                 Transactions
               </p>
               <h2 className="text-white fs-1 text-center">
