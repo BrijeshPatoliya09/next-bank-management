@@ -3,15 +3,25 @@ import dbConnect from "../../../../helper/connection";
 export default async (req, res) => {
   const { body } = req;
   try {
-    const loanData = (
-      await dbConnect().mango("bank-management", {
+    const fetchLoanData = async (bookmark = null, docs = []) => {
+      const { data } = await dbConnect().mango("bank-management", {
         selector: {
           docType: "Loan",
           ifscCode: body,
           status: 1,
         },
-      })
-    ).data.docs;
+        bookmark,
+      });
+
+      docs = docs.concat(data.docs);
+
+      if (data.bookmark && data.docs.length > 0) {
+        return fetchLoanData(data.bookmark, docs);
+      } else {
+        return docs;
+      }
+    };
+    const loanData = await fetchLoanData();
 
     const getDates = (dataTime) => {
       const nowDate = Math.floor(Date.now() / 1000);
@@ -199,7 +209,7 @@ export default async (req, res) => {
           console.log(checkPenalty);
           if (checkPenalty.length > 0) {
             const nowDate = Math.floor(Date.now() / 1000);
-            const updatedEpochTime = checkPenalty[0].timeStamp + 30;
+            const updatedEpochTime = checkPenalty[0].timeStamp + 864000;
 
             if (nowDate >= updatedEpochTime) {
               await interestDeduct(data, checkPenalty[0]);
@@ -211,6 +221,10 @@ export default async (req, res) => {
             }
           }
         } else {
+          await dbConnect().update("bank-management", {
+            ...data,
+            status: 3,
+          });
           console.log("loan is over");
         }
       }

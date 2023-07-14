@@ -113,9 +113,9 @@ const userTable = ({ data, empData, treeSelectBox }) => {
       <div className="row bank-reg">
         <div className="align-items-center col-12 d-flex">
           <div className="col-12">
-            <div className="card my-4">
+            <div className="card">
               <div className="pt-3 px-3 sub-head d-flex">
-                <h3>User table</h3>
+                <h3>User List</h3>
                 <div className="ms-auto me-3">
                   <button
                     type="button"
@@ -435,8 +435,8 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                                   Rejected
                                 </span>
                               ) : (
-                                <span className="badge badge-sm bg-gradient-primary p-2">
-                                  Deactive
+                                <span className="badge badge-sm bg-gradient-warning p-2">
+                                  Account Closed
                                 </span>
                               )}
                             </td>
@@ -465,7 +465,7 @@ const userTable = ({ data, empData, treeSelectBox }) => {
                                               ? "Reject this user"
                                               : "Close this users account"
                                           } ?`,
-                                          icon: "warning",
+                                          icon: "question",
                                           showCancelButton: true,
                                           cancelButtonText: "Cancel",
                                           confirmButtonColor: "#5773FF",

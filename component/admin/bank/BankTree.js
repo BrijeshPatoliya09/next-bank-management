@@ -8,7 +8,7 @@ const BankTree = ({ data, setActiveEmployeeData, activeEmployee, select }) => {
     <>
       <div className="col-12" style={{ height: "95%" }}>
         <div className="card my-4" style={{ height: "95%" }}>
-          <div className="pb-2 mb-3">
+          <div className="pb-2   mb-3">
             <div className="pt-3 px-3 sub-head d-flex align-items-center">
               <h3>Bank Tree</h3>
               <div className="col-lg-3 rounded-3 bg-white ms-auto me-3">
@@ -17,6 +17,11 @@ const BankTree = ({ data, setActiveEmployeeData, activeEmployee, select }) => {
                   onChange={(event, newValue) => {
                     if (newValue) {
                       setBankSelect(newValue);
+
+                      setActiveEmployeeData({
+                        bankId: newValue.value,
+                        ifsc: newValue.ifsc,
+                      });
                     } else {
                       setBankSelect(null);
                     }
@@ -37,6 +42,7 @@ const BankTree = ({ data, setActiveEmployeeData, activeEmployee, select }) => {
                     return {
                       label: `${item.name} - ${addName}`,
                       value: item._id,
+                      ifsc: item.ifscCode,
                     };
                   })}
                   sx={{ width: 300 }}

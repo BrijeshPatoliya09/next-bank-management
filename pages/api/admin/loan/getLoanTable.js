@@ -87,6 +87,18 @@ export default async (req, res) => {
               userAccountNo: getUsersData[i].accountNumber,
               ...loanFilter,
             },
+            fields: [
+              "amount",
+              "duration",
+              "userAccountNo",
+              "ifscCode",
+              "type",
+              "collateralValue",
+              "status",
+              "createdAt",
+              "_id",
+              "_rev",
+            ],
           })
         ).data.docs;
 
@@ -106,6 +118,18 @@ export default async (req, res) => {
           skip: page * 10,
           limit: 10,
           sort: [sort],
+          fields: [
+            "amount",
+            "duration",
+            "userAccountNo",
+            "ifscCode",
+            "type",
+            "collateralValue",
+            "status",
+            "createdAt",
+            "_id",
+            "_rev",
+          ],
         })
       ).data.docs;
       getLoanAsUser.push(...data);

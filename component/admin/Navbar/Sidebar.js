@@ -12,12 +12,12 @@ const Sidebar = ({ level }) => {
       router.push("/admin/auth/login");
     }
   };
-
+  
   const path = router.pathname;
   return (
     <>
       <div
-        className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
+        className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start"
         id="sidenav-main"
       >
         <div className="sidenav-header">
@@ -55,14 +55,27 @@ const Sidebar = ({ level }) => {
             <li className="nav-item">
               <Link
                 className={`nav-link  ${
-                  path == "/admin/table" ? "active" : ""
+                  path == "/admin/bank/bankInfo" ? "active" : ""
                 }`}
-                href="/admin/table"
+                href="/admin/bank/bankInfo"
+              >
+                <span className=" text-center me-2 d-flex align-items-center justify-content-center">
+                  <i className="material-icons opacity-10">account_balance</i>
+                </span>
+                <span className="nav-link-text ms-1">Bank Info</span>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={`nav-link  ${
+                  path == "/admin/employee/table" ? "active" : ""
+                }`}
+                href="/admin/employee/table"
               >
                 <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">table_view</i>
                 </span>
-                <span className="nav-link-text ms-1">Employee</span>
+                <span className="nav-link-text ms-1">Manage Employee</span>
               </Link>
             </li>
             {level != 5 && (
@@ -90,7 +103,7 @@ const Sidebar = ({ level }) => {
                 <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="bi bi-person-lines-fill fs-5"></i>
                 </span>
-                <span className="nav-link-text ms-1">User Table</span>
+                <span className="nav-link-text ms-1">Manage User</span>
               </Link>
             </li>
             <li className="nav-item">
@@ -103,20 +116,20 @@ const Sidebar = ({ level }) => {
                 <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="bi bi-cash-coin fs-5"></i>
                 </span>
-                <span className="nav-link-text ms-1">Transaction Table</span>
+                <span className="nav-link-text ms-1">Manage Transaction</span>
               </Link>
             </li>
             <li className="nav-item">
               <Link
                 className={`nav-link  ${
-                  path == "/admin/loan/loanTable" ? "active" : ""
+                  path.includes("loan/") ? "active" : ""
                 }`}
                 href="/admin/loan/loanTable"
               >
                 <span className=" text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="bi bi-piggy-bank-fill fs-5"></i>
                 </span>
-                <span className="nav-link-text ms-1">Loan Table</span>
+                <span className="nav-link-text ms-1">Manage Loan</span>
               </Link>
             </li>
             <li className="nav-item mt-3">

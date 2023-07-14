@@ -50,7 +50,7 @@ const payment = () => {
 
   return (
     <>
-      <div className="hero-area2  slider-height2 hero-overly2 d-flex align-items-center ">
+      <div className="hero-area2 slider-height2 hero-overly2 d-flex align-items-center ">
         <div className="container">
           <div className="row">
             <div className="col-xl-12">
@@ -61,63 +61,58 @@ const payment = () => {
           </div>
         </div>
       </div>
-      <div className="apply-area pt-150 pb-150">
+      <div className="apply-area py-80">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-lg-12">
+            <div className="col-9">
               <div className="apply-wrapper">
                 <form action="#">
                   <div className="row">
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Bank Account No</label>
-                        <input
-                          type="text"
-                          name="accountNo"
-                          placeholder="Enter Bank Account No."
-                          onChange={changeHandler}
-                        />
-                      </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Bank Account No</label>
+                      <input
+                        type="text"
+                        name="accountNo"
+                        className="form-control"
+                        placeholder="Enter Bank Account No."
+                        onChange={changeHandler}
+                      />
                     </div>
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Bank IFSC Code</label>
-                        <input
-                          type="text"
-                          name="ifscCode"
-                          placeholder="Enter IFSC Code"
-                          onChange={changeHandler}
-                        />
-                      </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Bank IFSC Code</label>
+                      <input
+                        type="text"
+                        name="ifscCode"
+                        className="form-control"
+                        placeholder="Enter IFSC Code"
+                        onChange={changeHandler}
+                      />
                     </div>
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Amount</label>
-                        <input
-                          type="number"
-                          name="amount"
-                          placeholder="Enter Amount"
-                          onInput={(e) => {
-                            e.target.value = e.target.value
-                              .replace(/[^0-9]/g, "")
-                              .replace(/(\..*)\./g, "$1");
-                            setPayment({ ...payment, amount: e.target.value });
-                          }}
-                        />
-                      </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Amount</label>
+                      <input
+                        type="number"
+                        name="amount"
+                        className="form-control"
+                        placeholder="Enter Amount"
+                        onInput={(e) => {
+                          e.target.value = e.target.value
+                            .replace(/[^0-9]/g, "")
+                            .replace(/(\..*)\./g, "$1");
+                          setPayment({ ...payment, amount: e.target.value });
+                        }}
+                      />
                     </div>
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Description</label>
-                        <textarea
-                          className="form-control w-100"
-                          cols="15"
-                          rows="4"
-                          name="description"
-                          placeholder="Enter Decription"
-                          onChange={changeHandler}
-                        />
-                      </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Description</label>
+                      <textarea
+                        className="form-control w-100"
+                        cols="15"
+                        rows="4"
+                        name="description"
+                        placeholder="Enter Decription"
+                        onChange={changeHandler}
+                      />
                     </div>
                   </div>
                 </form>

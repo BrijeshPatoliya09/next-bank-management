@@ -44,20 +44,20 @@ const UserLayout = ({ children }) => {
           href="/assets/img/favicon.ico"
         />
 
-        <link rel="stylesheet" href="assets/css/user/bootstrap.min.css" />
-        <link rel="stylesheet" href="assets/css/user/slicknav.css" />
-        <link rel="stylesheet" href="assets/css/user/flaticon.css" />
-        <link rel="stylesheet" href="assets/css/user/animate.min.css" />
-        <link rel="stylesheet" href="assets/css/user/magnific-popup.css" />
+        <link rel="stylesheet" href="/assets/css/user/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/css/user/slicknav.css" />
+        <link rel="stylesheet" href="/assets/css/user/flaticon.css" />
+        <link rel="stylesheet" href="/assets/css/user/animate.min.css" />
+        <link rel="stylesheet" href="/assets/css/user/magnific-popup.css" />
         <link
           rel="stylesheet"
           href="/assets/css/user/fontawesome-all.min.css"
         />
-        <link rel="stylesheet" href="assets/css/user/themify-icons.css" />
-        <link rel="stylesheet" href="assets/css/user/slick.css" />
-        <link rel="stylesheet" href="assets/css/user/nice-select.css" />
-        <link rel="stylesheet" href="assets/css/user/login.css" />
-        <link rel="stylesheet" href="assets/css/user/style.css" />
+        <link rel="stylesheet" href="/assets/css/user/themify-icons.css" />
+        <link rel="stylesheet" href="/assets/css/user/slick.css" />
+        <link rel="stylesheet" href="/assets/css/user/nice-select.css" />
+        <link rel="stylesheet" href="/assets/css/user/style.css" />
+        <link rel="stylesheet" href="/assets/css/user/login.css" />
       </Head>
       <body>
         {loader ? (

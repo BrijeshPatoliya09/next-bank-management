@@ -184,7 +184,7 @@ const EmployeeCreate = ({ onSetEmpModel, bankId, onGetEmpData, empEdit }) => {
       <div className="row bank-reg">
         <div className="align-items-center col-12 d-flex">
           <div className="col-12">
-            <div className="card my-4">
+            <div className="card">
               <div className="pb-2 mb-3">
                 <div className="pt-3 px-3 sub-head">
                   <h3>Employee {!empEdit ? "Create" : "Edit"}</h3>

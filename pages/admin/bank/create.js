@@ -212,8 +212,8 @@ const create = ({ empLevel }) => {
   return (
     <>
       <div className="row bank-reg">
-        <div className="col-12 d-flex">
-          <div className="col-6 px-2 me-2">
+        <div className="col-12 d-flex flex-wrap flex-sm-nowrap">
+          <div className="col-12 col-sm-6 pe-2 me-2">
             <div className="col-12">
               <div className="card my-4">
                 <div className="pb-2 mb-3">
@@ -363,7 +363,7 @@ const create = ({ empLevel }) => {
               </div>
             </div>
           </div>
-          <div className="col-6 px-2">
+          <div className="col-12 col-sm-6 px-0 px-sm-2">
             <div className="col-12">
               <div className="card my-4">
                 <div className="pb-2 mb-3">

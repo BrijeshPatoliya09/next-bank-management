@@ -7,6 +7,7 @@ import {
   imgUploadHandler,
   removeImgHandler,
 } from "../../../helper/common";
+import CreatableSelect from "react-select";
 
 const registerAccount = () => {
   const [user, setUser] = useState({
@@ -135,351 +136,324 @@ const registerAccount = () => {
           </div>
         </div>
       </div>
-      <div className="apply-area pt-150 pb-150">
+      <div className="apply-area py-80">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-lg-12">
+            <div className="mb-3 col-lg-12">
               <div className="apply-wrapper">
                 <form action="#">
                   <div className="row">
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>First Name</label>
-                        <input
-                          type="text"
-                          name="firstName"
-                          placeholder="Enter First Name"
-                          onChange={changeHandler}
-                        />
-                      </div>
+                    <div className="mb-3 col-lg-4">
+                      <label>First Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="firstName"
+                        placeholder="Enter First Name"
+                        onChange={changeHandler}
+                      />
                     </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>Middle Name</label>
-                        <input
-                          type="text"
-                          name="middleName"
-                          placeholder="Enter Middle Name"
-                          onChange={changeHandler}
-                        />
-                      </div>
+                    <div className="mb-3 col-lg-4">
+                      <label>Middle Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="middleName"
+                        placeholder="Enter Middle Name"
+                        onChange={changeHandler}
+                      />
                     </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>Last Name</label>
-                        <input
-                          type="text"
-                          name="lastName"
-                          placeholder="Enter Last Name"
-                          onChange={changeHandler}
-                        />
-                      </div>
+                    <div className="mb-3 col-lg-4">
+                      <label>Last Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="lastName"
+                        placeholder="Enter Last Name"
+                        onChange={changeHandler}
+                      />
                     </div>
-                    <div className="col-lg-3">
-                      <div className="single-form">
-                        <label>Gender</label>
-                        <div className="select-radio6 mt-4">
-                          <div className="radio">
-                            <input
-                              id="radio"
-                              name="gender"
-                              value={0}
-                              type="radio"
-                              onChange={changeHandler}
-                            />
-                            <label for="radio-6" className="radio-label">
-                              Male
-                            </label>
-                          </div>
-                          <div className="radio">
-                            <input
-                              id="radio"
-                              name="gender"
-                              value={1}
-                              onChange={changeHandler}
-                              type="radio"
-                            />
-                            <label for="radio-7" className="radio-label">
-                              Female
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-3">
-                      <div className="single-form">
-                        <label>Email</label>
-                        <input
-                          type="email"
-                          name="email"
-                          placeholder="Enter Email"
-                          onChange={changeHandler}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-lg-3">
-                      <div className="single-form">
-                        <label>Contact</label>
-                        <input
-                          type="number"
-                          name="contact"
-                          placeholder="Enter Cantact"
-                          onInput={(e) => {
-                            e.target.value = e.target.value
-                              .replace(/[^0-9]/g, "")
-                              .replace(/(\..*)\./g, "$1");
-                            setUser({ ...user, contact: e.target.value });
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-lg-3">
-                      <div className="single-form">
-                        <label>Date of Birth</label>
-                        <input
-                          type="date"
-                          name="dob"
-                          placeholder="Enter Date of Birth"
-                          onChange={async (e) =>
-                            setUser({
-                              ...user,
-                              dob: new Date(e.target.value).getTime() / 1000,
-                            })
-                          }
-                        />
-                      </div>
-                    </div>
-                    <div className="col-lg-6">
-                      <div className="single-form">
-                        <label>Address</label>
-                        <input
-                          type="text"
-                          name="address"
-                          placeholder="Enter Address"
-                          onChange={changeHandler}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-lg-6">
-                      <div className="single-form">
-                        <label>Country</label>
-                        <div className="select-option mb-10">
-                          <select
-                            name="country"
-                            className="nice-select"
-                            value={user.country}
-                            onChange={changeHandler}
-                            tabIndex="0"
-                          >
-                            <option value="" className="option selected focus">
-                              Choose Country
-                            </option>
-                            {Country.getAllCountries().map((country, i) => (
-                              <option value={country.name} key={i}>
-                                {country.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>State</label>
-                        <div className="select-option mb-10">
-                          <select
-                            name="state"
-                            className="nice-select"
-                            tabIndex="0"
-                            value={user.state}
-                            onChange={changeHandler}
-                            disabled={!user.country}
-                          >
-                            <option value="" className="option selected focus">
-                              Choose State
-                            </option>
-                            {State.getStatesOfCountry(
-                              getIsoCode(user.country, "country") || ""
-                            ).map((state, i) => (
-                              <option value={state.name} key={i}>
-                                {state.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>City</label>
-                        <div className="select-option mb-10">
-                          <select
-                            name="city"
-                            className="nice-select"
-                            tabIndex="0"
-                            value={user.city}
-                            onChange={async (e) => {
-                              setUser({ ...user, city: e.target.value });
-                              await getNearBank({
-                                country: user.country,
-                                state: user.state,
-                                city: e.target.value,
-                              });
-                            }}
-                            disabled={!user.state}
-                          >
-                            <option value="" className="option selected focus">
-                              Choose City
-                            </option>
-                            {City.getCitiesOfState(
-                              getIsoCode(user.country, "country") || "",
-                              getIsoCode(user.state, "state", user.country)
-                            ).map((city, i) => (
-                              <option value={city.name} key={i}>
-                                {city.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>Pin Code</label>
-                        <input
-                          type="number"
-                          name="zipCode"
-                          placeholder="Enter Pin Code"
-                          onInput={(e) => {
-                            e.target.value = e.target.value
-                              .replace(/[^0-9]/g, "")
-                              .replace(/(\..*)\./g, "$1");
-                            setUser({ ...user, zipCode: e.target.value });
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>National Proof</label>
-                        <div className="select-option mb-10">
-                          <select
-                            name="nationalProof"
-                            className="nice-select"
-                            tabIndex="0"
-                            onChange={changeHandler}
-                            value={user.nationalProof}
-                          >
-                            <option value="" className="option selected focus">
-                              Choose National Proof
-                            </option>
-                            <option value="Adhar Card" className="option">
-                              Adhar Card
-                            </option>
-                            <option value="Pan Card" className="option">
-                              Pan Card
-                            </option>
-                            <option value="Passport" className="option">
-                              Passport
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>National Proof Number</label>
-                        <input
-                          type="text"
-                          name="nationalProofNumber"
-                          placeholder="Enter Pin Code"
-                          onChange={changeHandler}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      {user.nationalProofImage ? (
-                        <div>
-                          <img
-                            src={user.nationalProofImage}
-                            style={{
-                              width: "60px",
-                              position: "relative",
-                            }}
-                          />
-                          <span
-                            onClick={() => {
-                              removeImgHandler(user.nationalProofImage);
-                              setUser({ ...user, nationalProofImage: "" });
-                            }}
-                            className="pl-2 position-absolute top-0 start-0 translate-middle"
-                            style={{ cursor: "pointer" }}
-                          >
-                            <i className="bi bi-x-circle"></i>
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="single-form">
-                          <label>National Proof Image</label>
+                    <div className="mb-3 col-lg-3 single-form">
+                      <label>Gender</label>
+                      <div className="select-radio6 mt-4">
+                        <div className="radio">
                           <input
-                            type="file"
-                            name="nationalProofImage"
-                            accept="image/*"
-                            onChange={async (e) => {
-                              const url = await imgUploadHandler(
-                                e.target.files[0]
-                              );
-                              setUser({
-                                ...user,
-                                nationalProofImage: `/assets/image/user/${url}`,
-                              });
-                            }}
+                            id="radio"
+                            name="gender"
+                            value={0}
+                            type="radio"  
+                            onChange={changeHandler}
                           />
+                          <label for="radio-6" className="radio-label">
+                            Male
+                          </label>
                         </div>
+                        <div className="radio">
+                          <input
+                            id="radio"
+                            name="gender"
+                            value={1}
+                            onChange={changeHandler}
+                            type="radio"
+                          />
+                          <label for="radio-7" className="radio-label">
+                            Female
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mb-3 col-lg-3">
+                      <label>Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        className="form-control"
+                        placeholder="Enter Email"
+                        onChange={changeHandler}
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-3">
+                      <label>Contact</label>
+                      <input
+                        type="number"
+                        name="contact"
+                        className="form-control"
+                        placeholder="Enter Cantact"
+                        onInput={(e) => {
+                          e.target.value = e.target.value
+                            .replace(/[^0-9]/g, "")
+                            .replace(/(\..*)\./g, "$1");
+                          setUser({ ...user, contact: e.target.value });
+                        }}
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-3">
+                      <label>Date of Birth</label>
+                      <input
+                        type="date"
+                        name="dob"
+                        className="form-control"
+                        placeholder="Enter Date of Birth"
+                        onChange={async (e) =>
+                          setUser({
+                            ...user,
+                            dob: new Date(e.target.value).getTime() / 1000,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-6">
+                      <label>Address</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="address"
+                        placeholder="Enter Address"
+                        onChange={changeHandler}
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-6">
+                      <label>Country</label>
+                      <CreatableSelect
+                        placeholder="Select Country"
+                        isSearchable
+                        isClearable
+                        value={
+                          user.country
+                            ? { label: user.country, value: user.country }
+                            : null
+                        }
+                        onChange={(e) =>
+                          setUser({ ...user, country: e?.value })
+                        }
+                        options={Country.getAllCountries().map(
+                          (country, i) => ({
+                            label: country.name,
+                            value: country.name,
+                          })
+                        )}
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-4">
+                      <label>State</label>
+                      <CreatableSelect
+                        placeholder="Select State"
+                        isSearchable
+                        isClearable
+                        value={
+                          user.state
+                            ? { label: user.state, value: user.state }
+                            : null
+                        }
+                        onChange={(e) => setUser({ ...user, state: e?.value })}
+                        options={State.getStatesOfCountry(
+                          getIsoCode(user.country, "country") || ""
+                        ).map((state, i) => ({
+                          label: state.name,
+                          value: state.name,
+                        }))}
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-4">
+                      <label>City</label>
+                      <CreatableSelect
+                        placeholder="Select City"
+                        isSearchable
+                        isClearable
+                        value={
+                          user.city
+                            ? { label: user.city, value: user.city }
+                            : null
+                        }
+                        onChange={(e) => setUser({ ...user, city: e?.value })}
+                        options={City.getCitiesOfState(
+                          getIsoCode(user.country, "country") || "",
+                          getIsoCode(user.state, "state", user.country)
+                        ).map((city, i) => ({
+                          label: city.name,
+                          value: city.name,
+                        }))}
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-4">
+                      <label>Pin Code</label>
+                      <input
+                        type="number"
+                        name="zipCode"
+                        placeholder="Enter Pin Code"
+                        className="form-control"
+                        onInput={(e) => {
+                          e.target.value = e.target.value
+                            .replace(/[^0-9]/g, "")
+                            .replace(/(\..*)\./g, "$1");
+                          setUser({ ...user, zipCode: e.target.value });
+                        }}
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-4">
+                      <label>National Proof</label>
+                      <div className="select-option mb-10">
+                        <select
+                          name="nationalProof"
+                          className="form-control"
+                          tabIndex="0"
+                          onChange={changeHandler}
+                          value={user.nationalProof}
+                        >
+                          <option value="" className="option selected focus">
+                            Choose National Proof
+                          </option>
+                          <option value="Adhar Card" className="option">
+                            Adhar Card
+                          </option>
+                          <option value="Pan Card" className="option">
+                            Pan Card
+                          </option>
+                          <option value="Passport" className="option">
+                            Passport
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="mb-3 col-lg-4">
+                      <label>National Proof Number</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="nationalProofNumber"
+                        placeholder="Enter Pin Code"
+                        onChange={changeHandler}
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-4">
+                      {user.nationalProofImage ? (
+                        <>
+                          <label class="custum-file-upload mt-4" for="file">
+                            <div className="position-relative">
+                              <img
+                                src={user.nationalProofImage}
+                                className="img-fluid preview-box"
+                              />  
+                              <button
+                                type="button"
+                                className="preview-close"
+                                onClick={() => {
+                                  removeImgHandler(user.nationalProofImage);
+                                  setUser({ ...user, nationalProofImage: "" });
+                                }}
+                              >
+                                <i class="bi bi-x"></i>
+                              </button>
+                            </div>
+                          </label>
+                        </>
+                      ) : (
+                        <>
+                          <label>National Proof Image</label>
+                          <label
+                            class="custum-file-upload  custum-file-upload-borderBack "
+                            for="file"
+                          >
+                            <div class="custum-file-upload-placeholder ">
+                              <i class="bi bi-card-image"></i>
+                            </div>
+                            <input
+                              type="file"
+                              id="file"
+                              accept="image/png, image/jpeg, image/jpg"
+                              onChange={async (e) => {
+                                const url = await imgUploadHandler(
+                                  e.target.files[0]
+                                );
+                                setUser({
+                                  ...user,
+                                  nationalProofImage: `/assets/image/user/${url}`,
+                                });
+                              }}
+                            />
+                          </label>
+                        </>
                       )}
                     </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>Nominee Name</label>
-                        <input
-                          type="text"
-                          name="nomineeName"
-                          placeholder="Enter Nominee Name"
+                    <div className="mb-3 col-lg-4">
+                      <label>Nominee Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="nomineeName"
+                        placeholder="Enter Nominee Name"
+                        onChange={changeHandler}
+                      />
+                    </div>
+                    <div className="mb-3 col-lg-4">
+                      <label>Account</label>
+                      <div className="select-option mb-10">
+                        <select
+                          name="accountType"
+                          className="form-control"
+                          tabIndex="0"
+                          value={user.accountType}
                           onChange={changeHandler}
-                        />
+                        >
+                          <option value="" className="option selected focus">
+                            Choose Account
+                          </option>
+                          <option value="0" className="option">
+                            Saving Account
+                          </option>
+                          <option value="1" className="option">
+                            Current Account
+                          </option>
+                        </select>
                       </div>
                     </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
-                        <label>Account</label>
-                        <div className="select-option mb-10">
-                          <select
-                            name="accountType"
-                            className="nice-select"
-                            tabIndex="0"
-                            value={user.accountType}
-                            onChange={changeHandler}
-                          >
-                            <option value="" className="option selected focus">
-                              Choose Account
-                            </option>
-                            <option value="0" className="option">
-                              Saving Account
-                            </option>
-                            <option value="1" className="option">
-                              Current Account
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="single-form">
+                    <div className="mb-3 col-lg-4">
+                      <div>
                         <label>Banks</label>
                         <div className="select-option mb-10">
                           <select
                             name="bank"
-                            className="nice-select"
+                            className="form-control"
                             tabIndex="0"
                             value={user.bank}
                             onChange={changeHandler}

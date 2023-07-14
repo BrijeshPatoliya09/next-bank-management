@@ -93,9 +93,9 @@ const EmployeeTable = ({
       <div className="row bank-reg">
         <div className="align-items-center col-12 d-flex">
           <div className="col-12">
-            <div className="card my-4">
+            <div className="card">
               <div className="pt-3 px-3 sub-head d-flex">
-                <h3>Employee table</h3>
+                <h3>Employee List</h3>
                 <div className="ms-auto me-3 d-flex">
                   {empType && (
                     <button

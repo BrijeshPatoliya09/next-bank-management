@@ -53,65 +53,60 @@ const bankCustomer = () => {
           </div>
         </div>
       </div>
-      <div className="apply-area pt-150 pb-150">
+      <div className="apply-area py-80">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-lg-12">
+            <div className="col-9">
               <div className="apply-wrapper">
                 <form action="#">
                   <div className="row">
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Transaction Type</label>
-                        <div className="select-option mb-10">
-                          <select
-                            className="nice-select"
-                            tabIndex="0"
-                            onChange={(e) =>
-                              setPayment({ ...payment, type: e.target.value })
-                            }
-                          >
-                            <option value="" className="option selected focus">
-                              Choose Type
-                            </option>
-                            <option value={0}>withdraw</option>
-                            <option value={1}>Deposte</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Amount</label>
-                        <input
-                          type="number"
-                          name="amount"
-                          placeholder="Enter Amount"
-                          onInput={(e) => {
-                            e.target.value = e.target.value
-                              .replace(/[^0-9]/g, "")
-                              .replace(/(\..*)\./g, "$1");
-                            setPayment({ ...payment, amount: e.target.value });
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Description</label>
-                        <textarea
-                          className="form-control w-100"
-                          cols="15"
-                          rows="4"
-                          placeholder="Enter Decription"
+                    <div className="col-lg-12 mb-3">
+                      <label>Transaction Type</label>
+                      <div className="select-option">
+                        <select
+                          className="form-control"
+                          tabIndex="0"
                           onChange={(e) =>
-                            setPayment({
-                              ...payment,
-                              description: e.target.value,
-                            })
+                            setPayment({ ...payment, type: e.target.value })
                           }
-                        />
+                        >
+                          <option value="" className="option selected focus">
+                            Choose Type
+                          </option>
+                          <option value={0}>withdraw</option>
+                          <option value={1}>Deposte</option>
+                        </select>
                       </div>
+                    </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Amount</label>
+                      <input
+                        type="number"
+                        name="amount"
+                        className="form-control"
+                        placeholder="Enter Amount"
+                        onInput={(e) => {
+                          e.target.value = e.target.value
+                            .replace(/[^0-9]/g, "")
+                            .replace(/(\..*)\./g, "$1");
+                          setPayment({ ...payment, amount: e.target.value });
+                        }}
+                      />
+                    </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Description</label>
+                      <textarea
+                        className="form-control"
+                        cols="15"
+                        rows="4"
+                        placeholder="Enter Decription"
+                        onChange={(e) =>
+                          setPayment({
+                            ...payment,
+                            description: e.target.value,
+                          })
+                        }
+                      />
                     </div>
                   </div>
                 </form>

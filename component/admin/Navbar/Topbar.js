@@ -17,39 +17,60 @@ const Topbar = ({ loggedIn }) => {
             {router.pathname != "/admin" && (
               <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                 <li className="breadcrumb-item text-sm">
-                  <Link className="opacity-5 text-dark" href="/admin">
-                    Dashboard
+                  <Link
+                    className="opacity-5 text-dark"
+                    href={
+                      router.pathname.includes("loan/") &&
+                      !router.pathname.includes("loan/loanTable")
+                        ? "/admin/loan/loanTable"
+                        : "/admin"
+                    }
+                  >
+                    {router.pathname.includes("loan/") &&
+                    !router.pathname.includes("loan/loanTable")
+                      ? "Manage Loan"
+                      : "Dashboard"}
                   </Link>
                 </li>
                 <li
                   className="breadcrumb-item text-sm text-dark active"
                   aria-current="page"
                 >
-                  {router.pathname.includes("table")
-                    ? "Employee"
+                  {router.pathname.includes("employee/table")
+                    ? "Manage Employee"
                     : router.pathname.includes("bank/create")
                     ? "Bank Registration"
+                    : router.pathname.includes("bank/bankInfo")
+                    ? "Bnak Info"
                     : router.pathname.includes("user/userTable")
-                    ? "User Table"
+                    ? "Manage User"
                     : router.pathname.includes("transaction/transactionTable")
-                    ? "Transaction Table"
+                    ? "Manage Transaction"
+                    : router.pathname.includes("loan/") &&
+                      !router.pathname.includes("loan/loanTable")
+                    ? "View Loan Details"
                     : router.pathname.includes("loan/loanTable")
-                    ? "Loan Table"
+                    ? "Manage Loan"
                     : "Dashboard"}
                 </li>
               </ol>
             )}
             <h6 className="font-weight-bolder mb-0">
-              {router.pathname.includes("table")
-                ? "Employee"
+              {router.pathname.includes("employee/table")
+                ? "Manage Employee"
                 : router.pathname.includes("bank/create")
                 ? "Bank Registration"
+                : router.pathname.includes("bank/bankInfo")
+                ? "Bnak Info"
                 : router.pathname.includes("user/userTable")
-                ? "User Table"
+                ? "Manage User"
                 : router.pathname.includes("transaction/transactionTable")
-                ? "Transaction Table"
+                ? "Manage Transaction"
+                : router.pathname.includes("loan/") &&
+                  !router.pathname.includes("loan/loanTable")
+                ? "View Loan Details"
                 : router.pathname.includes("loan/loanTable")
-                ? "Loan Table"
+                ? "Manage Loan"
                 : "Dashboard"}
             </h6>
           </nav>

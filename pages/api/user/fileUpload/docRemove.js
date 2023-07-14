@@ -2,11 +2,13 @@ import fs from "fs";
 
 export default async (req, res) => {
   try {
-    console.log(req.body);
     fs.unlink(`public${req.body}`, (err) => {
-      return res
-        .status(404)
-        .json({ status: false, message: "Image not found" });
+      if (err) {
+        console.log("err: ", err);
+        return res
+          .status(404)
+          .json({ status: false, message: "Image not found" });
+      }
     });
     res
       .status(200)

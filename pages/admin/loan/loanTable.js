@@ -21,12 +21,17 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import BankTree from "../../../component/admin/bank/BankTree";
 import NoDataFound from "../../../component/admin/noDataFound";
+import { useRouter } from "next/router";
+import { enc, keyStore } from "../../../helper/common";
 
 const transactionTable = ({ data, empData, treeSelectBox }) => {
+  const router = useRouter();
+
   const [activeEmployee, setActiveEmployeeData] = useState({
     bankId: empData[0].bankInfo[0]._id,
     ifsc: empData[0].bankInfo[0].ifscCode,
   });
+
   const [toggleFilter, setToggleFilter] = useState(false);
   const [applyFilter, setApplyFilter] = useState(false);
 
@@ -129,10 +134,17 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
       <div className="row bank-reg loan">
         <div className="align-items-center col-12 d-flex">
           <div className="col-12">
-            <div className="card my-4">
+            <div className="card">
               <div className="pt-3 px-3 sub-head d-flex">
-                <h3>Loan Table</h3>
-                <div className="ms-auto me-3">
+                <h3>Loan List</h3>
+                <div className="ms-auto me-3 d-flex">
+                  <button
+                    type="button"
+                    onClick={interestDeduct}
+                    className="btn btn-bank text-danger btn btn-bank-sm mb-0 bg-white me-3"
+                  >
+                    Loan Interest
+                  </button>
                   <button
                     type="button"
                     onClick={() => setToggleFilter(!toggleFilter)}
@@ -239,18 +251,6 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                 <table className="table align-items-center justify-content-center mb-0">
                   <thead>
                     <tr>
-                      {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
-                        <button
-                          className="btn p-0"
-                          onClick={() => sortDataHandler("userAccountNo")}
-                        >
-                          Acount No.
-                          <FilterListIcon
-                            className="ms-1"
-                            style={{ fontSize: "16px" }}
-                          />
-                        </button>
-                      </th> */}
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                         <button
                           className="btn p-0 m-0"
@@ -299,18 +299,6 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                           />
                         </button>
                       </th>
-                      {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        <button
-                          className="btn p-0 m-0"
-                          onClick={() => sortDataHandler("collateralName")}
-                        >
-                          Collateral
-                          <FilterListIcon
-                            className="ms-1"
-                            style={{ fontSize: "16px" }}
-                          />
-                        </button>
-                      </th> */}
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         <button
                           className="btn p-0 m-0"
@@ -347,9 +335,6 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                           />
                         </button>
                       </th>
-                      {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        <button className="btn p-0 m-0">Doccument</button>
-                      </th> */}
                       <th className="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                         <button className="btn p-0 m-0">Action</button>
                       </th>
@@ -391,11 +376,6 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                 {item.type == 4 && "Mortgage Loan"}
                               </p>
                             </td>
-                            {/* <td className="px-4 text-center">
-                              <p className="text-md font-weight-bold mb-0">
-                                {item.collateralName}
-                              </p>
-                            </td> */}
                             <td className="px-4 text-center">
                               <p className="text-md font-weight-bold mb-0">
                                 {item.collateralValue}
@@ -425,38 +405,18 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                 {moment(created).format("L")}
                               </p>
                             </td>
-                            {/* <td className="px-4">
-                              <a
-                                className="btn btn-primary mb-0 me-1"
-                                href={item.doccument}
-                              >
-                                Loan
-                              </a>
-                              {item.collateralDoc.includes("jpg") ||
-                              item.collateralDoc.includes("jpeg") ? (
-                                <a href={item.collateralDoc}>
-                                  <img
-                                    src={item.collateralDoc}
-                                    alt
-                                    className="img-fluid"
-                                    style={{
-                                      width: "60px",
-                                    }}
-                                  />
-                                </a>
-                              ) : (
-                                <a
-                                  className="btn btn-primary mb-0"
-                                  href={item.collateralDoc}
-                                >
-                                  collateral
-                                </a>
-                              )}
-                            </td> */}
                             <td className="px-4">
                               <div className=" d-flex justify-content-center align-items-center">
                                 <div className="me-3">
-                                  <button className="btn btn-bank m-0">
+                                  <button
+                                    className="btn btn-bank m-0"
+                                    onClick={() => {
+                                      const id = encodeURIComponent(
+                                        enc(item._id, keyStore("idEnc"))
+                                      );
+                                      router.push(`/admin/loan/${id}`);
+                                    }}
+                                  >
                                     <i class="bi bi-eye-fill pe-1"></i>View
                                   </button>
                                 </div>
@@ -474,7 +434,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                                                 ? "Accept"
                                                 : "Reject"
                                             } this Loan Request ?`,
-                                            icon: "warning",
+                                            icon: "question",
                                             showCancelButton: true,
                                             cancelButtonText: "Cancel",
                                             confirmButtonColor: "#5773FF",

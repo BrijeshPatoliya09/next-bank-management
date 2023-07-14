@@ -73,6 +73,13 @@
 .css-wb57ya-MuiFormControl-root-MuiTextField-root {
   background-color: white !important;
 }
+.Mui-focused {
+  color: #216273 !important;
+}
+
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  color: #216273 !important;
+}
 
 .bank-reg .btn-bank {
   background-color: rgb(33, 98, 115) !important;
@@ -197,4 +204,16 @@
 
 .bank-detail .cookieCard::before {
   background: linear-gradient(to right, rgb(255, 104, 159), rgb(255, 151, 203));
+}
+
+.loan-view h3 {
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.loan-view img{
+  min-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
 }

@@ -550,11 +550,11 @@ hr {
 }
 
 /* line 290, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_common.scss */
-.btn:hover::before {
+/* .btn:hover::before {
   transform: scaleX(1);
   color: #fff !important;
   z-index: -1;
-}
+} */
 
 /* line 296, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_common.scss */
 .header-btn {
@@ -570,13 +570,13 @@ hr {
 /* line 304, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_common.scss */
 .apply-btn {
   padding: 27px 44px;
-  background: #ff872d;
+  background: #216273;
   border-radius: 0;
 }
 
 /* line 308, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_common.scss */
 .apply-btn::before {
-  background: #e66e13;
+  background: #216273;
   border-radius: 0;
 }
 
@@ -3195,7 +3195,7 @@ hr {
 /* line 3, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_h1-hero.scss */
 .slider-area {
   padding-top: 120px;
-  background-image: url(/assets/image/user/hero/h1_hero.jpg) ;
+  background-image: url(/assets/image/user/hero/h1_hero.jpg);
 }
 
 /* line 7, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_h1-hero.scss */
@@ -3420,7 +3420,7 @@ hr {
   background-image: url(../../image/user/hero/hero2.jpg);
   background-size: cover;
   background-repeat: no-repeat;
-  min-height: 560px;
+  min-height: 275px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -3446,7 +3446,7 @@ hr {
 
 /* line 146, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_h1-hero.scss */
 .hero-area2 .hero-cap h2 {
-  color: #000a2d;
+  color: #216273;
   font-size: 55px;
   font-weight: 700;
   text-transform: capitalize;
@@ -4726,6 +4726,7 @@ hr {
   background-image: url(../../image/user/gallery/footer_bg.jpg);
   background-size: cover;
   background-repeat: no-repeat;
+  filter: saturate(2);
 }
 
 /* line 5, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_footer.scss */
@@ -4811,7 +4812,7 @@ hr {
 
 /* line 55, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_footer.scss */
 .footer-area .footer-tittle ul li a:hover {
-  color: #3589f1;
+  color: #c9d7da;
   padding-left: 5px;
 }
 
@@ -4943,7 +4944,8 @@ hr {
 }
 
 /* line 16, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_apply.scss */
-.apply-area .apply-wrapper .single-form label {
+.apply-area .apply-wrapper .single-form label,
+.apply-area .apply-wrapper .select-add label {
   display: block;
   font-size: 14px;
   margin-bottom: 11px;
@@ -5077,7 +5079,7 @@ hr {
   .radio
   input[type="radio"]:checked
   + .radio-label:before {
-  background-color: #ff872d;
+  background-color: #216273;
   box-shadow: inset 0 0 0 4px #f4f4f4;
 }
 
@@ -5090,7 +5092,7 @@ hr {
   input[type="radio"]:focus
   + .radio-label:before {
   outline: none;
-  border-color: #ff872d;
+  border-color: #216273;
 }
 
 /* line 122, ../../../sponDon TI/Running Project/259.Finance_HTML/assets/scss/_apply.scss */
@@ -8443,3 +8445,82 @@ del {
 }
 
 /*# sourceMappingURL=style.css.map */
+.apply-area .apply-wrapper .single-form input {
+  border: 1px solid #f3f3f3;
+  border-radius: 6px;
+  width: 35%;
+  height: 35%;
+  margin-bottom: 25px;
+  padding: 0 25px;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
+
+.css-13cymwt-control,
+.css-t3ipsp-control {
+  padding: 5px 7px !important;
+  border-radius: 6px !important;
+  background: #f2f7f7 !important;
+  border-color: #41a6bd !important;
+  color: white !important;
+  display: flex !important;
+  width: 100% !important;
+  height: 50px !important;
+}
+.form-control {
+  background-color: #f2f7f7 !important;
+  border-color: #41a6bd !important;
+  border-radius: 6px !important;
+  height: 50px !important;
+}
+.custum-file-upload {
+  display: flex !important;
+  height: 50px !important;
+  gap: 20px !important;
+  cursor: pointer !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1.5rem !important;
+  border-radius: 6px !important;
+}
+.custum-file-upload-borderBack {
+  background-color: #f2f7f7 !important;
+  border: 1px solid #41a6bd !important;
+}
+.custum-file-upload-placeholder {
+  font-size: 40px !important;
+  color: #41a6bd !important;
+}
+.custum-file-upload input {
+  display: none !important;
+}
+.custum-file-upload .preview-box {
+  max-height: 100px !important;
+  border-radius: 6px;
+}
+.custum-file-upload .preview-close {
+  position: absolute !important;
+  width: 25px !important;
+  color: #216273 !important;
+  border: 1px solid transparent !important;
+  background-color: #eaf5f9 !important;
+  top: 5px !important;
+  right: 5px !important;
+  height: 25px !important;
+  border-radius: 6px !important;
+  text-align: center !important;
+  line-height: 0 !important;
+  transition: all 0.2s !important;
+}
+.btn-primary {
+  background-color: #216273 !important;
+}
+
+.btn:hover {
+  background-color: #318195 !important;
+}
+
+.py-80 {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}

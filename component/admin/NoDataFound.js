@@ -9,6 +9,9 @@ const NoDataFound = () => {
           src="/assets/image/admin/nodata.png"
           height={200}
           width={200}
+          style={{
+            objectFit: "cover",
+          }}
           alt="no-data-found"
         ></Image>
       </td>

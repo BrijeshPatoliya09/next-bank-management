@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { withSessionSsr } from "../../helper/session";
-import BankShowEdit from "../../component/admin/bank/BankShowEdit";
-import EmployeeCreate from "../../component/admin/employee/EmployeeCreate";
-import EmployeeTable from "../../component/admin/employee/EmployeeTable";
-import BankTree from "../../component/admin/bank/BankTree";
+import { withSessionSsr } from "../../../helper/session";
+import BankShowEdit from "../../../component/admin/bank/BankShowEdit";
+import EmployeeCreate from "../../../component/admin/employee/EmployeeCreate";
+import EmployeeTable from "../../../component/admin/employee/EmployeeTable";
+import BankTree from "../../../component/admin/bank/BankTree";
+import { getTreeData } from "../../../helper/common";
 
 const table = ({ data, empData, treeSelectBox }) => {
   const [activeEmployee, setActiveEmployeeData] = useState({
@@ -49,7 +50,6 @@ const table = ({ data, empData, treeSelectBox }) => {
       );
 
       const data = await res.json();
-      console.log(data);
       setLoader(false);
 
       setEmployeeData(data.data.empData);
@@ -77,8 +77,8 @@ const table = ({ data, empData, treeSelectBox }) => {
   return (
     <>
       <div className="row bank-reg">
-        <div className="col-12 d-flex">
-          <div className="col-6 px-2 me-2">
+        <div className="col-12 d-flex flex-wrap flex-md-nowrap">
+          <div className="col-12 col-md-6 pe-2 me-2">
             <BankTree
               data={data}
               setActiveEmployeeData={setActiveEmployeeData}
@@ -86,12 +86,8 @@ const table = ({ data, empData, treeSelectBox }) => {
               select={treeSelectBox}
             />
           </div>
-          <div className="col-6 px-2">
-            <BankShowEdit
-              bankData={bankData[0]}
-              onGetEmpData={getEmployeeData}
-              empType={empType}
-            />
+          <div className="col-12 col-md-6 px-0 px-md-2">
+            <BankShowEdit bankData={bankData[0]} />
           </div>
         </div>
       </div>
@@ -133,19 +129,10 @@ export const getServerSideProps = withSessionSsr(async ({ req }) => {
     });
     const empData = await empRes.json();
 
-    const res = await fetch(`${process.env.apiUrl}/admin/bank/getTreeData`, {
-      method: "PUT",
-      body: JSON.stringify({
-        bankData: {
-          address: empData.data[0].bankInfo[0].address,
-          level: empData.data[0].bankInfo[0].level,
-        },
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
+    const data = await getTreeData(
+      empData.data[0].bankInfo[0].address,
+      empData.data[0].bankInfo[0].level
+    );
 
     return {
       props: {

@@ -58,12 +58,12 @@ export default async (req, res) => {
     //     };
     //   });
 
-    
     const selectBox = data.data.docs.map((item) => ({
       name: item.name,
       _id: item._id,
       address: item.address,
       level: item.level,
+      ifscCode: item.ifscCode,
     }));
 
     convertToNestedTree(data.data.docs);

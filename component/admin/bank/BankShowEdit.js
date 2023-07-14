@@ -7,10 +7,10 @@ import { SingleInputTimeRangeField } from "@mui/x-date-pickers-pro";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import { checkName } from "../../../helper/common";
+import { checkName, getTreeData } from "../../../helper/common";
 import { toast } from "react-toastify";
 
-const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
+const BankShowEdit = ({ bankData, empType, empBankData, onSetTree }) => {
   const router = useRouter();
   const [address, setAddress] = useState({
     country: "",
@@ -27,6 +27,7 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
     second: [],
   });
   const [editMode, setEditMode] = useState(false);
+  const [cancelEdit, setCancelEdit] = useState(false);
 
   const [loader, setLoader] = useState(false);
 
@@ -62,7 +63,7 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
         dayjs(new Date(bankData.time.second[1] * 1000)),
       ],
     });
-  }, [bankData]);
+  }, [bankData, cancelEdit]);
 
   const handleAdressChange = (e) => {
     if (editMode) {
@@ -152,7 +153,8 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
 
       if (data.status) {
         toast.success(data.message);
-        onGetEmpData();
+        const tree = await getTreeData(empBankData.address, empBankData.level);
+        onSetTree(tree.data.newData);
       } else {
         toast.error(data.message);
       }
@@ -184,15 +186,17 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
   return (
     <>
       <div className="col-12" style={{ height: "95%" }}>
-        <div className="card my-4" style={{ height: "95%" }}>
+        <div className={`card ${!empType && "my-4"}`} style={{ height: "95%" }}>
           <div className="pb-2 mb-3">
-            <div className="pt-3 px-3 sub-head">
+            <div className="pt-3 px-3  sub-head">
               <h3>Bank Details</h3>
             </div>
             <hr />
             <div className="d-flex flex-wrap px-3">
               <Autocomplete
-                className="col-sm-6 col-12 p-1 mt-2"
+                className={`${
+                  empType ? "col-lg-4 col-md-6" : "col-lg-6"
+                } col-12 p-1 mt-2`}
                 onChange={(event, newValue) => {
                   if (newValue) {
                     setAddress({ ...address, country: newValue.value });
@@ -215,7 +219,9 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
                 )}
               />
               <Autocomplete
-                className="col-sm-6 col-12 p-1 mt-2"
+                className={`${
+                  empType ? "col-lg-4 col-md-6" : "col-lg-6"
+                } col-12 p-1 mt-2`}
                 onChange={(event, newValue) => {
                   if (newValue) {
                     setAddress({ ...address, state: newValue.value });
@@ -240,7 +246,9 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
                 )}
               />
               <Autocomplete
-                className="col-sm-6 col-12 p-1 mt-2"
+                className={`${
+                  empType ? "col-lg-4 col-md-6" : "col-lg-6"
+                } col-12 p-1 mt-2`}
                 onChange={(event, newValue) => {
                   if (newValue) {
                     setAddress({ ...address, city: newValue.value });
@@ -265,7 +273,7 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
                   <TextField {...params} label="Select City" />
                 )}
               />
-              {/* <FormControl className="col-sm-6 col-12 p-1 mt-2">
+              {/* <FormControl className={`${empType ? "col-lg-4 col-md-6" : "col-lg-6"} col-lg-6 col-12 p-1 mt-2`}>
                 <InputLabel id="demo-simple-select-label">
                   Select City
                 </InputLabel>
@@ -288,7 +296,9 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
                 </Select>
               </FormControl> */}
               <TextField
-                className="col-sm-6 col-12 p-1 mt-2"
+                className={`${
+                  empType ? "col-lg-4 col-md-6" : "col-lg-6"
+                } col-12 p-1 mt-2`}
                 name="zone"
                 value={address.zone}
                 label="Zone"
@@ -297,7 +307,9 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
                 disabled={!editMode}
               />
               <TextField
-                className="col-sm-6 col-12 p-1 mt-2"
+                className={`${
+                  empType ? "col-lg-4 col-md-6" : "col-lg-6"
+                } col-12 p-1 mt-2`}
                 type="number"
                 name="zipCode"
                 value={address.zipCode}
@@ -307,7 +319,9 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
                 disabled={!editMode}
               />
               <TextField
-                className="col-sm-6 col-12 p-1 mt-2"
+                className={`${
+                  empType ? "col-lg-4 col-md-6" : "col-lg-6"
+                } col-12 p-1 mt-2`}
                 name="name"
                 value={bankDetail.name}
                 label="Bank Name"
@@ -317,7 +331,9 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
               />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <SingleInputTimeRangeField
-                  className="col-sm-6 col-12 p-1 mt-2"
+                  className={`${
+                    empType ? "col-lg-4 col-md-6" : "col-lg-6"
+                  } col-12 p-1 mt-2`}
                   label="First Shift"
                   value={bankTime.first}
                   onChange={(e) => {
@@ -333,7 +349,9 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
               </LocalizationProvider>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <SingleInputTimeRangeField
-                  className="col-sm-6 col-12 p-1 mt-2"
+                  className={`${
+                    empType ? "col-lg-4 col-md-6" : "col-lg-6"
+                  } col-12 p-1 mt-2`}
                   label="Second Shift"
                   value={bankTime.second}
                   onChange={(e) => {
@@ -386,7 +404,10 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
                       type="button"
                       className="btn btn-bank"
                       style={{ fontSize: "14px" }}
-                      onClick={() => setEditMode(false)}
+                      onClick={() => {
+                        setEditMode(false);
+                        setCancelEdit(!cancelEdit);
+                      }}
                     >
                       Cancel
                     </button>
@@ -397,191 +418,6 @@ const BankShowEdit = ({ bankData, onGetEmpData, empType }) => {
           </div>
         </div>
       </div>
-      {/* <div className="row mb-3">
-        <div className="col-12">
-          <div className="card my-4">
-            <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 className="text-white text-capitalize ps-3">
-                  Bank Details
-                </h6>
-              </div>
-            </div>
-            <div className="card-body px-3 pb-2">
-              <div className="d-flex flex-wrap">
-                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
-                  <InputLabel id="demo-simple-select-label">
-                    Select Country
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    name="country"
-                    value={address.country}
-                    label="Select Country"
-                    onChange={handleAdressChange}
-                    disabled={!editMode}
-                  >
-                    {Country.getAllCountries().map((country, i) => (
-                      <MenuItem value={country.name} key={i}>
-                        {country.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
-                  <InputLabel id="demo-simple-select-label">
-                    Select State
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    name="state"
-                    value={address.state}
-                    label="Select State"
-                    onChange={handleAdressChange}
-                    disabled={!address.country || !editMode}
-                  >
-                    {State.getStatesOfCountry(
-                      getIsoCode(address.country, "country") || ""
-                    ).map((state, i) => (
-                      <MenuItem value={state.name} key={i}>
-                        {state.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl className="col-lg-4 col-sm-6 col-12 p-1 mt-2">
-                  <InputLabel id="demo-simple-select-label">
-                    Select State
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    name="city"
-                    value={address.city}
-                    label="Select City"
-                    onChange={handleAdressChange}
-                    disabled={!address.country || !address.state || !editMode}
-                  >
-                    {City.getCitiesOfState(
-                      getIsoCode(address.country, "country") || "",
-                      getIsoCode(address.state, "state", address.country)
-                    ).map((city, i) => (
-                      <MenuItem value={city.name} key={i}>
-                        {city.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  name="zone"
-                  value={address.zone}
-                  label="Zone"
-                  variant="outlined"
-                  onChange={handleAdressChange}
-                  disabled={!editMode}
-                />
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  type="number"
-                  name="zipCode"
-                  value={address.zipCode}
-                  label="Zip Code"
-                  variant="outlined"
-                  onChange={handleAdressChange}
-                  disabled={!editMode}
-                />
-                <TextField
-                  className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                  name="name"
-                  value={bankDetail.name}
-                  label="Bank Name"
-                  variant="outlined"
-                  onChange={handleBankdetailChange}
-                  disabled={!editMode}
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <SingleInputTimeRangeField
-                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                    label="First Shift"
-                    value={bankTime.first}
-                    onChange={(e) => {
-                      if (editMode) {
-                        setBankTime({
-                          ...bankTime,
-                          first: [e[0], e[1]],
-                        });
-                      }
-                    }}
-                    disabled={!editMode}
-                  />
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <SingleInputTimeRangeField
-                    className="col-lg-4 col-sm-6 col-12 p-1 mt-2"
-                    label="Second Shift"
-                    value={bankTime.second}
-                    onChange={(e) => {
-                      if (editMode) {
-                        setBankTime({
-                          ...bankTime,
-                          second: [e[0], e[1]],
-                        });
-                      }
-                    }}
-                    disabled={!editMode}
-                  />
-                </LocalizationProvider>
-                <div className="w-100 mt-3 mb-2 d-flex justify-content-center">
-                  {!editMode && empType && (
-                    <>
-                      <div className="ms-4">
-                        <button
-                          type="button"
-                          className="btn btn-bank bg-gradient-primary"
-                          style={{ fontSize: "14px" }}
-                          onClick={() => setEditMode(true)}
-                        >
-                          Edit Bank Details
-                        </button>
-                      </div>
-                    </>
-                  )}
-                  {editMode && (
-                    <>
-                      <div>
-                        <button
-                          type="button"
-                          className="btn btn-bank bg-gradient-primary d-flex justify-content-center align-items-center"
-                          style={{ fontSize: "14px" }}
-                          onClick={editDataHandler}
-                          disabled={loader}
-                        >
-                          {loader && (
-                            <div class="spinner-border me-2" role="status">
-                              <span class="visually-hidden">Loading...</span>
-                            </div>
-                          )}
-                          Edit
-                        </button>
-                      </div>
-                      <div className="ms-4">
-                        <button
-                          type="button"
-                          className="btn btn-bank bg-gradient-primary"
-                          style={{ fontSize: "14px" }}
-                          onClick={() => setEditMode(false)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };

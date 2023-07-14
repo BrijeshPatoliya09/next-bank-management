@@ -4,6 +4,9 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+
+@import url("/public/assets/css/admin/fonts.css");
+
 :root {
   --bs-blue: #63b3ed;
   --bs-indigo: #596cff;
@@ -17799,7 +17802,7 @@ fieldset:disabled .btn {
 }
 
 .card {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  box-shadow: 0px 0px 6px 5px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 .card[data-animation="true"] .card-header {
@@ -19144,7 +19147,7 @@ label,
 }
 
 .bg-gradient-primary {
-  background-image: linear-gradient(195deg, #216273 0%,  #73949c 100%);
+  background-image: linear-gradient(195deg, #216273 0%, #73949c 100%);
 }
 
 .bg-gradient-secondary {
@@ -21144,7 +21147,7 @@ hr.horizontal.gray-light {
     padding: 1.5rem;
   }
   .sidenav.fixed-start + .main-content {
-    margin-left: 17.125rem;
+    margin-left: 16.525rem;
   }
   .sidenav.fixed-end + .main-content {
     margin-right: 17.125rem;
@@ -24597,4 +24600,3 @@ pre[class*="language-"] {
     transform: scale(1.2, 1);
   }
 }
-

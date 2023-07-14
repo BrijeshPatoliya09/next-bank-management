@@ -312,3 +312,20 @@ export const addPswHandler = (text, valid) => {
     }));
   }
 };
+
+export const getTreeData = async (address, level) => {
+  const res = await fetch(`${process.env.apiUrl}/admin/bank/getTreeData`, {
+    method: "PUT",
+    body: JSON.stringify({
+      bankData: {
+        address,
+        level,
+      },
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  return data;
+};

@@ -83,7 +83,7 @@ const CustomContent = React.forwardRef(function CustomContent(props, ref) {
         component="div"
         className={`${classes.label} cursor-pointer d-flex px-3 py-2 w-100 ${
           label.active ? "tree_active border border-0" : "tree_hover"
-        } ${label.highLight ? (!label.active ? "tree_highlight" : "") : ""}`}
+        }`}
         style={{
           borderLeft: `3px solid ${label.color ? label.color : "red"}`,
           borderRadius: "8px",
@@ -132,6 +132,7 @@ export default function Tree({
   if (select.length > 0) {
     if (select[0]._id == treeData._id) {
       highLight = true;
+      // onSetActiveEmp({ bankId: treeData._id, ifsc: treeData.ifscCode });
     }
   }
 

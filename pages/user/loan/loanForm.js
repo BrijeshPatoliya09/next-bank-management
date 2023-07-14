@@ -91,7 +91,7 @@ const loanForm = () => {
           </div>
         </div>
       </div>
-      <div className="apply-area pt-150 pb-150">
+      <div className="apply-area py-80">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-12">
@@ -101,44 +101,40 @@ const loanForm = () => {
                 </div>
                 <form action="#">
                   <div className="row">
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Loan Type</label>
-                        <div className="select-option mb-10">
-                          <select
-                            className="nice-select"
-                            tabIndex="0"
-                            onChange={(e) =>
-                              setLoan({ ...loan, type: e.target.value })
-                            }
-                          >
-                            <option value="" className="option selected focus">
-                              Choose Loan Type
-                            </option>
-                            <option value={0}>Personal Loan (12%)</option>
-                            <option value={1}>Student Loan (9%)</option>
-                            <option value={2}>Business Loan (12%)</option>
-                            <option value={3}>House Loan (15%)</option>
-                            <option value={4}>Mortgage Loan (15%)</option>
-                          </select>
-                        </div>
+                    <div className="col-lg-12   ">
+                      <label>Loan Type</label>
+                      <div className="select-option mb-10">
+                        <select
+                          className="form-control"
+                          tabIndex="0"
+                          onChange={(e) =>
+                            setLoan({ ...loan, type: e.target.value })
+                          }
+                        >
+                          <option value="" className="option selected focus">
+                            Choose Loan Type
+                          </option>
+                          <option value={0}>Personal Loan (12%)</option>
+                          <option value={1}>Student Loan (9%)</option>
+                          <option value={2}>Business Loan (12%)</option>
+                          <option value={3}>House Loan (15%)</option>
+                          <option value={4}>Mortgage Loan (15%)</option>
+                        </select>
                       </div>
                     </div>
                     <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Loan Amount</label>
-                        <input
-                          type="text"
-                          name="accountNo"
-                          placeholder="Enter Loan Amount"
-                          onInput={(e) => {
-                            e.target.value = e.target.value
-                              .replace(/[^0-9]/g, "")
-                              .replace(/(\..*)\./g, "$1");
-                            setLoan({ ...loan, amount: e.target.value });
-                          }}
-                        />
-                      </div>
+                      <label>Loan Amount</label>
+                      <input
+                        type="text"
+                        name="accountNo"
+                        placeholder="Enter Loan Amount"
+                        onInput={(e) => {
+                          e.target.value = e.target.value
+                            .replace(/[^0-9]/g, "")
+                            .replace(/(\..*)\./g, "$1");
+                          setLoan({ ...loan, amount: e.target.value });
+                        }}
+                      />
                     </div>
                     <div className="col-lg-12">
                       <div className="single-form">
