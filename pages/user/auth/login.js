@@ -13,7 +13,7 @@ const login = () => {
   });
 
   const [loader, setLoader] = useState(false);
-  console.log(dec("DD1LPu2L5ghqy1EZqA==", keyStore("userPsw")));
+  console.log(dec("b3lTNZrayiEqxyYXqA==", keyStore("userPsw")));
   const submitHandler = async (e) => {
     e.preventDefault();
 

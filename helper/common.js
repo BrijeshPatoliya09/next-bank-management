@@ -251,6 +251,23 @@ export const filterFunction = (filter, data) => {
   return tempData;
 };
 
+export async function dataSorting(obj, filteredData, page) {
+  const fld = Object.keys(obj)[0];
+  let finaldata = [];
+  if (filteredData.length > 0) {
+    if (obj[fld] == 0) {
+      finaldata = filteredData.sort((a, b) =>
+        a[fld] > b[fld] ? -1 : b[fld] > a[fld] ? 1 : 0
+      );
+    } else {
+      finaldata = filteredData.sort((a, b) =>
+        a[fld] > b[fld] ? 1 : b[fld] > a[fld] ? -1 : 0
+      );
+    }
+  }
+  return await finaldata.slice(page * 10, page * 10 + 10);
+}
+
 export const addPswHandler = (text, valid) => {
   if (characterLength.test(text)) {
     valid((item) => ({

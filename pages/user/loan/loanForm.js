@@ -80,7 +80,7 @@ const loanForm = () => {
 
   return (
     <>
-      <div className="hero-area2  slider-height2 hero-overly2 d-flex align-items-center ">
+      <div className="hero-area2 slider-height2 hero-overly2 d-flex align-items-center">
         <div className="container">
           <div className="row">
             <div className="col-xl-12">
@@ -91,19 +91,20 @@ const loanForm = () => {
           </div>
         </div>
       </div>
-      <div className="apply-area py-80">
+      <div className="apply-area py-80 loan-apply">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-lg-12">
-              <div className="apply-wrapper">
-                <div className="text-center mb-3">
-                  <h1>Loan</h1>
+            <div className="col-9 d-lg-flex">
+              <div className="apply-wrapper mb-4 mb-lg-0 card col-12 col-lg-6 me-lg-5 p-4">
+                <div className="text-center">
+                  <h3 className="m-0">Loan</h3>
                 </div>
+                <hr />
                 <form action="#">
                   <div className="row">
-                    <div className="col-lg-12   ">
+                    <div className="col-lg-12 mb-3">
                       <label>Loan Type</label>
-                      <div className="select-option mb-10">
+                      <div className="select-option">
                         <select
                           className="form-control"
                           tabIndex="0"
@@ -122,12 +123,13 @@ const loanForm = () => {
                         </select>
                       </div>
                     </div>
-                    <div className="col-lg-12">
+                    <div className="col-lg-12 mb-3">
                       <label>Loan Amount</label>
                       <input
                         type="text"
                         name="accountNo"
                         placeholder="Enter Loan Amount"
+                        className="form-control"
                         onInput={(e) => {
                           e.target.value = e.target.value
                             .replace(/[^0-9]/g, "")
@@ -136,145 +138,140 @@ const loanForm = () => {
                         }}
                       />
                     </div>
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Loan Duration</label>
-                        <div className="select-option mb-10">
-                          <select
-                            className="nice-select"
-                            tabIndex="0"
-                            disabled={!loan.type}
-                            onChange={(e) =>
-                              setLoan({ ...loan, duration: e.target.value })
-                            }
-                          >
-                            <option value="" className="option selected focus">
-                              {!loan.type
-                                ? "Please select loan type"
-                                : "Choose Loan Duration"}
-                            </option>
-                            {(loan.type == 0 || loan.type == 2) && (
-                              <>
-                                <option value={3}>3 Months</option>
-                                <option value={6}>6 Months</option>
-                                <option value={12}>1 Years</option>
-                                <option value={24}>2 Years</option>
-                                <option value={36}>3 Years</option>
-                              </>
-                            )}
-                            {(loan.type == 3 ||
-                              loan.type == 4 ||
-                              loan.type == 1) && (
-                              <>
-                                <option value={36}>3 Years</option>
-                                <option value={72}>6 Years</option>
-                                <option value={108}>9 Years</option>
-                                <option value={144}>12 Years</option>
-                                <option value={180}>15 Years</option>
-                              </>
-                            )}
-                          </select>
-                        </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Loan Duration</label>
+                      <div className="select-option">
+                        <select
+                          className="form-control"
+                          tabIndex="0"
+                          disabled={!loan.type}
+                          onChange={(e) =>
+                            setLoan({ ...loan, duration: e.target.value })
+                          }
+                        >
+                          <option value="" className="option selected focus">
+                            {!loan.type
+                              ? "Please select loan type"
+                              : "Choose Loan Duration"}
+                          </option>
+                          {(loan.type == 0 || loan.type == 2) && (
+                            <>
+                              <option value={3}>3 Months</option>
+                              <option value={6}>6 Months</option>
+                              <option value={12}>1 Years</option>
+                              <option value={24}>2 Years</option>
+                              <option value={36}>3 Years</option>
+                            </>
+                          )}
+                          {(loan.type == 3 ||
+                            loan.type == 4 ||
+                            loan.type == 1) && (
+                            <>
+                              <option value={36}>3 Years</option>
+                              <option value={72}>6 Years</option>
+                              <option value={108}>9 Years</option>
+                              <option value={144}>12 Years</option>
+                              <option value={180}>15 Years</option>
+                            </>
+                          )}
+                        </select>
                       </div>
                     </div>
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Loan Doccument</label>
-                        <input
-                          type="file"
-                          accept="application/pdf,application/vnd.ms-excel"
-                          onChange={async (e) => {
-                            const url = await loanDocUploadHandler(
-                              e.target.files[0]
-                            );
-                            setLoan({
-                              ...loan,
-                              doccument: `/assets/doc/user/loan/${url}`,
-                            });
-                          }}
-                        />
-                      </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Loan Doccument</label>
+                      <input
+                        type="file"
+                        accept="application/pdf,application/vnd.ms-excel"
+                        className="form-control"
+                        onChange={async (e) => {
+                          const url = await loanDocUploadHandler(
+                            e.target.files[0]
+                          );
+                          setLoan({
+                            ...loan,
+                            doccument: `/assets/doc/user/loan/${url}`,
+                          });
+                        }}
+                      />
                     </div>
                   </div>
                 </form>
               </div>
-              <div className="apply-wrapper">
-                <div className="text-center mb-3">
-                  <h1>Collateral</h1>
+              <div className="apply-wrapper card p-4 col-12 col-lg-6">
+                <div className="text-center">
+                  <h3 className="m-0">Collateral</h3>
                 </div>
+                <hr />
                 <form action="#">
                   <div className="row">
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Collateral</label>
-                        <input
-                          type="text"
-                          name="accountNo"
-                          placeholder="Enter Collateral"
-                          onChange={(e) =>
-                            setCollateral({
-                              ...collteral,
-                              name: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Collateral</label>
+                      <input
+                        type="text"
+                        name="accountNo"
+                        className="form-control"
+                        placeholder="Enter Collateral"
+                        onChange={(e) =>
+                          setCollateral({
+                            ...collteral,
+                            name: e.target.value,
+                          })
+                        }
+                      />
                     </div>
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Collateral Value</label>
-                        <input
-                          type="text"
-                          name="accountNo"
-                          placeholder="Enter Collateral Value"
-                          onInput={(e) => {
-                            e.target.value = e.target.value
-                              .replace(/[^0-9]/g, "")
-                              .replace(/(\..*)\./g, "$1");
-                            setCollateral({
-                              ...collteral,
-                              value: e.target.value,
-                            });
-                          }}
-                        />
-                      </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Collateral Value</label>
+                      <input
+                        type="text"
+                        name="accountNo"
+                        className="form-control"
+                        placeholder="Enter Collateral Value"
+                        onInput={(e) => {
+                          e.target.value = e.target.value
+                            .replace(/[^0-9]/g, "")
+                            .replace(/(\..*)\./g, "$1");
+                          setCollateral({
+                            ...collteral,
+                            value: e.target.value,
+                          });
+                        }}
+                      />
                     </div>
-                    <div className="col-lg-12">
-                      <div className="single-form">
-                        <label>Collateral Doccument</label>
-                        <input
-                          type="file"
-                          accept="application/pdf,application/vnd.ms-excel,image/jpeg,image/jpg"
-                          onChange={async (e) => {
-                            const url = await collateralDocUploadHandler(
-                              e.target.files[0]
-                            );
-                            setCollateral({
-                              ...collteral,
-                              doccument: `/assets/doc/user/collateral/${url}`,
-                            });
-                          }}
-                        />
-                      </div>
+                    <div className="col-lg-12 mb-3">
+                      <label>Collateral Doccument</label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        accept="application/pdf,application/vnd.ms-excel,image/jpeg,image/jpg"
+                        onChange={async (e) => {
+                          const url = await collateralDocUploadHandler(
+                            e.target.files[0]
+                          );
+                          setCollateral({
+                            ...collteral,
+                            doccument: `/assets/doc/user/collateral/${url}`,
+                          });
+                        }}
+                      />
                     </div>
                   </div>
                 </form>
               </div>
-              <div className="d-flex justify-content-center">
-                <button
-                  type="button"
-                  className="btn d-flex justify-content-center align-items-center btn-primary p-3 border-0 fw-bold apply-btn mt-30"
-                  onClick={submitHandler}
-                  disabled={loader}
-                >
-                  {loader && (
-                    <div class="spinner-border me-2" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                  )}
-                  APPLY NOW{" "}
-                </button>
-              </div>
+            </div>
+            <div className="d-flex justify-content-center">
+              <button
+                type="button"
+                className="btn d-flex justify-content-center align-items-center btn-primary p-3 border-0 fw-bold apply-btn mt-30"
+                onClick={submitHandler}
+                disabled={loader}
+              >
+                {loader && (
+                  <div class="spinner-border me-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                )}
+                APPLY NOW{" "}
+              </button>
             </div>
           </div>
         </div>

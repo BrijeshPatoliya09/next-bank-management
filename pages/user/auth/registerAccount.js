@@ -181,7 +181,7 @@ const registerAccount = () => {
                             id="radio"
                             name="gender"
                             value={0}
-                            type="radio"  
+                            type="radio"
                             onChange={changeHandler}
                           />
                           <label for="radio-6" className="radio-label">
@@ -305,7 +305,14 @@ const registerAccount = () => {
                             ? { label: user.city, value: user.city }
                             : null
                         }
-                        onChange={(e) => setUser({ ...user, city: e?.value })}
+                        onChange={async (e) => {
+                          setUser({ ...user, city: e?.value });
+                          await getNearBank({
+                            country: user.country,
+                            state: user.state,
+                            city: e?.value,
+                          });
+                        }}
                         options={City.getCitiesOfState(
                           getIsoCode(user.country, "country") || "",
                           getIsoCode(user.state, "state", user.country)
@@ -373,7 +380,7 @@ const registerAccount = () => {
                               <img
                                 src={user.nationalProofImage}
                                 className="img-fluid preview-box"
-                              />  
+                              />
                               <button
                                 type="button"
                                 className="preview-close"

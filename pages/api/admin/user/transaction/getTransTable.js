@@ -1,4 +1,4 @@
-import { filterFunction } from "../../../../../helper/common";
+import { filterFunction, dataSorting } from "../../../../../helper/common";
 import dbConnect from "../../../../../helper/connection";
 
 export default async (req, res) => {
@@ -24,7 +24,7 @@ export default async (req, res) => {
     };
     const getAllUsers = await fetchAllUserData();
 
-      const allUserId = getAllUsers.map((item) => item._id);
+    const allUserId = getAllUsers.map((item) => item._id);
 
     const fetchTransData = async (bookmark = null, docs = []) => {
       const { data } = await dbConnect().mango("bank-management", {
@@ -95,28 +95,11 @@ export default async (req, res) => {
       filteredData.filter((item) => item.user == filter.user);
     }
 
-    async function dataSorting(obj) {
-      const fld = Object.keys(obj)[0];
-      let finaldata = [];
-      if (filteredData.length > 0) {
-        if (obj[fld] == 0) {
-          finaldata = filteredData
-            .sort((a, b) => (a[fld] > b[fld] ? -1 : b[fld] > a[fld] ? 1 : 0))
-            .slice(page * 10, page * 10 + 10);
-        } else {
-          finaldata = filteredData
-            .sort((a, b) => (a[fld] > b[fld] ? 1 : b[fld] > a[fld] ? -1 : 0))
-            .slice(page * 10, page * 10 + 10);
-        }
-      }
-      return finaldata;
-    }
-
     res.status(200).json({
       status: true,
       message: "success",
       data: {
-        userData: await dataSorting(sort),
+        userData: await dataSorting(sort, filteredData, page),
         count: filteredData.length,
       },
     });

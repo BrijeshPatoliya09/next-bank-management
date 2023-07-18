@@ -326,7 +326,7 @@ const transactionTable = ({ data, empData, treeSelectBox }) => {
                   <tbody className={userData.length == 0 && "text-center"}>
                     {userData.length == 0 && <NoDataFound />}
                     {userData.length > 0 &&
-                      [...userData].reverse().map((item) => {
+                      userData.map((item) => {
                         const created = new Date(item.createdAt * 1000);
                         return (
                           <tr>
