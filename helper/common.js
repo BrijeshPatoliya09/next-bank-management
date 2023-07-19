@@ -346,3 +346,25 @@ export const getTreeData = async (address, level) => {
   const data = await res.json();
   return data;
 };
+
+function getDaysFromDate(startDate) {
+  const currentDate = new Date();
+  const days = [];
+  const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+
+  // Set the start date
+  const current = new Date(startDate);
+  current.setHours(0, 0, 0, 0); // Set the time to midnight
+
+  // Loop until the current date
+    while (current <= currentDate) {
+      const start = Math.floor(new Date(current).getTime() / 1000.0);
+      const end = new Date(current);
+      end.setHours(23, 59, 59, 999); // Set the time to 23:59:59.999 (end of the day)
+      const endEpochTime = Math.floor(end.getTime() / 1000);
+      days.push({ start, end: endEpochTime }); // Add the current date to the list
+      current.setTime(current.getTime() + oneDay); // Move to the next day
+    }
+
+  return days;
+}

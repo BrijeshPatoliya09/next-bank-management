@@ -574,3 +574,7 @@ li {
 .m-b-23 {
   margin-bottom: 23px;
 }
+
+.email i {
+  color: #a7a7a7 !important;
+}

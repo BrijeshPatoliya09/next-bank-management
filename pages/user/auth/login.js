@@ -13,7 +13,7 @@ const login = () => {
   });
 
   const [loader, setLoader] = useState(false);
-  console.log(dec("b3lTNZrayiEqxyYXqA==", keyStore("userPsw")));
+  console.log(dec("DD1LPu2L5ghqy1EZqA==", keyStore("userPsw")));
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -67,13 +67,20 @@ const login = () => {
                 data-validate="Username is reauired"
               >
                 <span className="label-input100">Email</span>
-                <input
-                  className="input100"
-                  type="email"
-                  name="email"
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
-                  placeholder="Type your username"
-                />
+                <div className="d-flex email">
+                  <input
+                    className="input100"
+                    type="email"
+                    name="email"
+                    onChange={(e) =>
+                      setUser({ ...user, email: e.target.value })
+                    }
+                    placeholder="Type your username"
+                  />
+                  <button>
+                    <i class="bi bi-eye fs-4"></i>
+                  </button>
+                </div>
                 <span className="focus-input100"></span>
               </div>
 

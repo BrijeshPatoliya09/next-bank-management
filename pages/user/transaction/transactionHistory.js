@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import Chart from "../../../component/user/chart/Chart";
 
 const transactionHistory = () => {
   const [userData, setUserData] = useState([]);
@@ -65,6 +66,49 @@ const transactionHistory = () => {
     }
   };
 
+  const options = {
+    chart: {
+      type: "area",
+      height: 180,
+      toolbar: { show: false },
+      zoom: { enabled: false },
+    },
+    colors: ["#ffffff"],
+    series: [{ name: "Measurable stuff", data: [18, 50, 42, 94, 41, 65] }],
+    dataLabels: { enabled: false },
+    stroke: { width: 3, curve: "smooth" },
+
+    xaxis: {
+      axisBorder: { show: true },
+      labels: { style: { colors: "transparent" } },
+    },
+    yaxis: {
+      show: false,
+    },
+    grid: {
+      borderColor: "rgba(0, 0, 0, 0, 0)",
+      padding: { top: -30, bottom: -8, left: 12, right: 12 },
+    },
+    // tooltip: {
+    //   enabled: true,
+    //   y: { formatter: (value) => `${value}K` },
+    //   style: { fontFamily: "Rubik, sans-serif" },
+    // },
+    tooltip: {
+      custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+        const data = w.globals.series[seriesIndex][dataPointIndex];
+
+        return `<div>
+                  <p class="mb-0" style="font-size: 14px;">Day - 12 jun</p>
+                  <p class="mb-0" style="font-size: 14px;">Amount - 12000</p>
+                </div>`;
+      },
+    },
+    markers: { show: false },
+  };
+
+  const series = [{ name: "Series 1", data: [30, 40, 45, 50, 49, 60, 70, 91] }];
+
   return (
     <>
       <div className="hero-area2 slider-height2 hero-overly2 d-flex align-items-center ">
@@ -83,6 +127,37 @@ const transactionHistory = () => {
           <div className="row justify-content-center">
             <div className="col-12">
               <div className="apply-wrapper">
+                <div className="trans-cards mb-4 d-flex justify-content-between">
+                  <div class="card">
+                    <div className="head d-fex justify-content-between">
+                      <h2 className="mb-0">₹120000</h2>
+                      <p>Transaction</p>
+                    </div>
+                    <Chart options={options} series={series} />
+                  </div>
+                  <div class="card">
+                    <div className="head d-fex justify-content-between">
+                      <h2 className="mb-0">₹120000</h2>
+                      <p>Transaction</p>
+                    </div>
+                    <Chart options={options} series={series} />
+                  </div>
+                  <div class="card">
+                    <div className="head d-fex justify-content-between">
+                      <h2 className="mb-0">₹120000</h2>
+                      <p>Transaction</p>
+                    </div>
+                    <Chart options={options} series={series} />
+                  </div>
+                  <div class="card">
+                    <div className="head d-fex justify-content-between">
+                      <h2 className="mb-0">₹120000</h2>
+                      <p>Transaction</p>
+                    </div>
+                    <Chart options={options} series={series} />
+                  </div>
+                  {/* <div className="card"></div> */}
+                </div>
                 <div className="table-responsive custom-table-responsive">
                   <div className="filter mb-4">
                     <div className="col-3 p-0 me-3">

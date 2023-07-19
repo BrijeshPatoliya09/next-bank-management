@@ -21,6 +21,7 @@ export default withSessionRoute(async (req, res) => {
       const { data } = await dbConnect().mango("bank-management", {
         selector: {
           docType: "Transaction",
+          status: 1,
           $or: [{ userId: user.userId }, { fromId: user.userId }],
         },
         sort: [{ createdAt: "asc" }],
